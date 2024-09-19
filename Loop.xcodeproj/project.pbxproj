@@ -27,6 +27,10 @@
 		BF9588A22C99E73100FF34A1 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = BF9588A12C99E73100FF34A1 /* FirebaseDatabase */; };
 		BF9588A42C99E73100FF34A1 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = BF9588A32C99E73100FF34A1 /* FirebaseFirestore */; };
 		BF9588A62C99E73100FF34A1 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = BF9588A52C99E73100FF34A1 /* FirebaseStorage */; };
+		DDA797FF2C9CE3E700B48704 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA797FE2C9CE3E700B48704 /* Post.swift */; };
+		DDA798012C9CE41900B48704 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA798002C9CE41900B48704 /* FeedViewModel.swift */; };
+		DDA798032C9CE45600B48704 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA798022C9CE45600B48704 /* FeedView.swift */; };
+		DDA798052C9CE46400B48704 /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA798042C9CE46400B48704 /* PostView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +51,10 @@
 		B5B40E6C2C94EAE400BD9131 /* Loop.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Loop.entitlements; sourceTree = "<group>"; };
 		B5B40E6E2C94EAE400BD9131 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BF95889A2C99E6DC00FF34A1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		DDA797FE2C9CE3E700B48704 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Post.swift; path = Loop/Post.swift; sourceTree = SOURCE_ROOT; };
+		DDA798002C9CE41900B48704 /* FeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
+		DDA798022C9CE45600B48704 /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
+		DDA798042C9CE46400B48704 /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +80,8 @@
 				7C0B1FC32C9CB0880076B590 /* Profile */,
 				7C0B1FC22C9CB07F0076B590 /* Activities */,
 				7C0B1FC12C9CB0770076B590 /* Challenges */,
+				DDA798022C9CE45600B48704 /* FeedView.swift */,
+				DDA798042C9CE46400B48704 /* PostView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -80,6 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				7C0B1FD82C9CB61C0076B590 /* ViewModel.swift */,
+				DDA798002C9CE41900B48704 /* FeedViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -87,6 +98,7 @@
 		7C0B1FC02C9CB06A0076B590 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				DDA797FE2C9CE3E700B48704 /* Post.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -241,14 +253,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DDA798012C9CE41900B48704 /* FeedViewModel.swift in Sources */,
 				7C0B1FCA2C9CB1AB0076B590 /* SettingsView.swift in Sources */,
 				7C0B1FCF2C9CB1F00076B590 /* HomeView.swift in Sources */,
 				7C0B1FCC2C9CB1C30076B590 /* ManageFriendsView.swift in Sources */,
 				B5B40E692C94EAE100BD9131 /* ContentView.swift in Sources */,
+				DDA797FF2C9CE3E700B48704 /* Post.swift in Sources */,
 				7C0B1FD72C9CB24E0076B590 /* ExploreChallengeView.swift in Sources */,
 				7C0B1FD12C9CB2050076B590 /* ChallengeListView.swift in Sources */,
 				7C0B1FD32C9CB2110076B590 /* ChallengeView.swift in Sources */,
 				B5B40E672C94EAE100BD9131 /* LoopApp.swift in Sources */,
+				DDA798052C9CE46400B48704 /* PostView.swift in Sources */,
+				DDA798032C9CE45600B48704 /* FeedView.swift in Sources */,
 				7C0B1FC82C9CB1950076B590 /* FriendProfileView.swift in Sources */,
 				7C0B1FD52C9CB2270076B590 /* CreateChallengeView.swift in Sources */,
 				7C0B1FD92C9CB61C0076B590 /* ViewModel.swift in Sources */,
