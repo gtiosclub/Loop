@@ -6,8 +6,11 @@
 //
 
 import SwiftUI
+import HealthKit
 
 struct ContentView: View {
+    var heartRate: HKStatistics?
+    
     var body: some View {
         VStack {
             Image(systemName: "globe")

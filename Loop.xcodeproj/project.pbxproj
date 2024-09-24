@@ -11,6 +11,7 @@
 		B5B40E692C94EAE100BD9131 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B40E682C94EAE100BD9131 /* ContentView.swift */; };
 		B5B40E6B2C94EAE400BD9131 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5B40E6A2C94EAE400BD9131 /* Assets.xcassets */; };
 		B5B40E6F2C94EAE400BD9131 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5B40E6E2C94EAE400BD9131 /* Preview Assets.xcassets */; };
+		BF1F2CE22CA383CD00AA1F6A /* HealthKitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1F2CE12CA383CD00AA1F6A /* HealthKitHelper.swift */; };
 		BF95889B2C99E6DC00FF34A1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BF95889A2C99E6DC00FF34A1 /* GoogleService-Info.plist */; };
 		BF95889E2C99E73100FF34A1 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = BF95889D2C99E73100FF34A1 /* FirebaseAnalytics */; };
 		BF9588A02C99E73100FF34A1 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = BF95889F2C99E73100FF34A1 /* FirebaseAuth */; };
@@ -26,6 +27,8 @@
 		B5B40E6A2C94EAE400BD9131 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B5B40E6C2C94EAE400BD9131 /* Loop.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Loop.entitlements; sourceTree = "<group>"; };
 		B5B40E6E2C94EAE400BD9131 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		BF1F2CE12CA383CD00AA1F6A /* HealthKitHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitHelper.swift; sourceTree = "<group>"; };
+		BF1F2CE32CA3848B00AA1F6A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		BF95889A2C99E6DC00FF34A1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -64,7 +67,9 @@
 		B5B40E652C94EAE100BD9131 /* Loop */ = {
 			isa = PBXGroup;
 			children = (
+				BF1F2CE32CA3848B00AA1F6A /* Info.plist */,
 				BF95889A2C99E6DC00FF34A1 /* GoogleService-Info.plist */,
+				BF1F2CE12CA383CD00AA1F6A /* HealthKitHelper.swift */,
 				B5B40E662C94EAE100BD9131 /* LoopApp.swift */,
 				B5B40E682C94EAE100BD9131 /* ContentView.swift */,
 				B5B40E6A2C94EAE400BD9131 /* Assets.xcassets */,
@@ -164,6 +169,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B5B40E692C94EAE100BD9131 /* ContentView.swift in Sources */,
+				BF1F2CE22CA383CD00AA1F6A /* HealthKitHelper.swift in Sources */,
 				B5B40E672C94EAE100BD9131 /* LoopApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -294,10 +300,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Loop/Preview Content\"";
-				DEVELOPMENT_TEAM = YN82V53CTG;
+				DEVELOPMENT_TEAM = RNSWSF66B7;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Loop/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -333,10 +340,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Loop/Preview Content\"";
-				DEVELOPMENT_TEAM = YN82V53CTG;
+				DEVELOPMENT_TEAM = RNSWSF66B7;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Loop/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
