@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct ChallengeView: View {
+    var challenge: String
+    var description: String
+    var dateRange: String
+    
     @Environment(\.dismiss) private var dismiss
     var colorList: [Color] = [.yellow, .gray, .orange]
     
@@ -19,7 +23,7 @@ struct ChallengeView: View {
             
             VStack {
                 HStack {
-                    Text("Challenge Title")
+                    Text(challenge)
                         .font(.system(size: 42, weight: .bold))
                         .foregroundStyle(.red)
                         .padding([.leading, .trailing], 15)
@@ -28,9 +32,9 @@ struct ChallengeView: View {
                 }
                 
                 HStack {
-                    Text("Most Miles Ran")
+                    Text(description)
                     Spacer()
-                    Text("6/1 - 9/1")
+                    Text(dateRange)
                 }
                 .padding([.leading, .trailing], 15)
                 .font(.system(size: 20, weight: .bold))
@@ -107,5 +111,5 @@ struct ChallengeView: View {
 }
 
 #Preview {
-    ChallengeView()
+    ChallengeView(challenge: "Challenge Name", description: "Challenge Description", dateRange: "6/1 - 9/1")
 }

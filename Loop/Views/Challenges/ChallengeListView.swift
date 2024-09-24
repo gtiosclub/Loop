@@ -12,7 +12,7 @@ struct ChallengeListView: View {
         NavigationView {
             VStack {
                 Text("Challenge List View")
-                NavigationLink(destination: ChallengeView()) {
+                NavigationLink(destination: ChallengeView(challenge: "Challenge Name", description: "Challenge Description", dateRange: "6/1 - 9/1")) {
                     Text("Challenge View ->")
                 }
             }
