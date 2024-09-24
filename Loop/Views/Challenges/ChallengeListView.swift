@@ -9,7 +9,14 @@ import SwiftUI
 
 struct ChallengeListView: View {
     var body: some View {
-        Text("Challenge List View")
+        NavigationView {
+            VStack {
+                Text("Challenge List View")
+                NavigationLink(destination: ChallengeView()) {
+                    Text("Challenge View ->")
+                }
+            }
+        }
     }
 }
 
