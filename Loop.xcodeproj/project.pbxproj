@@ -18,6 +18,7 @@
 		7C0B1FD72C9CB24E0076B590 /* ExploreChallengeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B1FD62C9CB24E0076B590 /* ExploreChallengeView.swift */; };
 		7C0B1FD92C9CB61C0076B590 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B1FD82C9CB61C0076B590 /* ViewModel.swift */; };
 		7C0B1FDB2C9CE9270076B590 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B1FDA2C9CE9270076B590 /* User.swift */; };
+		96354F592CA38686003DD6F8 /* ChalLeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96354F582CA3867E003DD6F8 /* ChalLeaderboardView.swift */; };
 		B5B40E672C94EAE100BD9131 /* LoopApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B40E662C94EAE100BD9131 /* LoopApp.swift */; };
 		B5B40E692C94EAE100BD9131 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B40E682C94EAE100BD9131 /* ContentView.swift */; };
 		B5B40E6B2C94EAE400BD9131 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5B40E6A2C94EAE400BD9131 /* Assets.xcassets */; };
@@ -42,6 +43,7 @@
 		7C0B1FD62C9CB24E0076B590 /* ExploreChallengeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreChallengeView.swift; sourceTree = "<group>"; };
 		7C0B1FD82C9CB61C0076B590 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		7C0B1FDA2C9CE9270076B590 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		96354F582CA3867E003DD6F8 /* ChalLeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChalLeaderboardView.swift; sourceTree = "<group>"; };
 		B5B40E632C94EAE100BD9131 /* Loop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Loop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5B40E662C94EAE100BD9131 /* LoopApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopApp.swift; sourceTree = "<group>"; };
 		B5B40E682C94EAE100BD9131 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -97,6 +99,7 @@
 		7C0B1FC12C9CB0770076B590 /* Challenges */ = {
 			isa = PBXGroup;
 			children = (
+				96354F582CA3867E003DD6F8 /* ChalLeaderboardView.swift */,
 				7C0B1FD02C9CB2050076B590 /* ChallengeListView.swift */,
 				7C0B1FD22C9CB2110076B590 /* ChallengeView.swift */,
 				7C0B1FD42C9CB2270076B590 /* CreateChallengeView.swift */,
@@ -252,6 +255,7 @@
 				7C0B1FD72C9CB24E0076B590 /* ExploreChallengeView.swift in Sources */,
 				7C0B1FD12C9CB2050076B590 /* ChallengeListView.swift in Sources */,
 				7C0B1FD32C9CB2110076B590 /* ChallengeView.swift in Sources */,
+				96354F592CA38686003DD6F8 /* ChalLeaderboardView.swift in Sources */,
 				B5B40E672C94EAE100BD9131 /* LoopApp.swift in Sources */,
 				7C0B1FC82C9CB1950076B590 /* FriendProfileView.swift in Sources */,
 				7C0B1FD52C9CB2270076B590 /* CreateChallengeView.swift in Sources */,

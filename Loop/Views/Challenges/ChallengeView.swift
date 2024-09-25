@@ -7,13 +7,22 @@
 
 import SwiftUI
 
+class Person {
+    var name: String
+    var distance: Double
+    
+    init(name: String, distance: Double) {
+        self.name = name
+        self.distance = distance
+    }
+}
+
 struct ChallengeView: View {
     var challenge: String
     var description: String
     var dateRange: String
     
     @Environment(\.dismiss) private var dismiss
-    var colorList: [Color] = [.yellow, .gray, .orange]
     
     var body: some View {
         ZStack {
@@ -39,44 +48,7 @@ struct ChallengeView: View {
                 .padding([.leading, .trailing], 15)
                 .font(.system(size: 20, weight: .bold))
                 
-                HStack {
-                    Text("Leaderboard")
-                        .font(.system(size: 32, weight: .bold))
-                        .foregroundStyle(.orange)
-                        .padding([.leading, .trailing, .bottom], 15)
-                        .padding(.top, 30)
-                    Spacer()
-                }
-                
-                ForEach(1..<4, id: \.self) { index in
-                    HStack {
-                        ZStack {
-                            Circle()
-                                .foregroundColor(colorList[index - 1])
-                                .frame(width: 50, height: 50)
-                            Text(String(index))
-                                .font(.system(size: 25, weight: .semibold))
-                                .foregroundColor(.black)
-                        }
-                        
-                        VStack {
-                            HStack {
-                                Text("Name" + String(index))
-                                    .font(.system(size: 20, weight: .bold))
-                                Spacer()
-                                Text("200 mi")
-                                    .font(.system(size: 14, weight: .bold))
-                            }
-                            .padding(.top, -5)
-                            
-                            RoundedRectangle(cornerRadius: 15)
-                                    .fill(colorList[index - 1])
-                                    .frame(width: .infinity, height: 5)
-                                    .padding(.top, -10)
-                        }
-                    }
-                    .padding([.leading, .trailing], 15)
-                }
+                ChalLeaderboardView(personList: [Person(name:"Ryan", distance: 50.2), Person(name:"Max", distance: 104.8), Person(name:"Jason", distance: 85)])
                 
                 HStack {
                     Text("Activities")
