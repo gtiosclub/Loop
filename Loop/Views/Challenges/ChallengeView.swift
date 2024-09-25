@@ -48,7 +48,7 @@ struct ChallengeView: View {
                 .padding([.leading, .trailing], 15)
                 .font(.system(size: 20, weight: .bold))
                 
-                ChalLeaderboardView(personList: [Person(name:"Ryan", distance: 50.2), Person(name:"Max", distance: 104.8), Person(name:"Jason", distance: 85)])
+                ChalLeaderboardView(personList: [Person(name:"Ryan", distance: 50.2), Person(name:"Max", distance: 104.8), Person(name:"Jason", distance: 85), Person(name:"Sam", distance: 90.6)])
                 
                 HStack {
                     Text("Activities")
