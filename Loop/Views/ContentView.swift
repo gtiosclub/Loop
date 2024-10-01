@@ -20,7 +20,7 @@ struct ContentView: View {
                 Label("Challenges", systemImage: "figure.run")
             }.tag(TabSelection.challenges)
             
-            FriendProfileView().tabItem {
+            SelfProfileView().tabItem {
                 Label("Profile", systemImage: "person.crop.circle.fill")
             }.tag(TabSelection.profile)
             }
