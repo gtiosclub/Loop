@@ -42,7 +42,7 @@ struct LoginView: View {
                            Text("Login")
                                .padding()
                                .frame(maxWidth: 170)
-                               .foregroundColor(Color.black)
+                               .foregroundColor(Color.black) 
                                
                                .bold()
                                .cornerRadius(50)
