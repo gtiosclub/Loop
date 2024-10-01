@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		191745362CACBC9700ECC352 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191745352CACBC9300ECC352 /* LoginView.swift */; };
 		7C0B1FC62C9CB17E0076B590 /* SelfProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B1FC52C9CB17E0076B590 /* SelfProfileView.swift */; };
 		7C0B1FC82C9CB1950076B590 /* FriendProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B1FC72C9CB1950076B590 /* FriendProfileView.swift */; };
 		7C0B1FCA2C9CB1AB0076B590 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B1FC92C9CB1AB0076B590 /* SettingsView.swift */; };
@@ -36,6 +37,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		191745352CACBC9300ECC352 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		7C0B1FC52C9CB17E0076B590 /* SelfProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfProfileView.swift; sourceTree = "<group>"; };
 		7C0B1FC72C9CB1950076B590 /* FriendProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendProfileView.swift; sourceTree = "<group>"; };
 		7C0B1FC92C9CB1AB0076B590 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -134,6 +136,7 @@
 				7C0B1FC52C9CB17E0076B590 /* SelfProfileView.swift */,
 				7C0B1FC72C9CB1950076B590 /* FriendProfileView.swift */,
 				7C0B1FC92C9CB1AB0076B590 /* SettingsView.swift */,
+				191745352CACBC9300ECC352 /* LoginView.swift */,
 				7C0B1FCB2C9CB1C30076B590 /* ManageFriendsView.swift */,
 			);
 			path = Profile;
@@ -283,6 +286,7 @@
 				7C0B1FD52C9CB2270076B590 /* CreateChallengeView.swift in Sources */,
 				D49F42062CA20A86003607BB /* Theme.swift in Sources */,
 				7C0B1FD92C9CB61C0076B590 /* ViewModel.swift in Sources */,
+				191745362CACBC9700ECC352 /* LoginView.swift in Sources */,
 				D49F420C2CA20C03003607BB /* CardView.swift in Sources */,
 				7C0B1FC62C9CB17E0076B590 /* SelfProfileView.swift in Sources */,
 			);
