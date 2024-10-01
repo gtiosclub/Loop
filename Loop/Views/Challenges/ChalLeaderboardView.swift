@@ -129,5 +129,5 @@ struct ChalLeaderboardView: View {
 }
 
 #Preview {
-    ChalLeaderboardView(personList: [Person(name:"Ryan", distance: 50.2), Person(name:"Max", distance: 104.8), Person(name:"Jason", distance: 85), Person(name:"Sam", distance: 90.6)])
+    ChalLeaderboardView(personList: [Person(name:"Ryan", distance: 50.2), Person(name:"Max", distance: 104.8), Person(name:"Jason", distance: 85), Person(name:"Sam", distance: 90.6), Person(name: "Joe", distance: 20.2)])
 }
