@@ -28,7 +28,7 @@ class Challenges {
     }
     
     // Adds a challenge to the firestore database.
-    //
+    // TETATYukshflafja
     // TODO: 1) add challenge id to the host challenges array.
     func addChallenge() async -> Void {
         // Create document's data
