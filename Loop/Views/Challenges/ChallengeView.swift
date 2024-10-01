@@ -39,7 +39,7 @@ struct ChallengeView: View {
                 }
                 
                 HStack {
-                    Text(challenge.description)
+                    Text(challenge.challengeType)
                     Spacer()
                     Text("\(challenge.lengthInMinutes)")
                 }
