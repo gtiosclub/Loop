@@ -19,7 +19,6 @@ struct CardView: View {
                 Label("\(challenge.attendees.count)", systemImage: "person.3")
                 Spacer()
                 Label("\(challenge.lengthInMinutes)", systemImage: "clock")
-                    .labelStyle(.trailingIcon)
             }
             .font(.caption)
         }
