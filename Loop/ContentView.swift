@@ -8,14 +8,21 @@
 import SwiftUI
 
 struct ContentView: View {
+    var challenge = Challenges(challengeName: "challenge", challengeType: "cardio", challengeStart: Date(), challengeEnd: Date(), host: "host");
+    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            Button("Add user to db") {
+                Task {
+                    await challenge.addChallenge();
+                }
+            }
+            Button("Get challenge data") {
+                Task {
+                    await challenge.getChallenge(challenge.challengeId);
+                }
+            }
         }
-        .padding()
     }
 }
 
