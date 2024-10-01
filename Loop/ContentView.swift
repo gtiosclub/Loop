@@ -14,12 +14,17 @@ struct ContentView: View {
         VStack {
             Button("Add user to db") {
                 Task {
-                    await challenge.addChallenge();
+                    await print(challenge.addChallenge());
                 }
             }
             Button("Get challenge data") {
                 Task {
-                    await challenge.getChallenge(challenge.challengeId);
+                    await print(challenge.getChallenge(challenge.challengeId));
+                }
+            }
+            Button("Remove challenge") {
+                Task {
+                    await print(challenge.removeChallenge(challenge.challengeId));
                 }
             }
         }

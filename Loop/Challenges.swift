@@ -30,7 +30,7 @@ class Challenges {
     // Adds a challenge to the firestore database.
     //
     // TODO: 1) add challenge id to the host challenges array.
-    func addChallenge() async -> Void {
+    func addChallenge() async -> String {
         // Create document's data
         let docData: [String: Any] = [
             "name" : challengeName,
@@ -49,9 +49,9 @@ class Challenges {
             let doc = db.collection("challenges").document();
             self.challengeId = doc.documentID;
             try await doc.setData(docData);
-            print("Document succesfully written.");
+            return "Document succesfully written.";
         } catch {
-            print("Error writing document: \(error).");
+            return "Error writing document: \(error).";
         }
     }
     
@@ -78,6 +78,13 @@ class Challenges {
     
     // Remove a challenge from the firestore database.
     func removeChallenge(_ challengeId: String) async -> String {
-        return "";
+        let db = Firestore.firestore();
+        let docRef = db.collection("challenges").document(challengeId);
+        do {
+            try await docRef.delete();
+            return "\(challengeId) removed.";
+        } catch {
+            return "Error getting document: \(error).";
+        }
     }
 }
