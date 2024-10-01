@@ -27,20 +27,6 @@ struct SettingsView: View {
                     }
                 }.padding()
                 
-//                VStack {
-//                    Button(action: {
-//                        //app settings implementation, as needed
-//                    }) {
-//                        HStack{
-//                            Image(systemName: "gearshape.fill").font(.system(size:40)).foregroundColor(.gray)
-//                            VStack(alignment: .leading) {
-//                                Text("App Settings").font(.headline).foregroundColor(.black)
-//                            }
-//                            Spacer()
-//                        }.padding().background(Color.white).cornerRadius(10).shadow(radius: 2).padding(.horizontal);
-//                    }
-//                }
-                
                 VStack {
                     Button(action: {
                         //change password implementation
