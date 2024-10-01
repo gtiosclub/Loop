@@ -10,7 +10,10 @@ import SwiftUI
 struct ChallengeView: View {
     
     var body: some View {
-        ChallengeListView(challenges: Challenge.sampleData)
+        VStack{
+            ChallengeListView(challenges: Challenge.sampleData)
+        }
+        
     }
 }
 
