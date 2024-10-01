@@ -11,7 +11,6 @@
 		AA169AF32C9A1B2100A2F01D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA169AF22C9A1B2100A2F01D /* SettingsView.swift */; };
 		AA169AF52C9A1B2D00A2F01D /* FriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA169AF42C9A1B2D00A2F01D /* FriendsView.swift */; };
 		AA169AF92C9A1BCF00A2F01D /* FriendsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA169AF82C9A1BCF00A2F01D /* FriendsViewModel.swift */; };
-		AA169AFC2C9A1E8B00A2F01D /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA169AFB2C9A1E8B00A2F01D /* Friend.swift */; };
 		B5B40E672C94EAE100BD9131 /* LoopApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B40E662C94EAE100BD9131 /* LoopApp.swift */; };
 		B5B40E692C94EAE100BD9131 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B40E682C94EAE100BD9131 /* ContentView.swift */; };
 		B5B40E6B2C94EAE400BD9131 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5B40E6A2C94EAE400BD9131 /* Assets.xcassets */; };
@@ -29,7 +28,6 @@
 		AA169AF22C9A1B2100A2F01D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		AA169AF42C9A1B2D00A2F01D /* FriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
 		AA169AF82C9A1BCF00A2F01D /* FriendsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsViewModel.swift; sourceTree = "<group>"; };
-		AA169AFB2C9A1E8B00A2F01D /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 		B5B40E632C94EAE100BD9131 /* Loop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Loop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5B40E662C94EAE100BD9131 /* LoopApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopApp.swift; sourceTree = "<group>"; };
 		B5B40E682C94EAE100BD9131 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -76,7 +74,6 @@
 		AA169AFA2C9A1E1300A2F01D /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				AA169AFB2C9A1E8B00A2F01D /* Friend.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -203,7 +200,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA169AF52C9A1B2D00A2F01D /* FriendsView.swift in Sources */,
-				AA169AFC2C9A1E8B00A2F01D /* Friend.swift in Sources */,
 				B5B40E692C94EAE100BD9131 /* ContentView.swift in Sources */,
 				AA169AF92C9A1BCF00A2F01D /* FriendsViewModel.swift in Sources */,
 				AA169AF32C9A1B2100A2F01D /* SettingsView.swift in Sources */,
