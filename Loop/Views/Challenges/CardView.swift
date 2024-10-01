@@ -18,7 +18,7 @@ struct CardView: View {
             HStack {
                 Label("\(challenge.attendees.count)", systemImage: "person.3")
                 Spacer()
-                Label("\(challenge.lengthInMinutes)", systemImage: "clock")
+                Label("\(challenge.dateCreated.formatted(.dateTime.day().month(.twoDigits))) - \(challenge.endDate.formatted(.dateTime.day().month(.twoDigits)))", systemImage: "clock")
             }
             .font(.caption)
         }
