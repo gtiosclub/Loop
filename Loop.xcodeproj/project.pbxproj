@@ -23,6 +23,7 @@
 		B5B40E692C94EAE100BD9131 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B40E682C94EAE100BD9131 /* ContentView.swift */; };
 		B5B40E6B2C94EAE400BD9131 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5B40E6A2C94EAE400BD9131 /* Assets.xcassets */; };
 		B5B40E6F2C94EAE400BD9131 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5B40E6E2C94EAE400BD9131 /* Preview Assets.xcassets */; };
+		BF0FEFFA2CACA1E3002B4C58 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0FEFF92CACA1E1002B4C58 /* Activity.swift */; };
 		BF95889B2C99E6DC00FF34A1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BF95889A2C99E6DC00FF34A1 /* GoogleService-Info.plist */; };
 		BF95889E2C99E73100FF34A1 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = BF95889D2C99E73100FF34A1 /* FirebaseAnalytics */; };
 		BF9588A02C99E73100FF34A1 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = BF95889F2C99E73100FF34A1 /* FirebaseAuth */; };
@@ -54,6 +55,7 @@
 		B5B40E6A2C94EAE400BD9131 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B5B40E6C2C94EAE400BD9131 /* Loop.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Loop.entitlements; sourceTree = "<group>"; };
 		B5B40E6E2C94EAE400BD9131 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		BF0FEFF92CACA1E1002B4C58 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
 		BF95889A2C99E6DC00FF34A1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D49F42052CA20A86003607BB /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		D49F42092CA20BCA003607BB /* Challenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Challenge.swift; sourceTree = "<group>"; };
@@ -99,6 +101,8 @@
 		7C0B1FC02C9CB06A0076B590 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				BF0FEFF92CACA1E1002B4C58 /* Activity.swift */,
+				D49F42092CA20BCA003607BB /* Challenge.swift */,
 				7C0B1FDA2C9CE9270076B590 /* User.swift */,
 			);
 			path = Models;
@@ -180,7 +184,6 @@
 			isa = PBXGroup;
 			children = (
 				D49F42052CA20A86003607BB /* Theme.swift */,
-				D49F42092CA20BCA003607BB /* Challenge.swift */,
 				D49F420D2CA2103D003607BB /* TrailingIconLabelStyle.swift */,
 			);
 			path = Models;
@@ -276,6 +279,7 @@
 				B5B40E692C94EAE100BD9131 /* ContentView.swift in Sources */,
 				7C0B1FD72C9CB24E0076B590 /* ExploreChallengeView.swift in Sources */,
 				7C0B1FD12C9CB2050076B590 /* ChallengeListView.swift in Sources */,
+				BF0FEFFA2CACA1E3002B4C58 /* Activity.swift in Sources */,
 				D49F420E2CA2103D003607BB /* TrailingIconLabelStyle.swift in Sources */,
 				7C0B1FD32C9CB2110076B590 /* ChallengeView.swift in Sources */,
 				B5B40E672C94EAE100BD9131 /* LoopApp.swift in Sources */,
