@@ -26,9 +26,11 @@ struct FriendRow: View {
 struct ManageFriendsView: View {
     @State private var searchText: String = ""
     @State private var onlineFriends: [String] = ["Kevin", "Ethan", "Jason"]
-    @State private var offlineFriends: [String] = ["Seohyun", "Dennis", "Aryun"]
-    @State private var allFriends: [String] = ["Kevin", "Ethan", "Jason", "Seohyun", "Dennis", "Aryun"]
+    @State private var offlineFriends: [String] = ["Kevin", "Ethan", "Jason", "Seohyun", "Dennis", "Aryun", "Dennis", "Dennis", "Dennis"]
+    @State private var allFriends: [String] = ["Kevin", "Ethan", "Jason", "Seohyun", "Dennis", "Aryun", "Dennis", "Dennis", "Dennis"]
     @State private var filteredFriends: [String] = []
+    
+    
     
     private func filterFriends() {
         if searchText.isEmpty {
@@ -73,21 +75,25 @@ struct ManageFriendsView: View {
                 TextField("Search Friends", text: $searchText).padding(8).background(Color.orange.opacity(0.3)).cornerRadius(8).onChange(of: searchText) { filterFriends() }
             }.padding(.horizontal)
             
-            
-            VStack(alignment: .leading) {
-                Text("Online: ").font(.subheadline).padding(.leading)
-                ForEach(onlineFriends, id: \.self) {friend in
-                    FriendRow(friendName: friend, status: "Now Active")
-                }
-            }.padding(.top)
-            
-            
+
+                VStack(alignment: .leading) {
+                    Text("Online: ").font(.subheadline).padding(.leading)
+                    ScrollView {
+                        ForEach(onlineFriends, id: \.self) {friend in
+                            FriendRow(friendName: friend, status: "Now Active")
+                        }
+                    }
+                }.padding(.top)
+                
             VStack(alignment: .leading) {
                 Text("Offline: ").font(.subheadline).padding(.leading)
-                ForEach(offlineFriends, id: \.self) {friend in
-                    FriendRow(friendName: friend, status: "Last Seen: 7 days")
+                ScrollView {
+                    ForEach(offlineFriends, id: \.self) {friend in
+                        FriendRow(friendName: friend, status: "Last Seen: 7 days")
+                    }
                 }
             }
+            
             
             Spacer()
             
