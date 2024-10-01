@@ -18,7 +18,6 @@
 		7C0B1FD72C9CB24E0076B590 /* ExploreChallengeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B1FD62C9CB24E0076B590 /* ExploreChallengeView.swift */; };
 		7C0B1FD92C9CB61C0076B590 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B1FD82C9CB61C0076B590 /* ViewModel.swift */; };
 		7C0B1FDB2C9CE9270076B590 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B1FDA2C9CE9270076B590 /* User.swift */; };
-		7CA5D6722CABA0C30062DA37 /* ChallengeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA5D6712CABA0C30062DA37 /* ChallengeDetailView.swift */; };
 		96354F592CA38686003DD6F8 /* ChalLeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96354F582CA3867E003DD6F8 /* ChalLeaderboardView.swift */; };
 		B5B40E672C94EAE100BD9131 /* LoopApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B40E662C94EAE100BD9131 /* LoopApp.swift */; };
 		B5B40E692C94EAE100BD9131 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B40E682C94EAE100BD9131 /* ContentView.swift */; };
@@ -48,7 +47,6 @@
 		7C0B1FD62C9CB24E0076B590 /* ExploreChallengeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreChallengeView.swift; sourceTree = "<group>"; };
 		7C0B1FD82C9CB61C0076B590 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		7C0B1FDA2C9CE9270076B590 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		7CA5D6712CABA0C30062DA37 /* ChallengeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeDetailView.swift; sourceTree = "<group>"; };
 		96354F582CA3867E003DD6F8 /* ChalLeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChalLeaderboardView.swift; sourceTree = "<group>"; };
 		B5B40E632C94EAE100BD9131 /* Loop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Loop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5B40E662C94EAE100BD9131 /* LoopApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopApp.swift; sourceTree = "<group>"; };
@@ -115,7 +113,6 @@
 				7C0B1FD22C9CB2110076B590 /* ChallengeView.swift */,
 				7C0B1FD42C9CB2270076B590 /* CreateChallengeView.swift */,
 				7C0B1FD62C9CB24E0076B590 /* ExploreChallengeView.swift */,
-				7CA5D6712CABA0C30062DA37 /* ChallengeDetailView.swift */,
 				D49F420B2CA20C03003607BB /* CardView.swift */,
 			);
 			path = Challenges;
@@ -273,7 +270,6 @@
 				7C0B1FDB2C9CE9270076B590 /* User.swift in Sources */,
 				7C0B1FCA2C9CB1AB0076B590 /* SettingsView.swift in Sources */,
 				7C0B1FCF2C9CB1F00076B590 /* HomeView.swift in Sources */,
-				7CA5D6722CABA0C30062DA37 /* ChallengeDetailView.swift in Sources */,
 				7C0B1FCC2C9CB1C30076B590 /* ManageFriendsView.swift in Sources */,
 				D49F420A2CA20BCA003607BB /* Challenge.swift in Sources */,
 				B5B40E692C94EAE100BD9131 /* ContentView.swift in Sources */,
