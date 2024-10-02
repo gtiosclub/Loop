@@ -6,43 +6,30 @@
 //
 
 import SwiftUI
-import FirebaseStorage
 
 struct ContentView: View {
-    @State private var isPickerShowing = false
-    @State private var selectedImage: UIImage? = nil
-    
+    @State var selectedView: TabSelection = .home
     var body: some View {
-        VStack {
-            if let image = selectedImage {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 200, height: 200)
-            } else {
-                Text("No image selected")
-            }
+        TabView(selection: $selectedView,
+            content: {
+                HomeView().tabItem {
+                    Label("Home", systemImage: "house.fill")
+                }.tag(TabSelection.home)
             
-            Button {
-                isPickerShowing = true
-            } label: {
-                Text("Select a photo")
-            }
+                ChallengeView().tabItem {
+                Label("Challenges", systemImage: "figure.run")
+            }.tag(TabSelection.challenges)
             
-            //upload photo
-            if selectedImage != nil {
-                Button {
-                    FirebaseUploader.uploadPhoto(image: selectedImage)
-                } label: {
-                    Text("Upload photo")
-                }
+            SelfProfileView().tabItem {
+                Label("Profile", systemImage: "person.crop.circle.fill")
+            }.tag(TabSelection.profile)
             }
-        }
-        .sheet(isPresented: $isPickerShowing, onDismiss: nil, content: {
-            ImagePicker(selectedImage: $selectedImage, isPickerShowing: $isPickerShowing)
-        })
+        )
     }
-    
+}
+
+enum TabSelection {
+    case home, challenges, profile
 }
 
 #Preview {
