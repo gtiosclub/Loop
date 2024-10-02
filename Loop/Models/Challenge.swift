@@ -19,6 +19,7 @@ struct Challenge: Identifiable {  // Previously DailyScrum
     var endDate: Date
     var host: String
     
+
     init(id: UUID = UUID(), title: String, attendees: [String], lengthInMinutes: Int, theme: Theme, endDate: Date, challengeType: String, dataMeasured: String, dateCreated: Date, host: String) {
         self.id = id
         self.title = title

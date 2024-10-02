@@ -35,7 +35,7 @@ struct ChallengeListView: View {
             List {
                 ForEach(challenges) { challenge in
                     NavigationLink {
-                        ChallengeDetailView()
+                        ChallengeView(challenge: challenge)
                     } label: {
                         CardView(challenge: challenge)
                     }
