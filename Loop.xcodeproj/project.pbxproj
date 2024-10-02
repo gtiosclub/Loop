@@ -36,6 +36,7 @@
 		D49F420E2CA2103D003607BB /* TrailingIconLabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49F420D2CA2103D003607BB /* TrailingIconLabelStyle.swift */; };
 		E25FF94C2CA61DC2006FF61C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25FF94B2CA61DC2006FF61C /* ImagePicker.swift */; };
 		E25FF94E2CA629C2006FF61C /* FirebaseUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25FF94D2CA629C2006FF61C /* FirebaseUploader.swift */; };
+		CE7696A02C9A4A2200950213 /* Challenges.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE76969F2C9A4A2200950213 /* Challenges.swift */; };
 
 /* End PBXBuildFile section */
 
@@ -66,6 +67,7 @@
 		D49F420D2CA2103D003607BB /* TrailingIconLabelStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailingIconLabelStyle.swift; sourceTree = "<group>"; };
 		E25FF94B2CA61DC2006FF61C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		E25FF94D2CA629C2006FF61C /* FirebaseUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseUploader.swift; sourceTree = "<group>"; };
+		CE76969F2C9A4A2200950213 /* Challenges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Challenges.swift; sourceTree = "<group>"; };
 
 /* End PBXFileReference section */
 
@@ -172,6 +174,8 @@
 				E25FF94D2CA629C2006FF61C /* FirebaseUploader.swift */,
 				BF95889A2C99E6DC00FF34A1 /* GoogleService-Info.plist */,
 				B5B40E662C94EAE100BD9131 /* LoopApp.swift */,
+				B5B40E682C94EAE100BD9131 /* ContentView.swift */,
+				CE76969F2C9A4A2200950213 /* Challenges.swift */,
 				B5B40E6A2C94EAE400BD9131 /* Assets.xcassets */,
 				B5B40E6C2C94EAE400BD9131 /* Loop.entitlements */,
 				B5B40E6D2C94EAE400BD9131 /* Preview Content */,
@@ -299,6 +303,8 @@
 				7C0B1FD92C9CB61C0076B590 /* ViewModel.swift in Sources */,
 				D49F420C2CA20C03003607BB /* CardView.swift in Sources */,
 				7C0B1FC62C9CB17E0076B590 /* SelfProfileView.swift in Sources */,
+				CE7696A02C9A4A2200950213 /* Challenges.swift in Sources */,
+
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

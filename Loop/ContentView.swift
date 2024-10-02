@@ -41,8 +41,6 @@ struct ContentView: View {
         .sheet(isPresented: $isPickerShowing, onDismiss: nil, content: {
             ImagePicker(selectedImage: $selectedImage, isPickerShowing: $isPickerShowing)
         })
-        
-        
     }
     
 }
