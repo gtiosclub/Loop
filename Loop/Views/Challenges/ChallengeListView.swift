@@ -33,7 +33,7 @@ struct ChallengeListView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.leading, 20)
             List {
-                ForEach(challenges) { challenge in
+                ForEach(challenges, id: \.id) { challenge in
                     NavigationLink {
                         ChallengeView(challenge: challenge)
                     } label: {
