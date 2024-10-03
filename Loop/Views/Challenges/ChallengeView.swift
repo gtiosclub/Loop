@@ -41,7 +41,8 @@ struct ChallengeView: View {
                 HStack {
                     Text(challenge.challengeType)
                     Spacer()
-                    Text("\(challenge.lengthInMinutes)")
+                    Text("\(challenge.dateCreated.formatted(.dateTime.day().month(.twoDigits))) - \(challenge.endDate.formatted(.dateTime.day().month(.twoDigits)))")
+                    
                 }
                 .padding([.leading, .trailing], 15)
                 .font(.system(size: 20, weight: .bold))
