@@ -99,6 +99,34 @@ struct Challenge: Identifiable {  // Previously DailyScrum
             return "Error getting document: \(error).";
         }
     }
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case title
+        case attendees
+        case lengthInMinutes
+        case theme
+        case endDate
+        case challengeType
+        case dataMeasured
+        case dateCreated
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decodeIfPresent(UUID.self, forKey: .id) ?? UUID()
+        title = try container.decode(String.self, forKey: .title)
+        
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(title, forKey: .title)
+        
+    }
+    
+    
 }
 
 extension Challenge {
