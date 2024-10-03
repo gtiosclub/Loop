@@ -31,7 +31,6 @@
 		BF9588A22C99E73100FF34A1 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = BF9588A12C99E73100FF34A1 /* FirebaseDatabase */; };
 		BF9588A42C99E73100FF34A1 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = BF9588A32C99E73100FF34A1 /* FirebaseFirestore */; };
 		BF9588A62C99E73100FF34A1 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = BF9588A52C99E73100FF34A1 /* FirebaseStorage */; };
-		CE7696A02C9A4A2200950213 /* Challenges.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE76969F2C9A4A2200950213 /* Challenges.swift */; };
 		D49F42062CA20A86003607BB /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49F42052CA20A86003607BB /* Theme.swift */; };
 		D49F420A2CA20BCA003607BB /* Challenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49F42092CA20BCA003607BB /* Challenge.swift */; };
 		D49F420C2CA20C03003607BB /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49F420B2CA20C03003607BB /* CardView.swift */; };
@@ -63,7 +62,6 @@
 		B5B40E6E2C94EAE400BD9131 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BF0FEFF92CACA1E1002B4C58 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
 		BF95889A2C99E6DC00FF34A1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		CE76969F2C9A4A2200950213 /* Challenges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Challenges.swift; sourceTree = "<group>"; };
 		D49F42052CA20A86003607BB /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		D49F42092CA20BCA003607BB /* Challenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Challenge.swift; sourceTree = "<group>"; };
 		D49F420B2CA20C03003607BB /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
@@ -114,7 +112,6 @@
 			children = (
 				BF0FEFF92CACA1E1002B4C58 /* Activity.swift */,
 				D49F42092CA20BCA003607BB /* Challenge.swift */,
-				CE76969F2C9A4A2200950213 /* Challenges.swift */,
 				7C0B1FDA2C9CE9270076B590 /* User.swift */,
 			);
 			path = Models;
@@ -324,7 +321,6 @@
 				191745362CACBC9700ECC352 /* LoginView.swift in Sources */,
 				D49F420C2CA20C03003607BB /* CardView.swift in Sources */,
 				7C0B1FC62C9CB17E0076B590 /* SelfProfileView.swift in Sources */,
-				CE7696A02C9A4A2200950213 /* Challenges.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
