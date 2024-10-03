@@ -6,6 +6,7 @@
 
 import Foundation
 import HealthKit
+import SwiftUI
 
 class HealthDataVariables {
 
@@ -49,4 +50,31 @@ class HealthDataVariables {
             completion(success, error)
         }
     }
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case heartRate
+        case caloriesBurned
+        case distanceWalkingRunning
+        case appleExerciseTime
+        case vo2Max
+        case dateCreated
+    }
+
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decodeIfPresent(UUID.self, forKey: .id) ?? UUID()
+        name = try container.decode(String.self, forKey: .name)
+        items = try container.decode([Item].self, forKey: .items)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(name, forKey: .name)
+        try container.encode(items, forKey: .items)
+    }
+
+    
 }
