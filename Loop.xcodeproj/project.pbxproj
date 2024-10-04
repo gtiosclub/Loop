@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		191745362CACBC9700ECC352 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191745352CACBC9300ECC352 /* LoginView.swift */; };
+		195087992CAF60F900AB3EE3 /* ChangePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 195087982CAF60ED00AB3EE3 /* ChangePasswordView.swift */; };
+		1950879D2CAF646C00AB3EE3 /* ChangeEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1950879C2CAF646800AB3EE3 /* ChangeEmailView.swift */; };
 		7C0B1FC62C9CB17E0076B590 /* SelfProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B1FC52C9CB17E0076B590 /* SelfProfileView.swift */; };
 		7C0B1FC82C9CB1950076B590 /* FriendProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B1FC72C9CB1950076B590 /* FriendProfileView.swift */; };
 		7C0B1FCA2C9CB1AB0076B590 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B1FC92C9CB1AB0076B590 /* SettingsView.swift */; };
@@ -43,6 +45,8 @@
 
 /* Begin PBXFileReference section */
 		191745352CACBC9300ECC352 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		195087982CAF60ED00AB3EE3 /* ChangePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordView.swift; sourceTree = "<group>"; };
+		1950879C2CAF646800AB3EE3 /* ChangeEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailView.swift; sourceTree = "<group>"; };
 		7C0B1FC52C9CB17E0076B590 /* SelfProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfProfileView.swift; sourceTree = "<group>"; };
 		7C0B1FC72C9CB1950076B590 /* FriendProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendProfileView.swift; sourceTree = "<group>"; };
 		7C0B1FC92C9CB1AB0076B590 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -146,6 +150,8 @@
 			isa = PBXGroup;
 			children = (
 				7C0B1FC52C9CB17E0076B590 /* SelfProfileView.swift */,
+				195087982CAF60ED00AB3EE3 /* ChangePasswordView.swift */,
+				1950879C2CAF646800AB3EE3 /* ChangeEmailView.swift */,
 				7C0B1FC72C9CB1950076B590 /* FriendProfileView.swift */,
 				7C0B1FC92C9CB1AB0076B590 /* SettingsView.swift */,
 				191745352CACBC9300ECC352 /* LoginView.swift */,
@@ -308,6 +314,7 @@
 				D49F420A2CA20BCA003607BB /* Challenge.swift in Sources */,
 				B5B40E692C94EAE100BD9131 /* ContentView.swift in Sources */,
 				7C0B1FD72C9CB24E0076B590 /* ExploreChallengeView.swift in Sources */,
+				195087992CAF60F900AB3EE3 /* ChangePasswordView.swift in Sources */,
 				7C0B1FD12C9CB2050076B590 /* ChallengeListView.swift in Sources */,
 				DF1CD2B02CACB98D00451888 /* FeedView.swift in Sources */,
 				BF0FEFFA2CACA1E3002B4C58 /* Activity.swift in Sources */,
@@ -320,6 +327,7 @@
 				7C0B1FC82C9CB1950076B590 /* FriendProfileView.swift in Sources */,
 				7C0B1FD52C9CB2270076B590 /* CreateChallengeView.swift in Sources */,
 				D49F42062CA20A86003607BB /* Theme.swift in Sources */,
+				1950879D2CAF646C00AB3EE3 /* ChangeEmailView.swift in Sources */,
 				7C0B1FD92C9CB61C0076B590 /* ViewModel.swift in Sources */,
 				191745362CACBC9700ECC352 /* LoginView.swift in Sources */,
 				D49F420C2CA20C03003607BB /* CardView.swift in Sources */,
