@@ -58,15 +58,6 @@ struct ManageFriendsView: View {
                 Text("Manage Friends").font(.headline)
                 
                 Spacer()
-                
-                Button(action: {
-                    //action for adding friends
-                }, label: {
-                    HStack {
-                        Image(systemName: "person.badge.plus.fill").font(.system(size: 15))
-                        Text("Add Friends")
-                    }.padding(10).background(Color.orange).foregroundColor(.white).cornerRadius(10.0)
-                })
             }.padding()
             
             
