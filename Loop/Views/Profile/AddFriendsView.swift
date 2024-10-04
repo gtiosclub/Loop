@@ -33,6 +33,43 @@ struct AddFriendRow: View {
         }.padding().background(Color.white).cornerRadius(10).shadow(radius: 2).padding(.horizontal)
     }
 }
+struct AcceptFriendRow: View {
+    var friendName: String
+    var status: String
+    
+    var body: some View {
+        HStack {
+            Image(systemName: "person.circle.fill").font(.system(size: 40)).foregroundColor(.gray)
+            VStack(alignment: .leading) {
+                Text(friendName).font(.headline)
+                Text(status).font(.caption).foregroundColor(.gray)
+            }
+            Spacer()
+            VStack {
+                Button(action: {
+                    print("friend added")
+                }) {Image(systemName: "plus")
+                        .font(.system(size: 24))
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .clipShape(Circle())
+                }
+            }
+            VStack {
+                Button(action: {
+                    print("friend removed")
+                }) {Image(systemName: "xmark")
+                        .font(.system(size: 24))
+                        .padding()
+                        .background(Color.red)
+                        .foregroundColor(.white)
+                        .clipShape(Circle())
+                }
+            }
+        }.padding().background(Color.white).cornerRadius(10).shadow(radius: 2).padding(.horizontal)
+    }
+}
 
 struct AddFriendsView: View {
     @State private var searchText: String = ""
@@ -84,7 +121,7 @@ struct AddFriendsView: View {
                 Text("Incoming Requests: ").font(.subheadline).padding(.leading)
                 ScrollView {
                     ForEach(requestingFriends, id: \.self) {friend in
-                        AddFriendRow(friendName: friend, status: "Last Seen: 7 days")
+                        AcceptFriendRow(friendName: friend, status: "Last Seen: 7 days")
                     }
                 }
             }
