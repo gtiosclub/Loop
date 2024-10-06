@@ -76,7 +76,7 @@ struct AddFriendsView: View {
     @State private var allFriends: [String] = ["Kevin", "Ethan", "Jason"]
     @State private var requestingFriends: [String] = ["Me", "Kevin", "Ethan", "Jason"]
     @State private var matchedFriends: [String] = []
-    
+    @Environment(\.presentationMode) var presentationMode
     
     private func filterFriends() {
         if searchText.isEmpty {
@@ -92,7 +92,7 @@ struct AddFriendsView: View {
         VStack {
             HStack {
                 Button(action: {
-                    //action for the back button back to profile page can be implemented here
+                    self.presentationMode.wrappedValue.dismiss()
                 }) {
                     Image(systemName: "arrow.left.circle.fill").font(.system(size: 30)).foregroundColor(.orange)
                 }
@@ -130,7 +130,7 @@ struct AddFriendsView: View {
             
             
         }.background(Color.gray.opacity(0.1).edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/))
-        
+            .navigationBarBackButtonHidden(true)
     }
 }
 

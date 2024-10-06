@@ -8,16 +8,14 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @Environment(\.presentationMode) var presentationMode
     var body: some View {
         ZStack {
             VStack{
                 ZStack {
-                    Text("Settings")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity)
                     HStack {
                         Button(action: {
-                            //back button implementation
+                            self.presentationMode.wrappedValue.dismiss()
                         }) {
                             Image(systemName: "arrow.left.circle.fill")
                                 .font(.system(size: 30))
@@ -28,30 +26,26 @@ struct SettingsView: View {
                 }.padding()
                 
                 VStack {
-                    Button(action: {
-                        //change password implementation
-                    }) {
+                    NavigationLink(destination: ChangePasswordView()) {
                         HStack{
                             Image(systemName: "lock.circle.fill").font(.system(size:40)).foregroundColor(.gray)
                             VStack(alignment: .leading) {
                                 Text("Change Password").font(.headline).foregroundColor(.black)
                             }
                             Spacer()
-                        }.padding().background(Color.white).cornerRadius(10).shadow(radius: 2).padding(.horizontal);
+                        }.padding().background(Color.white).cornerRadius(10).shadow(radius: 2).padding(.horizontal)
                     }
                 }
                 
                 VStack {
-                    Button(action: {
-                        //change email implementation
-                    }) {
+                    NavigationLink(destination: ChangeEmailView()){
                         HStack{
                             Image(systemName: "envelope.circle.fill").font(.system(size:40)).foregroundColor(.gray)
                             VStack(alignment: .leading) {
                                 Text("Change Email").font(.headline).foregroundColor(.black)
                             }
                             Spacer()
-                        }.padding().background(Color.white).cornerRadius(10).shadow(radius: 2).padding(.horizontal);
+                        }.padding().background(Color.white).cornerRadius(10).shadow(radius: 2).padding(.horizontal)
                     }
                 }
                 
@@ -104,6 +98,8 @@ struct SettingsView: View {
                 }.padding(.vertical)
             }
         }.background(Color.gray.opacity(0.1).edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/))
+            .navigationBarBackButtonHidden(true)
+            .navigationBarTitle("Settings", displayMode: .inline)
     }
 }
 
