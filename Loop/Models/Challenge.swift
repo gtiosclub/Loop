@@ -34,6 +34,7 @@ struct Challenge: Identifiable {  // Previously DailyScrum
     /// - Parameter endDate: The date when the challenge will end.
     /// - Parameter theme: The theme of the challenge. (?)
     init(title: String, host: String, attendees: [String], challengeType: String, lengthInMinutes: Int, dataMeasured: String, endDate: Date, theme: Theme) {
+        id = UUID().uuidString
         self.title = title
         self.host = host
         self.attendees = attendees

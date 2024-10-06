@@ -36,7 +36,6 @@ struct LoginView: View {
                        }
                        .padding(.horizontal)
                        Button(action: {
-                          
                            
                        }, label: {
                            Text("Login")
