@@ -10,16 +10,16 @@ import SwiftUI
 struct FriendProfileView: View {
     var body: some View {
         VStack {
-
+            
             HStack {
                 Text("Jane Doe")
                     .font(.title)
                     .fontWeight(.bold)
-
+                
                 Spacer()
-
+                
                 Button(action: {
-
+                    
                 }) {
                     Text("Remove Friend")
                         .font(.subheadline)
@@ -29,84 +29,83 @@ struct FriendProfileView: View {
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(Color.red, lineWidth: 1)
                         )
-                    }
                 }
             }
-
-            .padding(.horizontal)
-            .padding(.top, 8)
-
-            HStack {
-                VStack(alignment: .leading) {
-                    Image(systemName: "person.circle.fill")
-                        .resizable()
-                        .frame(width: 80, height: 80)
-                        .foregroundColor(.gray)
-
-                    Text("@jane_doe02")
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
-                }
-                .padding(.leading)
-
-                Spacer()
-
-
-                HStack(spacing: 30) {
-                    VStack {
-                        Text("12")
-                            .font(.headline)
-                        Text("Friends")
-                            .font(.caption)
-                    }
-
-                    VStack {
-                        Text("38")
-                            .font(.headline)
-                        Text("Wins")
-                            .font(.caption)
-                    }
-
-                    VStack {
-                        Text("132")
-                            .font(.headline)
-                        Text("Challenges")
-                            .font(.caption)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.5)
-                    }
-                }
-                .padding(.trailing)
-            }
-            .padding(.horizontal)
-            .padding(.vertical)
-
-            Divider()
-                .padding(.vertical)
-
-            Text("Jane Doe's Recent Activity")
-                .font(.headline)
-                .padding(.bottom, 8)
-
-
-            ScrollView(.vertical) {
-                VStack(spacing: 10) {
-                    ActivityCardView()
-                    ActivityCardView()
-                    ActivityCardView()
-                    ActivityCardView()
-                    ActivityCardView()
-                    ActivityCardView()
-                }
-                .padding(.horizontal)
-            }
-            .frame(maxHeight: .infinity)
-
-            Spacer()
         }
-        .padding(.bottom)
+        
+        .padding(.horizontal)
+        .padding(.top, 8)
+        
+        HStack {
+            VStack(alignment: .leading) {
+                Image(systemName: "person.circle.fill")
+                    .resizable()
+                    .frame(width: 80, height: 80)
+                    .foregroundColor(.gray)
+                
+                Text("@jane_doe02")
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+            }
+            .padding(.leading)
+            
+            Spacer()
+            
+            
+            HStack(spacing: 30) {
+                VStack {
+                    Text("12")
+                        .font(.headline)
+                    Text("Friends")
+                        .font(.caption)
+                }
+                
+                VStack {
+                    Text("38")
+                        .font(.headline)
+                    Text("Wins")
+                        .font(.caption)
+                }
+                
+                VStack {
+                    Text("132")
+                        .font(.headline)
+                    Text("Challenges")
+                        .font(.caption)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.5)
+                }
+            }
+            .padding(.trailing)
+        }
+        .padding(.horizontal)
+        .padding(.vertical)
+        
+        Divider()
+            .padding(.vertical)
+        
+        Text("Jane Doe's Recent Activity")
+            .font(.headline)
+            .padding(.bottom, 8)
+        
+        
+        ScrollView(.vertical) {
+            VStack(spacing: 10) {
+                ActivityCardView()
+                ActivityCardView()
+                ActivityCardView()
+                ActivityCardView()
+                ActivityCardView()
+                ActivityCardView()
+            }
+            .padding(.horizontal)
+        }
+        .frame(maxHeight: .infinity)
+        
+        Spacer()
     }
 }
+
 
 struct ActivityCardView: View {
     var body: some View {
