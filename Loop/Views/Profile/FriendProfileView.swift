@@ -34,8 +34,10 @@ struct FriendProfileView: View {
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(Color.red, lineWidth: 1)
                         )
+                    }
                 }
             }
+
             .padding(.horizontal)
             .padding(.top, 8)
 
