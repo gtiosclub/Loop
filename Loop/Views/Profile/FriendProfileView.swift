@@ -15,16 +15,16 @@ struct FriendProfileView: View {
     @State private var challengesCount: Int = 0
     var body: some View {
         VStack {
-
+            
             HStack {
                 Text(name)
                     .font(.title)
                     .fontWeight(.bold)
-
+                
                 Spacer()
-
+                
                 Button(action: {
-
+                    
                 }) {
                     Text("Remove Friend")
                         .font(.subheadline)
@@ -34,7 +34,6 @@ struct FriendProfileView: View {
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(Color.red, lineWidth: 1)
                         )
-                    }
                 }
             }
 
@@ -81,10 +80,11 @@ struct FriendProfileView: View {
                             .minimumScaleFactor(0.5)
                     }
                 }
-                .padding(.trailing)
             }
-            .padding(.horizontal)
-            .padding(.vertical)
+            .padding(.trailing)
+        }
+        .padding(.horizontal)
+        .padding(.vertical)
 
             Divider()
                 .padding(.vertical)
@@ -103,14 +103,13 @@ struct FriendProfileView: View {
                     ActivityCardView(name: name)
                 }
                 .padding(.horizontal)
-            }
-            .frame(maxHeight: .infinity)
-
-            Spacer()
         }
-        .padding(.bottom)
+        .frame(maxHeight: .infinity)
+        
+        Spacer()
     }
 }
+
 
 struct ActivityCardView: View {
     @State var name: String
