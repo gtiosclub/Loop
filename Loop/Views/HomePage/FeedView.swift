@@ -15,7 +15,7 @@ struct FeedView: View {
                     ForEach(0..<6) { index in
                         if index % 3 == 0 {
                             WorkoutCardView(
-                                name: "Jane Doe",
+                                name: "Sydney Sweeney",
                                 avatar: "avatar1",
                                 miles: "3.5",
                                 pace: "10:45",
@@ -25,7 +25,7 @@ struct FeedView: View {
                             .padding(.horizontal)
                         } else if index % 3 == 1 {
                             CompetitionCardView(
-                                name: "John Smith",
+                                name: "Johnny Appleseed",
                                 avatar: "avatar2",
                                 competition: "Marathon Challenge",
                                 result: "John Placed 2nd!",
@@ -34,7 +34,7 @@ struct FeedView: View {
                             .padding(.horizontal)
                         } else {
                             WorkoutCardView(
-                                name: "Emily Brown",
+                                name: "Thomas Da TankEngine",
                                 avatar: "avatar3",
                                 miles: "5.2",
                                 pace: "9:30",
