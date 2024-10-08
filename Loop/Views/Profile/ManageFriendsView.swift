@@ -13,13 +13,15 @@ struct FriendRow: View {
     
     var body: some View {
         HStack {
-            Image(systemName: "person.circle.fill").font(.system(size: 40)).foregroundColor(.gray)
-            VStack(alignment: .leading) {
-                Text(friendName).font(.headline)
-                Text(status).font(.caption).foregroundColor(.gray)
-            }
-            Spacer()
-        }.padding().background(Color.white).cornerRadius(10).shadow(radius: 2).padding(.horizontal)
+            NavigationLink(destination: FriendProfileView(username: friendName, name: friendName)) {
+                Image(systemName: "person.circle.fill").font(.system(size: 40)).foregroundColor(.gray)
+                VStack(alignment: .leading) {
+                    Text(friendName).font(.headline)
+                    Text(status).font(.caption).foregroundColor(.gray)
+                }
+                Spacer()
+            }.padding().background(Color.white).cornerRadius(10).shadow(radius: 2).padding(.horizontal)
+        }
     }
 }
 
@@ -29,7 +31,7 @@ struct ManageFriendsView: View {
     @State private var offlineFriends: [String] = ["Kevin", "Ethan", "Jason", "Seohyun", "Dennis", "Aryun", "Dennis", "Dennis", "Dennis"]
     @State private var allFriends: [String] = ["Kevin", "Ethan", "Jason", "Seohyun", "Dennis", "Aryun", "Dennis", "Dennis", "Dennis"]
     @State private var filteredFriends: [String] = []
-    
+    @Environment(\.presentationMode) var presentationMode
     
     
     private func filterFriends() {
@@ -48,7 +50,7 @@ struct ManageFriendsView: View {
         VStack {
             HStack {
                 Button(action: {
-                    //action for the back button back to profile page can be implemented here
+                    self.presentationMode.wrappedValue.dismiss()
                 }) {
                     Image(systemName: "arrow.left.circle.fill").font(.system(size: 30)).foregroundColor(.orange)
                 }
@@ -58,15 +60,6 @@ struct ManageFriendsView: View {
                 Text("Manage Friends").font(.headline)
                 
                 Spacer()
-                
-                Button(action: {
-                    //action for adding friends
-                }, label: {
-                    HStack {
-                        Image(systemName: "person.badge.plus.fill").font(.system(size: 15))
-                        Text("Add Friends")
-                    }.padding(10).background(Color.orange).foregroundColor(.white).cornerRadius(10.0)
-                })
             }.padding()
             
             
@@ -99,7 +92,7 @@ struct ManageFriendsView: View {
             
             
         }.background(Color.gray.opacity(0.1).edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/))
-        
+            .navigationBarBackButtonHidden(true)
     }
 }
 

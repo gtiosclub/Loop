@@ -8,159 +8,159 @@
 import SwiftUI
 
 struct FriendProfileView: View {
-    @State private var wins: Int = 0
-    @State private var lastActivity: String = "No recent activity"
-
+    @State public var wins: Int = 0
+    @State public var lastActivity: String = "No recent activity"
+    @State public var username: String
+    @State public var name: String
+    @State public var friends: Int = 12
+    @State public var challenges: Int = 132
+    @State public var description: String = "Im a friend"
+    @State public var activities: [[String]] = [["Running", "Super Run", "1"], ["Jogging", "Slow Jog", "9"], ["Sitting", "Super Sit", "1"], ["Sleep", "Super Sleep", "100"]]
     var body: some View {
-        VStack(spacing: 30) {
-
+        VStack(spacing: -30) {
             HStack {
-                Text("Friend Profile")
-                    .font(.largeTitle.bold())
+                Text(name)
+                    .font(.title)
                     .foregroundColor(.black)
-                    .padding(.leading, 20)
-                
+                    .padding(.leading, 10)
                 Spacer()
-
-                Button(action: {
-                }) {
-                    Text("Remove Friend")
-                        .font(.system(size: 14, weight: .bold))
-                        .foregroundColor(.white)
-                        .padding(10)
-                        .background(LinearGradient(
-                            gradient: Gradient(colors: [.red, .orange]),
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        ))
-                        .cornerRadius(10)
-                        .shadow(radius: 3)
+                
+                VStack {
+                    NavigationLink(destination: SettingsView()) {
+                        VStack(spacing: 5) {
+                            Rectangle()
+                                .frame(height: 4)
+                                .foregroundColor(.black)
+                            Rectangle()
+                                .frame(height: 4)
+                                .foregroundColor(.black)
+                            Rectangle()
+                                .frame(height: 4)
+                                .foregroundColor(.black)
+                        }
+                        .frame(width: 30)
+                        .padding(.trailing, 20)
+                    }
                 }
                 .padding(.trailing, 20)
             }
             .padding(.top, 60)
-
-
-            ZStack {
-                Circle()
-                    .fill(statusColor(for: wins))
-                    .frame(width: 170, height: 170)
-                    .overlay(Circle().stroke(Color.white, lineWidth: 4))
-                
-                Image(systemName: "person.crop.circle.fill")
-                    .resizable()
-                    .frame(width: 150, height: 150)
-                    .padding()
-                
+            .padding(.bottom, 10)
+            
+            HStack(spacing: 30) {
+                ZStack {
+                    Circle()
+                        .frame(width: 85, height: 85)
+                        .padding()
+                        .foregroundColor(.black)
+                }
+                .padding()
                 VStack {
-                    Text("Wins: \(wins)")
-                        .font(.system(size: 18, weight: .bold))
-                        .foregroundColor(.white)
-                        .padding(8)
-                        .background(Color.orange)
-                        .cornerRadius(10)
-                        .offset(y: 60)
+                    NavigationLink(destination: ManageFriendsView()) {
+                        VStack {
+                            Text(String(friends))
+                                .font(.system(size:14))
+                                .bold()
+                            Text("Friends")
+                                .font(.system(size:13))
+                        }
+                    }.foregroundStyle(.black)
+                }
+                VStack {
+                    Text(String(wins))
+                        .font(.system(size:14))
+                        .bold()
+                    Text("Wins")
+                        .font(.system(size:13))
+                }.foregroundStyle(.black)
+                VStack {
+                    Text(String(challenges))
+                        .font(.system(size:14))
+                        .bold()
+                    Text("Challenges")
+                        .font(.system(size:13))
+                }.foregroundStyle(.black)
+            }
+            .padding(.bottom, 10)
+            .offset(x:-10, y:0)
+            HStack {
+                Text(username)
+                    .bold()
+                    .font(.system(size: 14))
+                    .offset(x:-130, y:0)
+            }
+            .padding(.bottom, 40)
+            Text(description)
+                .frame(width: 362, height: 53)
+                .font(.system(size: 13))
+                .padding(.bottom, 40)
+            HStack {
+                NavigationLink(destination: EditProfileView()) {
+                    ZStack {
+                        Rectangle()
+                            .foregroundColor(Color(UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1)))
+                            .frame(width: 124, height: 33)
+                            .cornerRadius(10)
+                        Text("Edit Profile")
+                            .font(.system(size: 13))
+                            .foregroundStyle(.black)
+                            .bold()
+                        
+                    }
+                }
+                Button(action: {
+                    //implement
+                }) {
+                    ZStack {
+                        Rectangle()
+                            .foregroundColor(Color(UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1)))
+                            .frame(width: 124, height: 33)
+                            .cornerRadius(10)
+                        Text("Share Profile")
+                            .font(.system(size: 13))
+                            .foregroundStyle(.black)
+                            .bold()
+                        
+                    }
+                }
+                Button(action: {
+                    //implement
+                }) {
+                    ZStack {
+                        Rectangle()
+                            .foregroundColor(Color(UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1)))
+                            .frame(width: 35, height: 35)
+                            .cornerRadius(10)
+                        Image(systemName: "person.badge.plus")
+                            .foregroundStyle(.black)
+                    }
                 }
             }
-            
-            Text("Last Activity: \(lastActivity)")
-                .font(.headline)
-                .foregroundColor(.black)
-                .padding(10)
-                .background(LinearGradient(
-                    gradient: Gradient(colors: [.orange.opacity(0.7), .yellow.opacity(0.6)]),
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                ))
-                .cornerRadius(10)
-                .shadow(radius: 3)
-                .padding(.top, 20)
-
-            
+            .padding(.bottom, 45)
+            Text(name+"'s Recent Activity")
+                .padding(.bottom, 40)
+            Rectangle()
+                .frame(width: UIScreen.main.bounds.size.width, height: 1)
+                .padding(.bottom, 13)
             VStack(alignment: .leading, spacing: 20) {
-               
-                HStack {
-                    Image(systemName: "person.fill")
-                        .foregroundColor(.blue)
-                        .frame(width: 25, height: 25)
-                    
-                    VStack(alignment: .leading) {
-                        Text("Name")
-                            .font(.headline)
-                            .foregroundColor(.secondary)
-                        Text("insert name")
-                            .font(.title2.bold())
-                            .foregroundColor(.primary)
-                    }
-                }
-                
-                
-                HStack {
-                    Image(systemName: "location.fill")
-                        .foregroundColor(.green)
-                        .frame(width: 25, height: 25)
-                    
-                    VStack(alignment: .leading) {
-                        Text("Location")
-                            .font(.headline)
-                            .foregroundColor(.secondary)
-                        Text("insert location")
-                            .font(.title2.bold())
-                            .foregroundColor(.primary)
-                    }
-                }
-                
-                
-                HStack {
-                    Image(systemName: "star.fill")
-                        .foregroundColor(.yellow)
-                        .frame(width: 25, height: 25)
-                    
-                    VStack(alignment: .leading) {
-                        Text("Favorite Activity")
-                            .font(.headline)
-                            .foregroundColor(.secondary)
-                        Text("insert activity")
-                            .font(.title2.bold())
-                            .foregroundColor(.primary)
+                ScrollView {
+                    ForEach(activities, id: \.self) {activity in
+                        PastActivity(name: name, type: activity[0], activityName: activity[1], placement: activity[2])
                     }
                 }
             }
             .padding(20)
-            .background(Color.gray.opacity(0.1)) // Slight contrast for info card
             .cornerRadius(15)
             .shadow(radius: 5)
             .padding(.horizontal, 20)
-
+            
             Spacer()
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.white)
         .edgesIgnoringSafeArea(.all)
-    }
-    
-    private func statusColor(for wins: Int) -> Color {
-        switch wins {
-        case 0..<100:
-            return Color.brown
-        case 100..<200:
-            return Color.gray
-        case 200...:
-            return Color.yellow
-        default:
-            return Color.clear
-        }
-    }
-    
-    private func updateLastActivity() {
-        let currentDate = Date()
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .short
-        lastActivity = "Last interacted on \(formatter.string(from: currentDate))"
     }
 }
 
 #Preview {
-    FriendProfileView()
+   // FriendProfileView()
 }
