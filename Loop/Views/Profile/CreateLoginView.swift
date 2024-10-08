@@ -18,7 +18,7 @@ struct CreateLoginView: View {
     @State var ComfirmButton: String = ""
     @State var ProfilePicture: String =  "person.crop.circle"
     @State var HavePicture: Bool = false
-    
+    @Environment(\.presentationMode) var presentationMode
     var body: some View {
         ZStack {
                  
@@ -105,9 +105,23 @@ struct CreateLoginView: View {
                        
                        .padding()
                      
+                       Button(action: {
+                           self.presentationMode.wrappedValue.dismiss()
+                       }, label: {
+                           Text("Have an Account?")
+                               .padding()
+                               .frame(maxWidth: 170)
+                               .foregroundColor(Color.black)
+                               .bold()
+                               .cornerRadius(50)
+                           
+                               .background(
+                                           RoundedRectangle(cornerRadius: 5)
+                                               .fill(Color.gray) // Fill the background with gray
+                                       )
+                       })
                        
-                       
-                       
+                       .navigationBarBackButtonHidden(true)
                        Spacer()
                    }
                  
