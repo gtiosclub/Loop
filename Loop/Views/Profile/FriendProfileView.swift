@@ -8,11 +8,16 @@
 import SwiftUI
 
 struct FriendProfileView: View {
+    @State private var name: String = "My Name"
+    @State private var username: String = "username"
+    @State private var friendCount: Int = 0
+    @State private var winCount: Int = 0
+    @State private var challengesCount: Int = 0
     var body: some View {
         VStack {
             
             HStack {
-                Text("Jane Doe")
+                Text(name)
                     .font(.title)
                     .fontWeight(.bold)
                 
@@ -31,74 +36,73 @@ struct FriendProfileView: View {
                         )
                 }
             }
-        }
-        
-        .padding(.horizontal)
-        .padding(.top, 8)
-        
-        HStack {
-            VStack(alignment: .leading) {
-                Image(systemName: "person.circle.fill")
-                    .resizable()
-                    .frame(width: 80, height: 80)
-                    .foregroundColor(.gray)
-                
-                Text("@jane_doe02")
-                    .font(.subheadline)
-                    .foregroundColor(.gray)
-            }
-            .padding(.leading)
-            
-            Spacer()
-            
-            
-            HStack(spacing: 30) {
-                VStack {
-                    Text("12")
-                        .font(.headline)
-                    Text("Friends")
-                        .font(.caption)
+
+            .padding(.horizontal)
+            .padding(.top, 8)
+
+            HStack {
+                VStack(alignment: .leading) {
+                    Image(systemName: "person.circle.fill")
+                        .resizable()
+                        .frame(width: 80, height: 80)
+                        .foregroundColor(.gray)
+
+                    Text(username)
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
                 }
-                
-                VStack {
-                    Text("38")
-                        .font(.headline)
-                    Text("Wins")
-                        .font(.caption)
-                }
-                
-                VStack {
-                    Text("132")
-                        .font(.headline)
-                    Text("Challenges")
-                        .font(.caption)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.5)
+                .padding(.leading)
+
+                Spacer()
+
+
+                HStack(spacing: 30) {
+                    VStack {
+                        Text(String(friendCount))
+                            .font(.headline)
+                        Text("Friends")
+                            .font(.caption)
+                    }
+
+                    VStack {
+                        Text(String(winCount))
+                            .font(.headline)
+                        Text("Wins")
+                            .font(.caption)
+                    }
+
+                    VStack {
+                        Text(String(challengesCount))
+                            .font(.headline)
+                        Text("Challenges")
+                            .font(.caption)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.5)
+                    }
                 }
             }
             .padding(.trailing)
         }
         .padding(.horizontal)
         .padding(.vertical)
-        
-        Divider()
-            .padding(.vertical)
-        
-        Text("Jane Doe's Recent Activity")
-            .font(.headline)
-            .padding(.bottom, 8)
-        
-        
-        ScrollView(.vertical) {
-            VStack(spacing: 10) {
-                ActivityCardView()
-                ActivityCardView()
-                ActivityCardView()
-                ActivityCardView()
-                ActivityCardView()
-                ActivityCardView()
-            }
-            .padding(.horizontal)
+
+            Divider()
+                .padding(.vertical)
+
+            Text( name + "'s" + " Recent Activity")
+                .font(.headline)
+                .padding(.bottom, 8)
+
+
+            ScrollView(.vertical) {
+                VStack(spacing: 10) {
+                    ActivityCardView(name: name)
+                    ActivityCardView(name: name)
+                    ActivityCardView(name: name)
+                    ActivityCardView(name: name)
+                    ActivityCardView(name: name)
+                }
+                .padding(.horizontal)
         }
         .frame(maxHeight: .infinity)
         
@@ -108,6 +112,7 @@ struct FriendProfileView: View {
 
 
 struct ActivityCardView: View {
+    @State var name: String
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
@@ -116,7 +121,7 @@ struct ActivityCardView: View {
                     .frame(width: 30, height: 30)
                     .foregroundColor(.gray)
 
-                Text("Jane Doe")
+                Text(name)
                     .font(.subheadline)
 
                 Spacer()
@@ -137,8 +142,10 @@ struct ActivityCardView: View {
                     .frame(width: 80, height: 40)
                     .padding(.horizontal)
 
-                Text("Jane Placed 1st!")
+                Text( name + " Placed 1st!")
                     .font(.headline)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.5)
                 Spacer()
             }
             .padding(.horizontal)
