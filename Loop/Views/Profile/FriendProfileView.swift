@@ -161,6 +161,4 @@ struct FriendProfileView: View {
     }
 }
 
-#Preview {
-   // FriendProfileView()
-}
+
