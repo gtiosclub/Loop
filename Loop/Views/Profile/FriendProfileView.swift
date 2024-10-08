@@ -8,159 +8,161 @@
 import SwiftUI
 
 struct FriendProfileView: View {
-    @State private var wins: Int = 0
-    @State private var lastActivity: String = "No recent activity"
-
     var body: some View {
-        VStack(spacing: 30) {
+        VStack {
 
             HStack {
-                Text("Friend Profile")
-                    .font(.largeTitle.bold())
-                    .foregroundColor(.black)
-                    .padding(.leading, 20)
-                
+                Text("Jane Doe")
+                    .font(.title)
+                    .fontWeight(.bold)
+
                 Spacer()
 
                 Button(action: {
+
                 }) {
                     Text("Remove Friend")
-                        .font(.system(size: 14, weight: .bold))
-                        .foregroundColor(.white)
-                        .padding(10)
-                        .background(LinearGradient(
-                            gradient: Gradient(colors: [.red, .orange]),
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        ))
-                        .cornerRadius(10)
-                        .shadow(radius: 3)
-                }
-                .padding(.trailing, 20)
-            }
-            .padding(.top, 60)
-
-
-            ZStack {
-                Circle()
-                    .fill(statusColor(for: wins))
-                    .frame(width: 170, height: 170)
-                    .overlay(Circle().stroke(Color.white, lineWidth: 4))
-                
-                Image(systemName: "person.crop.circle.fill")
-                    .resizable()
-                    .frame(width: 150, height: 150)
-                    .padding()
-                
-                VStack {
-                    Text("Wins: \(wins)")
-                        .font(.system(size: 18, weight: .bold))
-                        .foregroundColor(.white)
-                        .padding(8)
-                        .background(Color.orange)
-                        .cornerRadius(10)
-                        .offset(y: 60)
+                        .font(.subheadline)
+                        .foregroundColor(.red)
+                        .padding(6)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.red, lineWidth: 1)
+                        )
                 }
             }
-            
-            Text("Last Activity: \(lastActivity)")
+            .padding(.horizontal)
+            .padding(.top, 8)
+
+            HStack {
+                VStack(alignment: .leading) {
+                    Image(systemName: "person.circle.fill")
+                        .resizable()
+                        .frame(width: 80, height: 80)
+                        .foregroundColor(.gray)
+
+                    Text("@jane_doe02")
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                }
+                .padding(.leading)
+
+                Spacer()
+
+
+                HStack(spacing: 30) {
+                    VStack {
+                        Text("12")
+                            .font(.headline)
+                        Text("Friends")
+                            .font(.caption)
+                    }
+
+                    VStack {
+                        Text("38")
+                            .font(.headline)
+                        Text("Wins")
+                            .font(.caption)
+                    }
+
+                    VStack {
+                        Text("132")
+                            .font(.headline)
+                        Text("Challenges")
+                            .font(.caption)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.5)
+                    }
+                }
+                .padding(.trailing)
+            }
+            .padding(.horizontal)
+            .padding(.vertical)
+
+            Divider()
+                .padding(.vertical)
+
+            Text("Jane Doe's Recent Activity")
                 .font(.headline)
-                .foregroundColor(.black)
-                .padding(10)
-                .background(LinearGradient(
-                    gradient: Gradient(colors: [.orange.opacity(0.7), .yellow.opacity(0.6)]),
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                ))
-                .cornerRadius(10)
-                .shadow(radius: 3)
-                .padding(.top, 20)
+                .padding(.bottom, 8)
 
-            
-            VStack(alignment: .leading, spacing: 20) {
-               
-                HStack {
-                    Image(systemName: "person.fill")
-                        .foregroundColor(.blue)
-                        .frame(width: 25, height: 25)
-                    
-                    VStack(alignment: .leading) {
-                        Text("Name")
-                            .font(.headline)
-                            .foregroundColor(.secondary)
-                        Text("insert name")
-                            .font(.title2.bold())
-                            .foregroundColor(.primary)
-                    }
+
+            ScrollView(.vertical) {
+                VStack(spacing: 10) {
+                    ActivityCardView()
+                    ActivityCardView()
+                    ActivityCardView()
+                    ActivityCardView()
+                    ActivityCardView()
+                    ActivityCardView()
                 }
-                
-                
-                HStack {
-                    Image(systemName: "location.fill")
-                        .foregroundColor(.green)
-                        .frame(width: 25, height: 25)
-                    
-                    VStack(alignment: .leading) {
-                        Text("Location")
-                            .font(.headline)
-                            .foregroundColor(.secondary)
-                        Text("insert location")
-                            .font(.title2.bold())
-                            .foregroundColor(.primary)
-                    }
-                }
-                
-                
-                HStack {
-                    Image(systemName: "star.fill")
-                        .foregroundColor(.yellow)
-                        .frame(width: 25, height: 25)
-                    
-                    VStack(alignment: .leading) {
-                        Text("Favorite Activity")
-                            .font(.headline)
-                            .foregroundColor(.secondary)
-                        Text("insert activity")
-                            .font(.title2.bold())
-                            .foregroundColor(.primary)
-                    }
-                }
+                .padding(.horizontal)
             }
-            .padding(20)
-            .background(Color.gray.opacity(0.1)) // Slight contrast for info card
-            .cornerRadius(15)
-            .shadow(radius: 5)
-            .padding(.horizontal, 20)
+            .frame(maxHeight: .infinity)
 
             Spacer()
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.white)
-        .edgesIgnoringSafeArea(.all)
-    }
-    
-    private func statusColor(for wins: Int) -> Color {
-        switch wins {
-        case 0..<100:
-            return Color.brown
-        case 100..<200:
-            return Color.gray
-        case 200...:
-            return Color.yellow
-        default:
-            return Color.clear
-        }
-    }
-    
-    private func updateLastActivity() {
-        let currentDate = Date()
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .short
-        lastActivity = "Last interacted on \(formatter.string(from: currentDate))"
+        .padding(.bottom)
     }
 }
 
-#Preview {
-    FriendProfileView()
+struct ActivityCardView: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                Image(systemName: "person.circle.fill")
+                    .resizable()
+                    .frame(width: 30, height: 30)
+                    .foregroundColor(.gray)
+
+                Text("Jane Doe")
+                    .font(.subheadline)
+
+                Spacer()
+
+                Text("Physical Activity")
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+            }
+            .padding(.horizontal)
+
+            Text("Competition Name")
+                .font(.headline)
+                .padding(.horizontal)
+
+            HStack {
+                Image(systemName: "chart.bar.fill")
+                    .resizable()
+                    .frame(width: 80, height: 40)
+                    .padding(.horizontal)
+
+                Text("Jane Placed 1st!")
+                    .font(.headline)
+                Spacer()
+            }
+            .padding(.horizontal)
+
+            HStack {
+                Text("Today at 9:16 PM")
+                    .font(.caption)
+                    .foregroundColor(.gray)
+                    .padding(.horizontal)
+
+                Spacer()
+
+                Image(systemName: "eye.slash.fill")
+                    .padding(.horizontal)
+            }
+        }
+        .padding()
+        .background(Color.gray.opacity(0.1))
+        .cornerRadius(15)
+    }
+}
+
+struct FriendProfileView_Previews: PreviewProvider {
+    static var previews: some View {
+        FriendProfileView()
+            .previewLayout(.fixed(width: 375, height: 800))
+    }
 }
