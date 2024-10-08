@@ -24,25 +24,6 @@ struct FriendProfileView: View {
                     .foregroundColor(.black)
                     .padding(.leading, 10)
                 Spacer()
-                
-                VStack {
-                    NavigationLink(destination: SettingsView()) {
-                        VStack(spacing: 5) {
-                            Rectangle()
-                                .frame(height: 4)
-                                .foregroundColor(.black)
-                            Rectangle()
-                                .frame(height: 4)
-                                .foregroundColor(.black)
-                            Rectangle()
-                                .frame(height: 4)
-                                .foregroundColor(.black)
-                        }
-                        .frame(width: 30)
-                        .padding(.trailing, 20)
-                    }
-                }
-                .padding(.trailing, 20)
             }
             .padding(.top, 60)
             .padding(.bottom, 10)
@@ -94,49 +75,6 @@ struct FriendProfileView: View {
                 .frame(width: 362, height: 53)
                 .font(.system(size: 13))
                 .padding(.bottom, 40)
-            HStack {
-                NavigationLink(destination: EditProfileView()) {
-                    ZStack {
-                        Rectangle()
-                            .foregroundColor(Color(UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1)))
-                            .frame(width: 124, height: 33)
-                            .cornerRadius(10)
-                        Text("Edit Profile")
-                            .font(.system(size: 13))
-                            .foregroundStyle(.black)
-                            .bold()
-                        
-                    }
-                }
-                Button(action: {
-                    //implement
-                }) {
-                    ZStack {
-                        Rectangle()
-                            .foregroundColor(Color(UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1)))
-                            .frame(width: 124, height: 33)
-                            .cornerRadius(10)
-                        Text("Share Profile")
-                            .font(.system(size: 13))
-                            .foregroundStyle(.black)
-                            .bold()
-                        
-                    }
-                }
-                Button(action: {
-                    //implement
-                }) {
-                    ZStack {
-                        Rectangle()
-                            .foregroundColor(Color(UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1)))
-                            .frame(width: 35, height: 35)
-                            .cornerRadius(10)
-                        Image(systemName: "person.badge.plus")
-                            .foregroundStyle(.black)
-                    }
-                }
-            }
-            .padding(.bottom, 45)
             Text(name+"'s Recent Activity")
                 .padding(.bottom, 40)
             Rectangle()
