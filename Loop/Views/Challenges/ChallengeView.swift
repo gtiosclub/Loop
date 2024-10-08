@@ -24,9 +24,9 @@ struct ChallengeView: View {
     
     var body: some View {
         ZStack {
-            Color.black
+            /*Color.black
                 .brightness(0.2)
-                .ignoresSafeArea()
+                .ignoresSafeArea()*/
             
             VStack {
                 HStack {
@@ -77,7 +77,7 @@ struct ChallengeView: View {
                 }
             }
         }
-        .foregroundStyle(.white)
+        //.foregroundStyle(.white)
     }
 }
 
