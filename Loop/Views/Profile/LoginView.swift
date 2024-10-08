@@ -65,16 +65,17 @@ struct LoginView: View {
                                .font(.system(size: 15))
                                .bold()
                            Button {
-                             
+                               
                                
                            } label: {
-                               Text("Sign Up")
-                                   .foregroundColor(Color.black)
-                                   .font(.system(size: 15))
-                                   .bold()
+                               NavigationLink(destination: CreateLoginView()) {
+                                   VStack {
+                                       Text("Sign Up")
+                                           .font(.system(size:13))
+                                   }
+                               }.foregroundStyle(.black)
                            }
                        }
-                       
                        Spacer()
                    }
                  
