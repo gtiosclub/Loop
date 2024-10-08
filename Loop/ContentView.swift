@@ -10,7 +10,7 @@ struct ContentView: View {
     var body: some View {
         TabView(selection: $selectedView,
             content: {
-                HomeView().tabItem {
+                FeedView().tabItem {
                     Label("Home", systemImage: "house.fill")
                 }.tag(TabSelection.home)
             
