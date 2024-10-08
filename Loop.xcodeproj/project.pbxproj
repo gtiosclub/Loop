@@ -29,6 +29,7 @@
 		B5B40E6B2C94EAE400BD9131 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5B40E6A2C94EAE400BD9131 /* Assets.xcassets */; };
 		B5B40E6F2C94EAE400BD9131 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5B40E6E2C94EAE400BD9131 /* Preview Assets.xcassets */; };
 		BF0FEFFA2CACA1E3002B4C58 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0FEFF92CACA1E1002B4C58 /* Activity.swift */; };
+		BF7005F52CB5E2C80057A8BF /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7005F42CB5E2C40057A8BF /* AuthManager.swift */; };
 		BF95889B2C99E6DC00FF34A1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BF95889A2C99E6DC00FF34A1 /* GoogleService-Info.plist */; };
 		BF95889E2C99E73100FF34A1 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = BF95889D2C99E73100FF34A1 /* FirebaseAnalytics */; };
 		BF9588A02C99E73100FF34A1 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = BF95889F2C99E73100FF34A1 /* FirebaseAuth */; };
@@ -72,6 +73,7 @@
 		B5B40E6C2C94EAE400BD9131 /* Loop.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Loop.entitlements; sourceTree = "<group>"; };
 		B5B40E6E2C94EAE400BD9131 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BF0FEFF92CACA1E1002B4C58 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
+		BF7005F42CB5E2C40057A8BF /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		BF95889A2C99E6DC00FF34A1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D49F42052CA20A86003607BB /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		D49F42092CA20BCA003607BB /* Challenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Challenge.swift; sourceTree = "<group>"; };
@@ -214,6 +216,7 @@
 		BF0FEFFD2CACE491002B4C58 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				BF7005F42CB5E2C40057A8BF /* AuthManager.swift */,
 				E25FF94D2CA629C2006FF61C /* FirebaseUploader.swift */,
 				E25FF94B2CA61DC2006FF61C /* ImagePicker.swift */,
 			);
@@ -330,6 +333,7 @@
 				195087992CAF60F900AB3EE3 /* ChangePasswordView.swift in Sources */,
 				7C0B1FD12C9CB2050076B590 /* ChallengeListView.swift in Sources */,
 				AA53DE7A2CB312B50029B7DB /* EditProfileView.swift in Sources */,
+				BF7005F52CB5E2C80057A8BF /* AuthManager.swift in Sources */,
 				DF1CD2B02CACB98D00451888 /* FeedView.swift in Sources */,
 				BF0FEFFA2CACA1E3002B4C58 /* Activity.swift in Sources */,
 				DF1CD2B22CACB9C200451888 /* FeedViewModel.swift in Sources */,
