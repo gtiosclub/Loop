@@ -37,6 +37,46 @@ class AuthManager: ObservableObject {
             }
         }
     }
+    
+    func signUp(email: String, password: String) async -> Bool {
+        // Validate email and password are not empty
+        guard !email.isEmpty, !password.isEmpty else {
+            self.errorMessage = "Email and Password cannot be empty."
+            return false
+        }
+
+        do {
+            let result = try await Auth.auth().createUser(withEmail: email, password: password)
+            self.isAuthenticated = true
+            self.errorMessage = nil
+            return true
+        } catch {
+            self.errorMessage = "Account creation failed"
+            return false
+        }
+    }
+    
+    func signUp(email: String, password: String, completion: @escaping (Bool) -> Void) {
+            // Validate email and password are not empty
+            guard !email.isEmpty, !password.isEmpty else {
+                self.errorMessage = "Email and Password cannot be empty."
+                completion(false)
+                return
+            }
+
+            Auth.auth().createUser(withEmail: email, password: password) { [weak self] result, error in
+                DispatchQueue.main.async {
+                    if error != nil {
+                        self?.errorMessage = "Account creation failed"
+                        completion(false)
+                    } else {
+                        self?.isAuthenticated = true
+                        self?.errorMessage = nil
+                        completion(true)
+                    }
+                }
+            }
+        }
 
     func signOut() {
         do {

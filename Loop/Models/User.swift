@@ -15,6 +15,7 @@ import FirebaseFirestore
 class User {
     var uid: String
     var name: String
+    var username: String
     var challengeIds: [String]
     var profilePictureId: String
     var friends: [String]
@@ -27,9 +28,10 @@ class User {
     /// - Parameter challengeIds: The challenge id(s) of the challenge(s) the user has participated or hosted.
     /// - Parameter profilePictureId: The profile picture id of the user.
     /// - Parameter friends: The user id(s) of the friends the user has.
-    init(uid: String, name: String, challengeIds: [String], profilePictureId: String, friends: [String]) {
+    init(uid: String, name: String, username: String, challengeIds: [String], profilePictureId: String, friends: [String]) {
         self.uid = uid
         self.name = name
+        self.username = username
         self.challengeIds = challengeIds
         self.profilePictureId = profilePictureId
         self.friends = friends
@@ -40,8 +42,8 @@ class User {
     /// - Parameter uid: The uid of the user.
     /// - Parameter name: The name of the user
     /// - Parameter profilePictureId: The profile picture id of the user.
-    convenience init(uid: String, name: String, profilePictureId: String) {
-        self.init(uid: uid, name: name, challengeIds: [], profilePictureId: profilePictureId, friends: [])
+    convenience init(uid: String, name: String, username: String, profilePictureId: String) {
+        self.init(uid: uid, name: name, username: username, challengeIds: [], profilePictureId: profilePictureId, friends: [])
     }
     
     /// Convert User to a dictionary for Firestore storage
@@ -51,6 +53,7 @@ class User {
         return [
             "uid": uid,
             "name": name,
+            "username": username,
             "challengeIds": challengeIds,
             "profilePictureId": profilePictureId,
             "friends": friends,

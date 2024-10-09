@@ -9,6 +9,7 @@ import SwiftUI
 
 struct FriendProfileView: View {
     var body: some View {
+        ZStack {
         VStack {
 
             HStack {

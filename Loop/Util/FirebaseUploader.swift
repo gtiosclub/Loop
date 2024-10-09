@@ -11,7 +11,7 @@ import UIKit
 
 class FirebaseUploader {
     
-    static func uploadPhoto(image: UIImage?) {
+    static func uploadPhoto(image: UIImage?, uid: String) {
         let storageRef = Storage.storage().reference()
         
         let imageData = image!.jpegData(compressionQuality: 0.8)
@@ -20,12 +20,12 @@ class FirebaseUploader {
             return
         }
         
-        let fileRef = storageRef.child("images/\(UUID().uuidString).jpg")
+        let fileRef = storageRef.child("images/\(uid).jpg")
         
         let uploadTask = fileRef.putData(imageData!, metadata: nil) { metadata, error in
             
             if error == nil && metadata != nil {
-                print("There was an error when uploading.")
+                print(error?.localizedDescription)
             }
         }
     }
