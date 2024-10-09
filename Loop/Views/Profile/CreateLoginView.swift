@@ -19,7 +19,6 @@ struct CreateLoginView: View {
     @State var ProfilePicture: String =  "person.crop.circle"
     @State var HavePicture: Bool = false
     @Environment(\.presentationMode) var presentationMode
-    
     @State private var isPickerShowing = false
     @State private var selectedImage: UIImage?
     @EnvironmentObject var authManager: AuthManager
@@ -186,6 +185,7 @@ struct CreateLoginView: View {
         }
 
     }
+
 }
 
 #Preview {

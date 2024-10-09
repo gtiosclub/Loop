@@ -28,3 +28,8 @@ Tasks:
     - Make function to add challenge id to user
 - Persist account accross sign ins (Don't have to log in every time app is opened)
   - Save UID on device
+- WatchUI
+  - Data should be synced between iPhone and watch
+  - User should be allowed to view a summarized version the stats
+  - User should be able to start a challenge
+  - Watch should display the current active session

@@ -13,14 +13,14 @@ struct FriendRow: View {
     
     var body: some View {
         HStack {
-//            NavigationLink(destination: FriendProfileView) {
-//                Image(systemName: "person.circle.fill").font(.system(size: 40)).foregroundColor(.gray)
-//                VStack(alignment: .leading) {
-//                    Text(friendName).font(.headline)
-//                    Text(status).font(.caption).foregroundColor(.gray)
-//                }
-//                Spacer()
-//            }.padding().background(Color.white).cornerRadius(10).shadow(radius: 2).padding(.horizontal)
+            NavigationLink(destination: FriendProfileView()) {
+                Image(systemName: "person.circle.fill").font(.system(size: 40)).foregroundColor(.gray)
+                VStack(alignment: .leading) {
+                    Text(friendName).font(.headline)
+                    Text(status).font(.caption).foregroundColor(.gray)
+                }
+                Spacer()
+            }.padding().background(Color.white).cornerRadius(10).shadow(radius: 2).padding(.horizontal)
         }
     }
 }
