@@ -174,3 +174,4 @@ struct FriendProfileView_Previews: PreviewProvider {
             .previewLayout(.fixed(width: 375, height: 800))
     }
 }
+
