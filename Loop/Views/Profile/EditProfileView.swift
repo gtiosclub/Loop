@@ -84,6 +84,7 @@ struct EditProfileView: View {
                 }
             }
             .padding()
+            .navigationBarBackButtonHidden(true)
         }
 
         private func saveChanges() {
@@ -91,6 +92,7 @@ struct EditProfileView: View {
             
             showConfirmationAlert = true
         }
+    
 }
 
 
