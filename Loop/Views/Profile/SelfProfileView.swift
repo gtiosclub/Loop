@@ -184,9 +184,7 @@ struct SelfProfileView: View {
 
                     }
                 }
-                Button(action: {
-                    //implement
-                }) {
+                NavigationLink(destination: AddFriendsView()){
                     ZStack {
                         Rectangle()
                             .foregroundColor(Color(UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1)))
