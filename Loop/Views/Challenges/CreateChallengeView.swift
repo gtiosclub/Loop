@@ -12,7 +12,6 @@ struct CreateChallengeView: View {
     @State private var challengeName: String = ""
     @State private var challengeType: ChallengeType = .mostMilesRan
     @State private var endDate: Date = Date()
-    private var futureDate: Calendar.current.date(byAdding: .year, value: 1, to: Date())
     
     
     var body: some View {
@@ -26,18 +25,17 @@ struct CreateChallengeView: View {
         //Challenge Name (text input)
         TextField("Enter your challenge name.", text: $challengeName)
         //Challenge Type (dropdown)
-        List {
-            Picker("Challenge Type", selection: $challengeType) {
-                Text("Most Miles Ran").tag(ChallengeType.mostMilesRan)
-                Text("Most Calories Burned").tag(ChallengeType.mostCaloriesBurned)
-                Text("Fastest Single Mile").tag(ChallengeType.fastestMile)
-                Text("Most Consecutive Days Exercised").tag(ChallengeType.mostConsecutiveDays)
-                Text("Farthest Distance Ran").tag(ChallengeType.farthestDistance)
-            }
+        Picker("Challenge Type", selection: $challengeType) {
+            Text("Most Miles Ran").tag(ChallengeType.mostMilesRan)
+            Text("Most Calories Burned").tag(ChallengeType.mostCaloriesBurned)
+            Text("Fastest Single Mile").tag(ChallengeType.fastestMile)
+            Text("Most Consecutive Days Exercised").tag(ChallengeType.mostConsecutiveDays)
+            Text("Farthest Distance Ran").tag(ChallengeType.farthestDistance)
         }
         //End Date (date picker)
-        DatePicker("End Date", selection: $endDate, in: Date.now <...<= futureDate, displayedComponents: .date)
+        DatePicker("End Date", selection: $endDate, in: Date.now..., displayedComponents: .date)
         //Participants, with add participant (search list)
+        Text("Participants")
     }
 }
 
