@@ -10,42 +10,176 @@ import SwiftUI
 struct CreateChallengeView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var challengeName: String = ""
-    @State private var challengeType: ChallengeType = .mostMilesRan
+    @State private var challengeActivity: ChallengeActivity = .Running
+    @State private var challengeMetric: ChallengeMetric = .Distance
     @State private var endDate: Date = Date()
+    @State private var isDatePickerVisible = false
+    @State private var searchText: String = ""
     
     
     var body: some View {
-        Button {
-            dismiss()
-        } label: {
-            Image(systemName: "chevron.left")
-                .foregroundColor(.black)
-                .bold()
+        ScrollView(.vertical) {
+            
+            VStack(alignment:.leading) {
+                HStack{
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "chevron.left")
+                            .foregroundColor(.black)
+                            .bold()
+                    }
+                    Text("Create a Challenge")
+                        .font(.title)
+                        .padding(.leading, 5)
+                        .bold()
+                }
+                .frame(maxWidth:.infinity, alignment: .leading)
+                .padding(.bottom, 10)
+                
+                TextField("Enter Challenge Name", text: $challengeName)
+                    .font(.title2)
+                    .bold()
+                    .padding(.bottom, 10)
+                
+                Rectangle()
+                    .frame(maxWidth: .infinity, minHeight: 180)
+                    .foregroundColor(.gray)
+                    .cornerRadius(20)
+                    .padding(.bottom, 20)
+                
+                //Challenge Details
+                Text("Challenge Details")
+                    .font(.title2)
+                    .bold()
+                
+                //End Date Select
+                HStack {
+                    Text("Challenge Period: ")
+                    Spacer()
+                    Text("\(Date().formatted(.dateTime.day().month(.twoDigits))) - \(endDate.formatted(.dateTime.day().month(.twoDigits)))")
+                    Button(action: {
+                        isDatePickerVisible.toggle() // Toggle visibility of the date picker
+                    }) {
+                        Image(systemName: "calendar") // SF Symbol for calendar icon
+                            .resizable()
+                            .frame(width: 30, height: 30)
+                            .foregroundColor(.black)
+                    }
+                }
+                // DatePicker that is conditionally shown
+                if isDatePickerVisible {
+                    DatePicker(
+                        "End Date",
+                        selection: $endDate,
+                        in: Date()...,
+                        displayedComponents: .date
+                    )
+                    .datePickerStyle(GraphicalDatePickerStyle())
+                    .labelsHidden()
+                }
+                Divider()
+                    .frame(height:1)
+                    .background(.gray)
+                
+                //Select Activity
+                HStack {
+                    Text("Challenge Activity:")
+                    Spacer()
+                    
+                    Picker("Challenge Type", selection: $challengeActivity) {
+                        Text("Running").tag(ChallengeActivity.Running)
+                        Text("Biking").tag(ChallengeActivity.Biking)
+                        Text("Swimming").tag(ChallengeActivity.Swimming)
+                        Text("Weightlifting").tag(ChallengeActivity.Weightlifting)
+                                Text("General Health")
+                            .tag(ChallengeActivity.General)
+
+                            }
+                    .pickerStyle(MenuPickerStyle())
+                    .accentColor(.red)
+                    .background(Color.white)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.red, lineWidth: 2)
+                                )
+                    
+                }
+                Divider()
+                    .frame(height:1)
+                    .background(.gray)
+                
+                //Select Metric
+                HStack {
+                    Text("Challenge Metric:")
+                    Spacer()
+                    
+                    Picker("Challenge Metric", selection: $challengeMetric) {
+                        Text("Distance" ).tag(ChallengeMetric.Distance)
+                        Text("Time").tag(ChallengeMetric.Time)
+                        Text("Consecutive Days").tag(ChallengeMetric.ConsecutiveDays)
+                        Text("Calories").tag(ChallengeMetric.Calories)
+                                Text("Speed")
+                            .tag(ChallengeMetric.Speed)
+
+                            }
+                    .pickerStyle(MenuPickerStyle())
+                    .accentColor(.red)
+                    .background(Color.white)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(.red, lineWidth: 2)
+                                )
+
+                }
+                Divider()
+                    .frame(height:1)
+                    .background(.gray)
+                
+                Text("Invite Participants")
+                    .font(.title2)
+                    .bold()
+                    .padding(.top, 20)
+                
+                HStack {
+                    Image(systemName: "magnifyingglass").foregroundColor(.gray)
+                    TextField("Search Friends", text: $searchText).padding(8).background(Color.gray.opacity(0.15)).cornerRadius(8)
+                }
+                
+                Button(action: {}){
+                        Text("CREATE CHALLENGE")
+                        .font(.system(size:22))
+                            .bold()
+                            .foregroundColor(.black)
+                }
+                .frame(maxWidth:.infinity, minHeight: 60, maxHeight: 60)
+                .background(.red)
+                .cornerRadius(15)
+                .padding(.vertical, 40)
+            
+            }
+            .padding([.leading,.trailing], 20)
         }
-        //Challenge Name (text input)
-        TextField("Enter your challenge name.", text: $challengeName)
-        //Challenge Type (dropdown)
-        Picker("Challenge Type", selection: $challengeType) {
-            Text("Most Miles Ran").tag(ChallengeType.mostMilesRan)
-            Text("Most Calories Burned").tag(ChallengeType.mostCaloriesBurned)
-            Text("Fastest Single Mile").tag(ChallengeType.fastestMile)
-            Text("Most Consecutive Days Exercised").tag(ChallengeType.mostConsecutiveDays)
-            Text("Farthest Distance Ran").tag(ChallengeType.farthestDistance)
-        }
-        //End Date (date picker)
-        DatePicker("End Date", selection: $endDate, in: Date.now..., displayedComponents: .date)
-        //Participants, with add participant (search list)
-        Text("Participants")
+        
     }
 }
 
-enum ChallengeType: String, CaseIterable, Identifiable {
+enum ChallengeActivity: String, CaseIterable, Identifiable {
     var id: Self {self}
-    case mostMilesRan
-    case mostCaloriesBurned
-    case fastestMile
-    case mostConsecutiveDays
-    case farthestDistance
+    case Running
+    case Swimming
+    case Weightlifting
+    case Biking
+    case General
+}
+enum ChallengeMetric: String, CaseIterable, Identifiable
+{
+    var id: Self {self}
+    case Distance
+    case Time
+    case ConsecutiveDays
+    case Calories
+    case Speed
 }
 
 #Preview {
