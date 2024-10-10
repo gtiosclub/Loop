@@ -14,8 +14,8 @@ struct CreateLoginView: View {
     @State var Password: String = ""
     @State var Username: String = ""
     @State var Name: String = ""
-    @State var ComfirmPassword: String = ""
-    @State var ComfirmButton: String = ""
+    @State var ConfirmPassword: String = ""
+    @State var ConfirmButton: String = ""
     @State var ProfilePicture: String =  "person.crop.circle"
     @State var HavePicture: Bool = false
     @Environment(\.presentationMode) var presentationMode
@@ -31,7 +31,7 @@ struct CreateLoginView: View {
         || !Password.isEmpty
         || !Username.isEmpty
         || !Name.isEmpty
-        || !ComfirmPassword.isEmpty
+        || !ConfirmPassword.isEmpty
     }
     
     var body: some View {
@@ -87,7 +87,7 @@ struct CreateLoginView: View {
                         .cornerRadius(10)
                         .font(.system(size: 15, weight: .regular))
                     
-                    SecureField("Comfirm Passowrd", text: $ComfirmPassword)
+                    SecureField("Confirm Passowrd", text: $ConfirmPassword)
                         .padding()
                         .foregroundColor(.gray)
                         .cornerRadius(10)
@@ -155,7 +155,7 @@ struct CreateLoginView: View {
         var profilePicID = HavePicture ? uid : "None"
         let user = User(uid: uid, name: Name, username: Username, challengeIds: [], profilePictureId: profilePicID, friends: [])
         
-        if (Password != ComfirmPassword) {
+        if (Password != ConfirmPassword) {
             alertMessage = "Passwords do not match"
             showAlert.toggle()
         }
