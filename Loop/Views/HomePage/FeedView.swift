@@ -66,10 +66,10 @@ struct WorkoutCardView: View {
         NavigationLink(destination: DetailedStatsView(name: name)) {
             VStack(alignment: .leading, spacing: 12) {
                 HStack {
-                    Image(avatar)
+                    Image(systemName: "person.crop.circle")
                         .resizable()
                         .clipShape(Circle())
-                        .frame(width: 50, height: 50)
+                        .frame(width: 25, height: 25)
                         .shadow(radius: 5)
                     VStack(alignment: .leading) {
                         Text(name)
@@ -146,10 +146,10 @@ struct CompetitionCardView: View {
         NavigationLink(destination: DetailedStatsView(name: name)) {
             VStack(alignment: .leading, spacing: 12) {
                 HStack {
-                    Image(avatar)
+                    Image(systemName: "person.crop.circle")
                         .resizable()
                         .clipShape(Circle())
-                        .frame(width: 50, height: 50)
+                        .frame(width: 25, height: 25)
                         .shadow(radius: 5)
                     VStack(alignment: .leading) {
                         Text(name)

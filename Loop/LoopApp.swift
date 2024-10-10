@@ -16,12 +16,18 @@ struct YourApp: App {
   // register app delegate for Firebase setup
   @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
+    @StateObject var authManager = AuthManager()
 
   var body: some Scene {
     WindowGroup {
       NavigationView {
-        ContentView()
+          if authManager.isAuthenticated {
+              ContentView()
+          } else {
+              LoginView()
+          }
       }
+      .environmentObject(authManager)
     }
   }
 }
