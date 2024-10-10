@@ -13,7 +13,7 @@ struct FriendRow: View {
     
     var body: some View {
         HStack {
-            NavigationLink(destination: FriendProfileView(username: friendName, name: friendName)) {
+            NavigationLink(destination: FriendProfileView()) {
                 Image(systemName: "person.circle.fill").font(.system(size: 40)).foregroundColor(.gray)
                 VStack(alignment: .leading) {
                     Text(friendName).font(.headline)
