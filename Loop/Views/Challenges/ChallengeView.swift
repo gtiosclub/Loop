@@ -21,66 +21,82 @@ struct ChallengeView: View {
     var challenge: Challenge
     
     @Environment(\.dismiss) private var dismiss
+    @State private var selectedTab: String = "Leaderboard"
+    var tabs = ["Leaderboard", "Statistics", "Description"]
     
     var body: some View {
         ZStack {
-            /*Color.black
-                .brightness(0.2)
-                .ignoresSafeArea()*/
-            
             VStack {
                 HStack {
-                    Text(challenge.title)
-                        .font(.system(size: 42, weight: .bold))
-                        .foregroundStyle(.red)
-                        .padding([.leading, .trailing], 15)
-                        .padding([.top, .bottom], 2)
-                    Spacer()
+                    ForEach(tabs, id: \.self) { tab in
+                        if (tab == selectedTab) {
+                            Text(tab)
+                                .font(.system(size: 17, weight: .medium))
+                                .frame(width: UIScreen.main.bounds.size.width / 3, alignment: .center)
+                                .overlay(VStack {
+                                    Divider().frame(height: 2).background(Color.black).offset(x: 0, y: 20)
+                                })
+                        } else {
+                            Button {
+                                selectedTab = tab
+                            } label: {
+                                Text(tab)
+                                    .foregroundStyle(.gray)
+                                    .frame(width: UIScreen.main.bounds.size.width / 3, alignment: .center)
+                                    .overlay(VStack {
+                                        Divider().frame(height: 2).background(Color.gray).opacity(0.5).offset(x: 0, y: 20)
+                                    })
+                            }
+                        }
+                    }
+                    .padding(.horizontal, -4)
+                }
+                .padding(.top, 15).padding(.bottom, 20)
+                
+                if (selectedTab == "Leaderboard") {
+                    ChalLeaderboardView(personList: [Person(name:"Ryan", distance: 4.2), Person(name:"Max", distance: 14.8), Person(name:"Jason", distance: 7.1), Person(name:"Sam", distance: 11.4), Person(name: "Joe", distance: 5.5)])
                 }
                 
-                HStack {
-                    Text(challenge.challengeType)
-                    Spacer()
-                    Text("\(challenge.dateCreated.formatted(.dateTime.day().month(.twoDigits))) - \(challenge.endDate.formatted(.dateTime.day().month(.twoDigits)))")
-                    
+                if (selectedTab == "Statistics") {
+                    //stats view
                 }
-                .padding([.leading, .trailing], 15)
-                .font(.system(size: 20, weight: .bold))
                 
-                ChalLeaderboardView(personList: [Person(name:"Ryan", distance: 50.2), Person(name:"Max", distance: 104.8), Person(name:"Jason", distance: 85), Person(name:"Sam", distance: 90.6)])
-                
-                HStack {
-                    Text("Activities")
-                        .font(.system(size: 32, weight: .bold))
-                        .foregroundStyle(.blue)
-                        .padding([.leading, .trailing, .bottom], 15)
-                        .padding(.top, 20)
-                    Spacer()
+                if (selectedTab == "Description") {
+                    //description view
                 }
                 
                 Spacer()
             }
             .navigationBarBackButtonHidden(true)
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        HStack {
+                ToolbarItem(placement: .topBarLeading) {
+                    HStack {
+                        Button {
+                            dismiss()
+                        } label: {
                             Image(systemName: "chevron.backward")
-                                .font(.system(size: 15, weight: .bold))
-                            Text("All Challenges")
-                                .font(.system(size: 20))
-                                .padding(.leading, -5)
+                                .font(.system(size: 12, weight: .semibold))
+                            Text(challenge.title)
+                                .font(.system(size: 21, weight: .semibold))
                         }
                     }
                 }
+                ToolbarItem(placement: .topBarTrailing) {
+                    HStack {
+                        Image(systemName: "clock")
+                            .font(.system(size: 12))
+                        Text("04d 02h 44m")
+                            .font(.system(size: 15))
+                            .padding(.leading, -5)
+                    }
+                    .padding(.top, 2)
+                }
             }
+            .foregroundStyle(.black)
         }
-        //.foregroundStyle(.white)
     }
 }
 
 #Preview {
-    ChallengeView(challenge: Challenge.sampleData[0])
+    ChallengeListView(challenges: Challenge.sampleData)
 }
