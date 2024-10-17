@@ -132,6 +132,7 @@ struct DetailedStatsView: View {
         }
         .background(Color(.systemGray6))
         .navigationTitle("Workout Stats")
+        .navigationBarHidden(false)
     }
 }
 
