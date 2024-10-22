@@ -50,26 +50,3 @@ struct ChallengeListView: View {
 #Preview {
     ChallengeListView(challenges: Challenge.sampleData)
 }
-
-
-//@State private var isCreateChallengeActive = false
-//            VStack {
-//                List(challenges, id: \.id) { challenge in
-//                    CardView(challenge: challenge)
-//                        .listRowBackground(challenge.theme.mainColor)
-//                }
-//            }
-//            .navigationTitle("Challenges")
-//            .toolbar {
-//                ToolbarItem(placement: .navigationBarTrailing) {
-//                    Button(action: {
-//                        isCreateChallengeActive = true
-//                    }) {
-//                        Image(systemName: "plus")
-//                            .accessibilityLabel("Add New Challenge")
-//                    }
-//                }
-//            }
-//            .navigationDestination(isPresented: $isCreateChallengeActive) {
-//                CreateChallengeView()
-//            }
