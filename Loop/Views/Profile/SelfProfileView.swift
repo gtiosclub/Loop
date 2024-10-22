@@ -14,35 +14,69 @@ struct PastActivity: View {
     var placement: String
     
     var body: some View {
-        ZStack {
-            Rectangle()
-                .frame(width: 380, height: 330)
-                .foregroundColor(Color(UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1)))
-                .cornerRadius(10)
-            VStack {
-                HStack {
-                    Text(name)
-                        .frame(alignment: .leading)
-                    Text(type)
-                }
-                Text(activityName)
-                Image(systemName: "trophy.fill")
-                    .frame(width: 246 , height: 77)
-                Text(name+" Placed "+placement+"!")
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                Image(systemName: "person.circle.fill")
+                    .resizable()
+                    .frame(width: 30, height: 30)
+                    .foregroundColor(.gray)
+
+                Text(name)
+                    .font(.subheadline)
+
+                Spacer()
+
+                Text(type)
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+            }
+            .padding(.horizontal)
+
+            Text(activityName)
+                .font(.headline)
+                .padding(.horizontal)
+
+            HStack {
+                Image(systemName: "chart.bar.fill")
+                    .resizable()
+                    .frame(width: 80, height: 40)
+                    .padding(.horizontal)
+
+                Text( name + " Placed 1st!")
+                    .font(.headline)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.5)
+                Spacer()
+            }
+            .padding(.horizontal)
+
+            HStack {
+                Text("Today at 9:16 PM")
+                    .font(.caption)
+                    .foregroundColor(.gray)
+                    .padding(.horizontal)
+
+                Spacer()
+
+                Image(systemName: "eye.slash.fill")
+                    .padding(.horizontal)
             }
         }
+        .padding()
+        .background(Color.gray.opacity(0.1))
+        .cornerRadius(15)
     }
 }
 
 struct SelfProfileView: View {
     @State private var wins: Int = 0
     @State private var lastActivity: String = "No recent activity"
-    @State private var username: String = "@username"
-    @State private var name: String = "My Name"
+    @State private var username: String = "@john_running"
+    @State private var name: String = "John"
     @State private var friends: Int = 12
     @State private var challenges: Int = 132
     @State private var description: String = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
-    @State private var activities: [[String]] = [["Running", "Super Run", "1"], ["Jogging", "Slow Jog", "9"], ["Sitting", "Super Sit", "1"], ["Sleep", "Super Sleep", "100"]]
+    @State private var activities: [[String]] = [["Running", "Super Run", "1"], ["Jogging", "Slow Jog", "9"], ["Skipping", "Skip Challenge", "1"], ["Running", "My Running", "100"]]
     var body: some View {
         VStack(spacing: -30) {
             HStack {
@@ -150,9 +184,7 @@ struct SelfProfileView: View {
 
                     }
                 }
-                Button(action: {
-                    //implement
-                }) {
+                NavigationLink(destination: AddFriendsView()){
                     ZStack {
                         Rectangle()
                             .foregroundColor(Color(UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1)))

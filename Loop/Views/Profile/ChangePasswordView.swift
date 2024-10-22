@@ -38,7 +38,7 @@ struct ChangePasswordView: View {
                 
                 
                 
-                SecureField("Comfirm New Password", text: $ComfirmPassword)
+                SecureField("Confirm New Password", text: $ComfirmPassword)
                     .padding()
                     .foregroundColor(.gray)
                     .cornerRadius(10)
