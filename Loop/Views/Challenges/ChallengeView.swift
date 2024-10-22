@@ -78,6 +78,7 @@ struct ChallengeView: View {
             }
         }
         .foregroundStyle(.white)
+        .toolbar(.hidden, for: .tabBar)
     }
 }
 

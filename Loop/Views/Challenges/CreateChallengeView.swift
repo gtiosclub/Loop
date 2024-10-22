@@ -136,7 +136,7 @@ struct CreateChallengeView: View {
                     .frame(height:1)
                     .background(.gray)
                 
-                Text("Invite Participants")
+                Text("Manage Participants")
                     .font(.title2)
                     .bold()
                     .padding(.top, 20)
@@ -144,6 +144,17 @@ struct CreateChallengeView: View {
                 HStack {
                     Image(systemName: "magnifyingglass").foregroundColor(.gray)
                     TextField("Search Friends", text: $searchText).padding(8).background(Color.gray.opacity(0.15)).cornerRadius(8)
+                }
+                .padding(.bottom, 15)
+                
+                Button(action: {}){
+                    HStack {
+                        Image(systemName: "plus")
+                            .bold()
+                        Text("Add Participants")
+                            .bold()
+                    }
+                    .foregroundStyle(.black)
                 }
                 
                 Button(action: {}){
@@ -160,6 +171,8 @@ struct CreateChallengeView: View {
             }
             .padding([.leading,.trailing], 20)
         }
+        .navigationBarBackButtonHidden(true)
+        .toolbar(.hidden, for: .tabBar)
         
     }
 }
