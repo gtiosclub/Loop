@@ -25,9 +25,11 @@ struct WatchTypesOfExerciseView: View {
                     .frame(maxWidth: .infinity)
                     .padding()
                     .cornerRadius(10)
-                    
                 }
                 .buttonStyle(PlainButtonStyle())
+                .onTapGesture {
+                    workoutManager.startWorkout()
+                }
             }
             .listStyle(CarouselListStyle())
         }

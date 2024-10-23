@@ -7,6 +7,7 @@
 
 import HealthKit
 import SwiftUI
+import os
 
 class WorkoutManager: NSObject, ObservableObject {
     static let shared = WorkoutManager()
@@ -33,6 +34,7 @@ class WorkoutManager: NSObject, ObservableObject {
             session?.startActivity(with: Date())
             builder?.beginCollection(withStart: Date(), completion: { (success, error) in
                 self.isRunning = true
+                print("Successfully started workout")
             })
         } catch {
             print("Failed to start workout: \(error.localizedDescription)")
@@ -54,6 +56,7 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
                 self.builder?.finishWorkout(completion: { (workout, error) in
                     DispatchQueue.main.async {
                         self.isRunning = false
+                        print("Successfully ended workout")
                     }
                 })
             })
