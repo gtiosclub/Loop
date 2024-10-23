@@ -75,146 +75,108 @@ struct SelfProfileView: View {
     @State private var name: String = "John"
     @State private var friends: Int = 12
     @State private var challenges: Int = 132
-    @State private var description: String = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
     @State private var activities: [[String]] = [["Running", "Super Run", "1"], ["Jogging", "Slow Jog", "9"], ["Skipping", "Skip Challenge", "1"], ["Running", "My Running", "100"]]
     var body: some View {
         VStack(spacing: -30) {
             HStack {
-                Text(name)
-                    .font(.title)
-                    .foregroundColor(.black)
-                    .padding(.leading, 10)
                 Spacer()
-
+                
                 VStack {
                     NavigationLink(destination: SettingsView()) {
-                        VStack(spacing: 5) {
-                            Rectangle()
-                                .frame(height: 4)
-                                .foregroundColor(.black)
-                            Rectangle()
-                                .frame(height: 4)
-                                .foregroundColor(.black)
-                            Rectangle()
-                                .frame(height: 4)
-                                .foregroundColor(.black)
-                        }
-                        .frame(width: 30)
-                        .padding(.trailing, 20)
                     }
+                    .frame(width: 30)
+                    .padding(.trailing, 20)
                 }
-                .padding(.trailing, 20)
             }
-            .padding(.top, 60)
-            .padding(.bottom, 10)
-
+            .padding(.trailing, 20)
+        .padding(.top, 60)
+        .padding(.bottom, 10)
+        
             HStack(spacing: 30) {
-                ZStack {
-                    Circle()
-                        .frame(width: 85, height: 85)
-                        .padding()
-                        .foregroundColor(.black)
-                }
-                .padding()
-                VStack {
-                    NavigationLink(destination: ManageFriendsView()) {
-                        VStack {
-                            Text(String(friends))
-                                .font(.system(size:14))
-                                .bold()
-                            Text("Friends")
-                                .font(.system(size:13))
-                        }
-                    }.foregroundStyle(.black)
-                }
-                VStack {
-                    Text(String(wins))
-                        .font(.system(size:14))
-                        .bold()
-                    Text("Wins")
-                        .font(.system(size:13))
-                }.foregroundStyle(.black)
-                VStack {
-                    Text(String(challenges))
-                        .font(.system(size:14))
-                        .bold()
-                    Text("Challenges")
-                        .font(.system(size:13))
+            ZStack {
+                Circle()
+                    .frame(width: 85, height: 85)
+                    .padding()
+                    .foregroundColor(.gray)
+            }
+            .padding()
+            VStack {
+                NavigationLink(destination: ManageFriendsView()) {
+                    VStack {
+                        Text(String(friends))
+                            .font(.system(size:14))
+                            .bold()
+                        Text("Following")
+                            .font(.system(size:13))
+                    }
                 }.foregroundStyle(.black)
             }
-            .padding(.bottom, 10)
-            .offset(x:-10, y:0)
-            HStack {
-                Text(username)
-                    .bold()
-                    .font(.system(size: 14))
-                    .offset(x:-130, y:0)
-            }
-            .padding(.bottom, 40)
-            Text(description)
-                .frame(width: 362, height: 53)
-                .font(.system(size: 13))
-                .padding(.bottom, 40)
-            HStack {
-                NavigationLink(destination: EditProfileView()) {
-                    ZStack {
-                        Rectangle()
-                            .foregroundColor(Color(UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1)))
-                            .frame(width: 124, height: 33)
-                            .cornerRadius(10)
-                        Text("Edit Profile")
-                            .font(.system(size: 13))
-                            .foregroundStyle(.black)
-                            .bold()
-
-                    }
-                }
-                Button(action: {
-                    //implement
-                }) {
-                    ZStack {
-                        Rectangle()
-                            .foregroundColor(Color(UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1)))
-                            .frame(width: 124, height: 33)
-                            .cornerRadius(10)
-                        Text("Share Profile")
-                            .font(.system(size: 13))
-                            .foregroundStyle(.black)
-                            .bold()
-
-                    }
-                }
-                NavigationLink(destination: AddFriendsView()){
-                    ZStack {
-                        Rectangle()
-                            .foregroundColor(Color(UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1)))
-                            .frame(width: 35, height: 35)
-                            .cornerRadius(10)
-                        Image(systemName: "person.badge.plus")
-                            .foregroundStyle(.black)
-                    }
-                }
-            }
-            .padding(.bottom, 45)
-            Text(name+"'s Recent Activity")
-                .padding(.bottom, 40)
-            Rectangle()
-                .frame(width: UIScreen.main.bounds.size.width, height: 1)
-                .padding(.bottom, 13)
-            VStack(alignment: .leading, spacing: 20) {
-                ScrollView {
-                    ForEach(activities, id: \.self) {activity in
-                        PastActivity(name: name, type: activity[0], activityName: activity[1], placement: activity[2])
-                    }
-                }
-            }
-            .padding(20)
-            .cornerRadius(15)
-            .shadow(radius: 5)
-            .padding(.horizontal, 20)
-
-            Spacer()
         }
+        .padding(.bottom, 10)
+        .offset(x:-10, y:0)
+        HStack {
+            Text(username)
+                .bold()
+                .font(.system(size: 14))
+                .offset(x:-130, y:0)
+        }
+        .padding(.bottom, 40)
+        HStack {
+            NavigationLink(destination: EditProfileView()) {
+                ZStack {
+                    Rectangle()
+                        .foregroundColor(Color(UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1)))
+                        .frame(width: 124, height: 33)
+                        .cornerRadius(10)
+                    Text("Edit Profile")
+                        .font(.system(size: 13))
+                        .foregroundStyle(.black)
+                        .bold()
+                    
+                }
+            }
+            Button(action: {
+                //implement
+            }) {
+                ZStack {
+                    Rectangle()
+                        .foregroundColor(Color(UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1)))
+                        .frame(width: 124, height: 33)
+                        .cornerRadius(10)
+                    Text("Share Profile")
+                        .font(.system(size: 13))
+                        .foregroundStyle(.black)
+                        .bold()
+                    
+                }
+            }
+            NavigationLink(destination: AddFriendsView()){
+                ZStack {
+                    Rectangle()
+                        .foregroundColor(Color(UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1)))
+                        .frame(width: 35, height: 35)
+                        .cornerRadius(10)
+                    Image(systemName: "person.badge.plus")
+                        .foregroundStyle(.black)
+                }
+            }
+        }
+        .padding(.bottom, 45)
+        Text(name+"'s Recent Activity")
+            .padding(.bottom, 40)
+        VStack(alignment: .leading, spacing: 20) {
+            ScrollView {
+                ForEach(activities, id: \.self) {activity in
+                    PastActivity(name: name, type: activity[0], activityName: activity[1], placement: activity[2])
+                }
+            }
+        }
+        .padding(10)
+        .cornerRadius(15)
+        .shadow(radius: 5)
+        
+        Spacer()
+    }
         .background(Color.white)
         .edgesIgnoringSafeArea(.all)
     }
