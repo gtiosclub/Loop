@@ -508,6 +508,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = LoopWatchApp;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Loop needs access to your health data.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Loop needs to update your health data on your behalf.";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = dannyByrd123.Loop;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -538,6 +540,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = LoopWatchApp;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Loop needs access to your health data.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Loop needs to update your health data on your behalf.";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = dannyByrd123.Loop;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -684,6 +688,9 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Loop wants to access health data for your workouts.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Loop wants to add workouts on your behalf.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -723,6 +730,9 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Loop wants to access health data for your workouts.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Loop wants to add workouts on your behalf.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
