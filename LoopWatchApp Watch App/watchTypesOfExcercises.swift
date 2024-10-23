@@ -8,6 +8,7 @@ import SwiftUI
 
 struct WatchTypesOfExerciseView: View {
     @StateObject var exercisesList = ExercisesList()
+    @EnvironmentObject var workoutManager: WorkoutManager
     
     var body: some View {
         NavigationStack {

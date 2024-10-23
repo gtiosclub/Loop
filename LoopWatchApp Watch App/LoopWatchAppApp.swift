@@ -4,7 +4,6 @@
 //
 //  Created by Matt Free on 9/26/24.
 //
-
 import SwiftUI
 import HealthKit
 
@@ -12,7 +11,7 @@ import HealthKit
 class HealthKitManager {
     static let shared = HealthKitManager()
     let healthStore = HKHealthStore()
-
+    
     func requestAuthorization(completion: @escaping (Bool, Error?) -> Void) {
         guard HKHealthStore.isHealthDataAvailable() else {
             completion(false, nil)
@@ -33,7 +32,6 @@ class HealthKitManager {
     }
 }
 
-
 @main
 struct LoopWatchApp_Watch_AppApp: App {
     // Request for HealthKit authorization
@@ -47,9 +45,15 @@ struct LoopWatchApp_Watch_AppApp: App {
         }
     }
 
+    // Initialize managers here
+    private let workoutManager = WorkoutManager.shared
+    private let exercisesList = ExercisesList()
+
     var body: some Scene {
         WindowGroup {
             WatchTypesOfExerciseView()
+                .environmentObject(workoutManager)
+                .environmentObject(exercisesList)
         }
     }
 }
