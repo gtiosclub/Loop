@@ -8,33 +8,41 @@
 import Foundation
 import SwiftUI
 
+struct ActivityData {
+    let type: String
+    var timeCount: TimeInterval
+    var isTimerRunning = false
+    let timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
+    var totalCal = 0
+    var actCal = 0
+    var avgHundYd = 0
+    var yard = 0
+}
+
 struct statsView: View {
-    @State var timeCount: TimeInterval
-    @State var isTimerRunning = false
-    @State var timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
-    @State var totalCal = 0
-    @State var actCal = 0
-    @State var avgHundYd = 0
-    @State var yard = 0
+    @State var activity: ActivityData
     @State private var navigateToStatsView = false
+    @EnvironmentObject var manager:HealthManager
+    
     var body: some View {
         NavigationView {
             
             
             VStack {
                 
-                Text(formatTime(time: timeCount))
+                Text(formatTime(time: activity.timeCount))
                     .bold()
                     .font(.system(size: 40))
                     .foregroundColor(.yellow)
-                    .onReceive(timer) { _ in
-                        if isTimerRunning {
-                            timeCount += 1.0 // Increment time by 1 second
+                    .onReceive(activity.timer) { _ in
+                        if activity.isTimerRunning {
+                            activity.yard += manager.fetchTodaySteps()
+                            activity.timeCount += 1.0 // Increment time by 1 second
                         }
                     }
                 VStack {
                     HStack {
-                        Text(String(actCal))
+                        Text(String(activity.actCal))
                         Text("Active")
                     }
                     Text("Cal")
@@ -42,7 +50,7 @@ struct statsView: View {
                 
                 VStack {
                     HStack {
-                        Text(String(totalCal))
+                        Text(String(activity.totalCal))
                         Text("Total")
                     }
                     Text("Cal")
@@ -50,13 +58,13 @@ struct statsView: View {
                 
                 VStack {
                     HStack {
-                        Text(String(avgHundYd))
+                        Text(String(activity.avgHundYd))
                         Text("Average")
                     }
                     Text("/100YD")
                 }
                 
-                Text(String(yard) + "YD")
+                Text(String(activity.yard) + "YD")
                 
                 
                 
@@ -71,7 +79,7 @@ struct statsView: View {
                             
                         }
                     })
-            NavigationLink(destination: statsViewSecondPage(isTimerRunning: $isTimerRunning), isActive: $navigateToStatsView) {
+            NavigationLink(destination: statsViewSecondPage(isTimerRunning: $activity.isTimerRunning), isActive: $navigateToStatsView) {
                 EmptyView()
             }
         }

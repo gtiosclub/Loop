@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct LoopWatchApp_Watch_AppApp: App {
+    @StateObject var manager = HealthManager()
     var body: some Scene {
         WindowGroup {
             WatchTypesOfExerciseView()
+                .environmentObject(manager)
         }
     }
 }

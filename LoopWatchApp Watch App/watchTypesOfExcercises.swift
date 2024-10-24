@@ -7,12 +7,13 @@
 import SwiftUI
 
 struct WatchTypesOfExerciseView: View {
+    @EnvironmentObject var manager:HealthManager
     @StateObject var exercisesList = ExercisesList()
     
     var body: some View {
         NavigationStack {
             List(exercisesList.lists) { item in
-                NavigationLink(destination: statsView(timeCount: 0, isTimerRunning: true)) {
+                NavigationLink(destination: statsView(activity: ActivityData(type: item.type, timeCount: 0, isTimerRunning: true)).environmentObject(manager)) {
                     VStack {
                         Image(systemName: item.image)
                             .resizable()
