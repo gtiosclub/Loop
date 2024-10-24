@@ -153,7 +153,7 @@ struct CreateLoginView: View {
     func signup() {
         let uid = UUID().uuidString
         var profilePicID = HavePicture ? uid : "None"
-        let user = User(uid: uid, name: Name, username: Username, challengeIds: [], profilePictureId: profilePicID, friends: [])
+        let user = User(uid: uid, name: Name, username: Username, challengeIds: [], profilePictureId: profilePicID, friends: [], incomingRequest: [])
         
         if (Password != ConfirmPassword) {
             alertMessage = "Passwords do not match"

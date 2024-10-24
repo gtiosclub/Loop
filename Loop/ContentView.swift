@@ -8,41 +8,29 @@
 import SwiftUI
 
 struct ContentView: View {
-    init() {
-        // Set the background color of UITabBar
-        UITabBar.appearance().backgroundColor = UIColor.white
-    }
-    
-    @State var selectedView: TabSelection = .home
+    @StateObject var healthKitManager = HealthKitManager.shared
+    let user: User = User(uid: "user", name: "user", username: "user", profilePictureId: "None")
     var body: some View {
-        TabView(selection: $selectedView,
-            content: {
-            
-            FeedView().tabItem {
-                Label("Home", systemImage: "house.fill")
-            }.tag(TabSelection.home)
-            
-            ChallengeListView(challenges: Challenge.sampleData).tabItem {
-                Label("Challenges", systemImage: "figure.run")
-            }.tag(TabSelection.challenges)
-            
-            RecordView().tabItem {
-                Label("Record", systemImage: "clock.fill")
-            }.tag(TabSelection.record)
-            
-            SelfProfileView().tabItem {
-                Label("Profile", systemImage: "person.crop.circle.fill")
-            }.tag(TabSelection.profile)
-            
-            
+        Button("Get user data") {
+            Task {
+                await user.addUser()
+                let userGot: User? = await user.getUser(uid: user.uid)
+                if let userGotUnwrapped = userGot {
+                    print("uid: \(userGotUnwrapped.uid)")
+                    print("incomingRequest: \(userGotUnwrapped.incomingRequest)")
+                    print("challengeIds: \(userGotUnwrapped.challengeIds)")
+                    print("name: \(userGotUnwrapped.name)")
+                    print("profilePictureId: \(userGotUnwrapped.profilePictureId)")
+                    print("username: \(userGotUnwrapped.username)")
+                }
             }
-        )
+        }
+        Button("Get steps") {
+            healthKitManager.fetchAllDatas()
+        }
     }
 }
 
-enum TabSelection {
-    case home, challenges, profile, record
-}
 
 #Preview {
     ContentView()
