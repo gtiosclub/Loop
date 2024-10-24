@@ -28,6 +28,8 @@
 		7C0B1FD92C9CB61C0076B590 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B1FD82C9CB61C0076B590 /* ViewModel.swift */; };
 		7C0B1FDB2C9CE9270076B590 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B1FDA2C9CE9270076B590 /* User.swift */; };
 		91B4AE522CC95AE300CDED63 /* WorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B4AE512CC95ADE00CDED63 /* WorkoutManager.swift */; };
+		7C2D02D92CC75D5500D0FA76 /* RecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2D02D82CC75D5500D0FA76 /* RecordView.swift */; };
+		7C2D02DB2CC7685100D0FA76 /* AddParticipantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2D02DA2CC7685100D0FA76 /* AddParticipantView.swift */; };
 		96354F592CA38686003DD6F8 /* ChalLeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96354F582CA3867E003DD6F8 /* ChalLeaderboardView.swift */; };
 		9AB55D2A2CA5373B00C48C32 /* LoopWatchApp Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 9AB55D1D2CA5373A00C48C32 /* LoopWatchApp Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		9AB55D352CA5374F00C48C32 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB55D322CA5374F00C48C32 /* ContentView.swift */; };
@@ -107,6 +109,8 @@
 		7C0B1FDA2C9CE9270076B590 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		91B4AE512CC95ADE00CDED63 /* WorkoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutManager.swift; sourceTree = "<group>"; };
 		91B4AE532CC9626C00CDED63 /* LoopWatchApp Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "LoopWatchApp Watch App.entitlements"; sourceTree = "<group>"; };
+		7C2D02D82CC75D5500D0FA76 /* RecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordView.swift; sourceTree = "<group>"; };
+		7C2D02DA2CC7685100D0FA76 /* AddParticipantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddParticipantView.swift; sourceTree = "<group>"; };
 		96354F582CA3867E003DD6F8 /* ChalLeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChalLeaderboardView.swift; sourceTree = "<group>"; };
 		9AB55D1D2CA5373A00C48C32 /* LoopWatchApp Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LoopWatchApp Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AB55D2F2CA5374F00C48C32 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -162,6 +166,7 @@
 		7C0B1FBE2C9CB05E0076B590 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				7C2D02D62CC75D2500D0FA76 /* RecordActivity */,
 				DF1CD2AE2CACB97800451888 /* HomePage */,
 				7C0B1FC32C9CB0880076B590 /* Profile */,
 				7C0B1FC22C9CB07F0076B590 /* Activities */,
@@ -200,6 +205,7 @@
 				7C0B1FD42C9CB2270076B590 /* CreateChallengeView.swift */,
 				7C0B1FD62C9CB24E0076B590 /* ExploreChallengeView.swift */,
 				D49F420B2CA20C03003607BB /* CardView.swift */,
+				7C2D02DA2CC7685100D0FA76 /* AddParticipantView.swift */,
 			);
 			path = Challenges;
 			sourceTree = "<group>";
@@ -227,6 +233,14 @@
 				AA53DE792CB312B50029B7DB /* EditProfileView.swift */,
 			);
 			path = Profile;
+			sourceTree = "<group>";
+		};
+		7C2D02D62CC75D2500D0FA76 /* RecordActivity */ = {
+			isa = PBXGroup;
+			children = (
+				7C2D02D82CC75D5500D0FA76 /* RecordView.swift */,
+			);
+			path = RecordActivity;
 			sourceTree = "<group>";
 		};
 		9AB55D302CA5374F00C48C32 /* Preview Content */ = {
@@ -481,8 +495,10 @@
 				DF95BDB92CAF61F400CBDA32 /* StatsPageModel.swift in Sources */,
 				DF95BDB72CAF607400CBDA32 /* StatsPage.swift in Sources */,
 				D49F42062CA20A86003607BB /* Theme.swift in Sources */,
+				7C2D02D92CC75D5500D0FA76 /* RecordView.swift in Sources */,
 				BF7005F72CB7260F0057A8BF /* AuthManager.swift in Sources */,
 				1950879D2CAF646C00AB3EE3 /* ChangeEmailView.swift in Sources */,
+				7C2D02DB2CC7685100D0FA76 /* AddParticipantView.swift in Sources */,
 				7C0B1FD92C9CB61C0076B590 /* ViewModel.swift in Sources */,
 				191745362CACBC9700ECC352 /* LoginView.swift in Sources */,
 				D49F420C2CA20C03003607BB /* CardView.swift in Sources */,
