@@ -12,6 +12,7 @@ struct CreateChallengeView: View {
     @State private var challengeName: String = ""
     @State private var challengeActivity: ChallengeActivity = .Running
     @State private var challengeMetric: ChallengeMetric = .Distance
+    @State private var attendees: [String] = []
     @State private var endDate: Date = Date()
     @State private var isDatePickerVisible = false
     @State private var searchText: String = ""
@@ -51,26 +52,23 @@ struct CreateChallengeView: View {
                         .cornerRadius(20)
                         .padding(.bottom, 20)
                     
-                    //Challenge Details
                     Text("Challenge Details")
                         .font(.title2)
                         .bold()
                     
-                    //End Date Select
                     HStack {
                         Text("Challenge Period: ")
                         Spacer()
                         Text("\(Date().formatted(.dateTime.day().month(.twoDigits))) - \(endDate.formatted(.dateTime.day().month(.twoDigits)))")
                         Button(action: {
-                            isDatePickerVisible.toggle() // Toggle visibility of the date picker
+                            isDatePickerVisible.toggle()
                         }) {
-                            Image(systemName: "calendar") // SF Symbol for calendar icon
+                            Image(systemName: "calendar")
                                 .resizable()
                                 .frame(width: 30, height: 30)
-                                .foregroundColor(.black)
+                                .foregroundColor(.red)
                         }
                     }
-                    // DatePicker that is conditionally shown
                     if isDatePickerVisible {
                         DatePicker(
                             "End Date",
@@ -139,10 +137,12 @@ struct CreateChallengeView: View {
                         .frame(height:1)
                         .background(.gray)
                     
+                    
                     Text("Manage Participants")
                         .font(.title2)
                         .bold()
                         .padding(.top, 20)
+                    
                     
                     HStack {
                         Image(systemName: "magnifyingglass").foregroundColor(.gray)
@@ -150,8 +150,22 @@ struct CreateChallengeView: View {
                     }
                     .padding(.bottom, 15)
                     
+                    ScrollView {
+                        ParticipantCardView(name:"Max Ko", email: "maxko123@gatech.edu")
+                        ParticipantCardView(name:"Max Ko", email: "maxko123@gatech.edu")
+                        ParticipantCardView(name:"Max Ko", email: "maxko123@gatech.edu")
+                        ParticipantCardView(name:"Max Ko", email: "maxko123@gatech.edu")
+                        ParticipantCardView(name:"Max Ko", email: "maxko123@gatech.edu")
+                        ParticipantCardView(name:"Max Ko", email: "maxko123@gatech.edu")
+                        ParticipantCardView(name:"Max Ko", email: "maxko123@gatech.edu")
+                    }
+                    .frame(height: 350)
+                    
+                    
                     Button(action: {
-                        popUpOpen = true
+                        withAnimation {
+                            popUpOpen = true
+                        }
                     }){
                         HStack {
                             Image(systemName: "plus")
@@ -162,7 +176,11 @@ struct CreateChallengeView: View {
                         .foregroundStyle(.black)
                     }
                     
-                    Button(action: {}){
+                    Button(action: {
+                        print("activity: \(challengeActivity.rawValue)")
+                        
+                        var newChallenge = Challenge(title: challengeName, attendees: attendees, lengthInMinutes: 999, theme: .bubblegum, endDate: endDate, challengeType: challengeActivity.rawValue, dataMeasured: challengeMetric.rawValue, dateCreated: Date(), host:"userID")
+                    }){
                         Text("CREATE CHALLENGE")
                             .font(.system(size:22))
                             .bold()
@@ -184,9 +202,12 @@ struct CreateChallengeView: View {
                 Color.gray.opacity(0.5)
                     .edgesIgnoringSafeArea(.all)
                     .onTapGesture {
-                        popUpOpen = false
+                        withAnimation {
+                            popUpOpen = false
+                        }
                     }
-                AddParticipantView()
+                AddParticipantView(isShown: $popUpOpen)
+                    .transition(.move(edge: .bottom))
             }
         }
         
@@ -209,6 +230,38 @@ enum ChallengeMetric: String, CaseIterable, Identifiable
     case ConsecutiveDays
     case Calories
     case Speed
+}
+
+struct ParticipantCardView: View {
+    let name: String
+    let email: String
+    
+    var body: some View {
+        HStack {
+            Circle()
+                .fill(.gray)
+                .frame(width:40, height: 40)
+            
+            VStack(alignment: .leading){
+                Text(name)
+                Text(email)
+                    .opacity(0.5)
+            }
+            .padding(.leading, 15)
+            Spacer()
+            Button {
+                
+            } label: {
+                Text("Remove")
+                    .foregroundColor(.black)
+            }
+            .frame(width: 100, height: 40)
+            .background(.gray)
+            .opacity(0.6)
+            .cornerRadius(10)
+        }
+        .frame(height:50)
+    }
 }
 
 #Preview {

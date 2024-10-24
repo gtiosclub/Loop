@@ -11,6 +11,8 @@ struct AddParticipantView: View {
     let screenWidth = UIScreen.main.bounds.size.width
     let screenHeight = UIScreen.main.bounds.size.height
     
+    @Binding var isShown: Bool
+    
     @State private var searchText: String = ""
     
     
@@ -20,7 +22,9 @@ struct AddParticipantView: View {
                 VStack {
                     HStack {
                         Button {
-                            
+                            withAnimation {
+                                isShown = false
+                            }
                         } label: {
                             Image(systemName: "arrow.left")
                                 .resizable()
@@ -105,5 +109,6 @@ struct FriendCardView: View {
 }
 
 #Preview {
-    AddParticipantView()
+    @Previewable @State var isShown = true
+    AddParticipantView(isShown: $isShown)
 }
