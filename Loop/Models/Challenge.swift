@@ -99,6 +99,10 @@ struct Challenge: Identifiable {  // Previously DailyScrum
             return "Error getting document: \(error).";
         }
     }
+    
+    
+    
+    
 }
 
 extension Challenge {
