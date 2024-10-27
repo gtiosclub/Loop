@@ -28,13 +28,14 @@ class User {
     /// - Parameter challengeIds: The challenge id(s) of the challenge(s) the user has participated or hosted.
     /// - Parameter profilePictureId: The profile picture id of the user.
     /// - Parameter friends: The user id(s) of the friends the user has.
-    init(uid: String, name: String, username: String, challengeIds: [String], profilePictureId: String, friends: [String]) {
+    init(uid: String, name: String, username: String, challengeIds: [String], profilePictureId: String, friends: [String], incomingRequest: [String]) {
         self.uid = uid
         self.name = name
         self.username = username
         self.challengeIds = challengeIds
         self.profilePictureId = profilePictureId
         self.friends = friends
+        self.incomingRequest = incomingRequest
     }
     
     /// Convenience user initializer.
@@ -43,7 +44,7 @@ class User {
     /// - Parameter name: The name of the user
     /// - Parameter profilePictureId: The profile picture id of the user.
     convenience init(uid: String, name: String, username: String, profilePictureId: String) {
-        self.init(uid: uid, name: name, username: username, challengeIds: [], profilePictureId: profilePictureId, friends: [])
+        self.init(uid: uid, name: name, username: username, challengeIds: [], profilePictureId: profilePictureId, friends: [], incomingRequest: [])
     }
     
     /// Convert User to a dictionary for Firestore storage
@@ -81,16 +82,30 @@ class User {
     /// Get a user from the Firestore Database.
     ///
     /// - Parameter uid: The uid of the user.
-    /// - Returns: The user data from the Firebase Database, otherwise nil.
-    func getUser(uid: String) async -> String? {
+    /// - Returns: A copy of the user instance from the Firebase Database, otherwise nil.
+    // TODO: 1) getUser function return a User type instead of a String.
+    // TODO:    a) Could implemenet this by manually copy and pasting the data found from firestore
+    // TODO:       to a new User object and returning that.
+    // TODO:    b) Could implement this by using a codable User type, which is more complex to do since
+    // TODO:       we probably have to change the user interface.
+    func getUser(uid: String) async -> User? {
         let db = Firestore.firestore()
         let docRef = db.collection("users").document(uid)
         do {
           let document = try await docRef.getDocument()
           if document.exists {
-            let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
-            print("Successfully got the user data from the Firestore Database.")
-            return dataDescription;
+              let dataDescription = document.data()
+              if let data = dataDescription {
+                  let name: String = data["name"] as! String
+                  let username: String = data["username"] as! String
+                  let challengeIds: [String] = data["challengeIds"] as! [String]
+                  let profilePictureId: String = data["profilePictureId"] as! String
+                  let friends: [String] = data["friends"] as! [String]
+                  let incomingRequest: [String] = data["incomingRequest"] as! [String]
+                  return User(uid: uid, name: name, username: username, challengeIds: challengeIds, profilePictureId: profilePictureId, friends: friends, incomingRequest: incomingRequest)
+              } else {
+                  print("User's data in Firestore Database is nil.")
+              }
           } else {
               print("User does not exist in the Firestore Database.")
           }

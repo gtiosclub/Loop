@@ -50,6 +50,7 @@
 		BF9588A22C99E73100FF34A1 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = BF9588A12C99E73100FF34A1 /* FirebaseDatabase */; };
 		BF9588A42C99E73100FF34A1 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = BF9588A32C99E73100FF34A1 /* FirebaseFirestore */; };
 		BF9588A62C99E73100FF34A1 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = BF9588A52C99E73100FF34A1 /* FirebaseStorage */; };
+		CE3D5C082CC86A950033F349 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3D5C072CC86A920033F349 /* HealthKitManager.swift */; };
 		D49F42062CA20A86003607BB /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49F42052CA20A86003607BB /* Theme.swift */; };
 		D49F420A2CA20BCA003607BB /* Challenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49F42092CA20BCA003607BB /* Challenge.swift */; };
 		D49F420C2CA20C03003607BB /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49F420B2CA20C03003607BB /* CardView.swift */; };
@@ -128,6 +129,8 @@
 		BF0FEFF92CACA1E1002B4C58 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
 		BF7005F62CB726090057A8BF /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		BF95889A2C99E6DC00FF34A1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		CE3D5C042CC869DF0033F349 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		CE3D5C072CC86A920033F349 /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
 		D49F42052CA20A86003607BB /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		D49F42092CA20BCA003607BB /* Challenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Challenge.swift; sourceTree = "<group>"; };
 		D49F420B2CA20C03003607BB /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
@@ -191,6 +194,7 @@
 				BF0FEFF92CACA1E1002B4C58 /* Activity.swift */,
 				D49F42092CA20BCA003607BB /* Challenge.swift */,
 				7C0B1FDA2C9CE9270076B590 /* User.swift */,
+				CE3D5C072CC86A920033F349 /* HealthKitManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -290,6 +294,7 @@
 		B5B40E652C94EAE100BD9131 /* Loop */ = {
 			isa = PBXGroup;
 			children = (
+				CE3D5C042CC869DF0033F349 /* Info.plist */,
 				BF0FEFFD2CACE491002B4C58 /* Util */,
 				7C0B1FC02C9CB06A0076B590 /* Models */,
 				7C0B1FBF2C9CB0630076B590 /* ViewModels */,
@@ -504,6 +509,7 @@
 				191745362CACBC9700ECC352 /* LoginView.swift in Sources */,
 				D49F420C2CA20C03003607BB /* CardView.swift in Sources */,
 				AAA11A552CAF64CC00445880 /* AddFriendsView.swift in Sources */,
+				CE3D5C082CC86A950033F349 /* HealthKitManager.swift in Sources */,
 				7C0B1FC62C9CB17E0076B590 /* SelfProfileView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -709,7 +715,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Loop/Preview Content\"";
-				DEVELOPMENT_TEAM = JCY34ZWF85;
+				DEVELOPMENT_TEAM = GKU26H8G75;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -751,7 +757,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Loop/Preview Content\"";
-				DEVELOPMENT_TEAM = JCY34ZWF85;
+				DEVELOPMENT_TEAM = GKU26H8G75;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
