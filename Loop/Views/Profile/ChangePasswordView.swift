@@ -12,58 +12,155 @@
 import SwiftUI
 
 struct ChangePasswordView: View {
-    @State var Email: String = ""
+    @State var NewPassword: String = ""
     @State var Password: String = ""
     @State var ComfirmPassword: String = ""
+    @State var showAlert: Bool = false
+    @State private var alertMessage: String = ""
+    @State var showAlertForDifferentPassword: Bool = false
+    @State var alertmessage : String = ""
+    @State var alerTitle: String = ""
+    @State var ComfirmPasswordFilled :Bool = false
+    @State var NewPasswordFilled :Bool = false
+    @State var CurrentPasswordFilled :Bool = false
+    @State var EverythingIsfilled: Bool = false
+    @Environment(\.presentationMode) var presentationMode
+
+    
     var body: some View {
-        ZStack {
+        Button(action: {
+            self.presentationMode.wrappedValue.dismiss()
+        }) {
+            Image(systemName: "arrow.left.circle.fill")
+                .font(.system(size: 30))
+                .foregroundColor(.orange)
+        }
+        .offset(x: -150)
+        .navigationBarBackButtonHidden(true)
+
+
+        
+
+        VStack {
             
-            VStack {
-            
-                
-                Text("Change Your Password")
+            Text("Change Your Password")
                     .foregroundStyle(.black)
-                TextField("Current Password",text: $Email)
-                    .padding()
-                    .foregroundColor(.gray)
-                    .cornerRadius(10)
-                    .font(.system(size: 15, weight: .regular))
+            
+            TextField("Current Password",text: $Password) // maybe make this a secure field
+                    .autocapitalization(.none)
+                    .padding(8).background(Color.orange.opacity(0.3))
+                    .cornerRadius(8)
+                    .padding(.horizontal)
+                    .onChange(of: Password, initial: true) {
+                        if (Password == "") {
+                            CurrentPasswordFilled = false
+                        } else {
+                            CurrentPasswordFilled = true
+                        }
+                        if (CurrentPasswordFilled && NewPasswordFilled && ComfirmPasswordFilled) {
+                            EverythingIsfilled = true
+                        } else {
+                            EverythingIsfilled = false
+                        }
+                       
+                    }
+                   
                 
-                SecureField("New Password", text: $Password)
-                    .padding()
-                    .foregroundColor(.gray)
-                    .cornerRadius(10)
-                    .font(.system(size: 15, weight: .regular))
+                
+            TextField("New Password", text: $NewPassword) //maybe make this a secure field
+                    .autocapitalization(.none)
+                    .padding(8).background(Color.orange.opacity(0.3))
+                    .cornerRadius(8)
+                    .padding(.horizontal)
+                    .onChange(of: NewPassword, initial: true) {
+                        if (NewPassword == "") {
+                            NewPasswordFilled = false
+                        } else {
+                            NewPasswordFilled = true
+                        }
+                        if (CurrentPasswordFilled && NewPasswordFilled && ComfirmPasswordFilled) {
+                            EverythingIsfilled = true
+                        } else {
+                            EverythingIsfilled = false
+                        }
+                       
+                       
+                    }
                 
                 
+            SecureField("Comfirm Password", text: $ComfirmPassword)
+                    .autocapitalization(.none)
+                    .padding(8).background(Color.orange.opacity(0.3))
+                    .cornerRadius(8)
+                    .padding(.horizontal)
+                    .onChange(of: ComfirmPassword, initial: true) {
+                        if (ComfirmPassword == "") {
+                            ComfirmPasswordFilled = false
+                        } else {
+                            ComfirmPasswordFilled = true
+                        }
+                        if (CurrentPasswordFilled && NewPasswordFilled && ComfirmPasswordFilled) {
+                            EverythingIsfilled = true
+                        } else {
+                            EverythingIsfilled = false
+                        }
+                    }
                 
-                
-                SecureField("Comfirm New Password", text: $ComfirmPassword)
-                    .padding()
-                    .foregroundColor(.gray)
-                    .cornerRadius(10)
-                    .font(.system(size: 15, weight: .regular))
                 
                    
-                Button(action: {
-                    
+                Button(action: { //This button is for changing the password. There is no "change password" functionality only visuals
+                    if (Password == "" ) {
+                        showAlert.toggle()
+                        alerTitle = "Your did not enter the correct current password"
+                    } else if (NewPassword == "") {
+                            showAlert.toggle()
+                            alerTitle = "Type in your new Password"
+                            
+                            
+                    } else if (ComfirmPassword == "") {
+                        showAlert.toggle()
+                        alerTitle = "Comfirm your Password"
+                        
+                        
+                } else {
+                        showAlert.toggle()
+                        alerTitle = "Password changed successfully"
+                    }
                     
                 }, label: {
-                    Text("Change Password")
-                        .padding()
-                        .frame(maxWidth: 250)
-                        .foregroundColor(Color.black)
                     
-                        .bold()
-                        .cornerRadius(50)
-                        .background(
-                                    RoundedRectangle(cornerRadius: 5)
-                                        .fill(Color.gray) // Fill the background with gray
-                                )
+                        Text("Change Password")
+                            .padding()
+                            .frame(maxWidth: 250)
+                            .foregroundColor(Color.black)
+                            .padding(8).background(Color.orange.opacity(0.3))
+                            .cornerRadius(8)
+                            .padding(.horizontal)
+                            .bold()
+                            .cornerRadius(50)
+                            .background(
+                            RoundedRectangle(cornerRadius: 9)
+                                .fill(EverythingIsfilled ? Color.yellow : Color.gray)
+                                .frame(width:270, height: 70)
+                        )
                 })
+                .alert(isPresented: $showAlert) { // Creates an Alert
+                    Alert(title: Text(alerTitle),
+                          message: Text(alertMessage),
+                          dismissButton: .default(Text("OK")) {
+                        if (alerTitle == "Password changed successfully") {
+                            self.presentationMode.wrappedValue.dismiss() // When you press ok on the alert it will go back to the previous page
+
+                        }
+                    })
+                }
+               
                 
-            }
-        }
+        }.padding()
+        
+            Spacer()
+      
+        
                  
                }
                

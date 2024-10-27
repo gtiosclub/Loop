@@ -128,6 +128,10 @@ struct Challenge: Identifiable {  // Previously DailyScrum
         }
         return nil;
     }
+    
+    
+    
+    
 }
 
 extension Challenge {
