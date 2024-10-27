@@ -82,6 +82,38 @@ struct Challenge: Identifiable {  // Previously DailyScrum
             id = doc.documentID;
             try await doc.setData(docData);
             print("Added challenge to the Firestore Database.");
+            
+            let docChallengeRef = db.collection("challenges").document()
+            id = docChallengeRef.documentID
+            try await docChallengeRef.setData(docData)
+            print("Added challenge to the Firestore Database.")
+            do {
+                let docUserRef = db.collection("users").document(host)
+                let documentUser = try await docUserRef.getDocument()
+                if documentUser.exists {
+                    if let dataDescription = documentUser.data() {
+                        if let challengeIds = dataDescription["challengeIds"] {
+                            var challengeIdsArray = challengeIds as! [String]
+                            challengeIdsArray.append(id)
+                            print("Added challenge id to user's challenge ids array.")
+                            let docUserData: [String: Any] = [
+                                "challengeIds": challengeIdsArray
+                            ]
+                            do {
+                                try await docUserRef.setData(docUserData, merge: true)
+                                print("Updated the user's challengeIds in the Firestore Database.")
+                            } catch {
+                                print ("Cannot update the user's data in the Firestore Database.")
+                            }
+                        }
+                    }
+                } else {
+                    print("The user's uid does not exist in the Firestore Database.")
+                }
+            } catch {
+                print("Cannot access the user's document in the Firestore Database.")
+            }
+            
             return id;
         } catch {
             print("Error adding challenge to the Firestore Database: \(error).");
