@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct FriendProfileView: View {
+
     @State private var name: String = "My Name"
     @State private var username: String = "username"
     @State private var friendCount: Int = 0
@@ -17,9 +18,10 @@ struct FriendProfileView: View {
         VStack {
             
             HStack {
-                Text(name)
+                Text("Jane Doe")
                     .font(.title)
                     .fontWeight(.bold)
+
                 
                 Spacer()
                 
@@ -72,6 +74,7 @@ struct FriendProfileView: View {
                     }
 
                     VStack {
+
                         Text(String(challengesCount))
                             .font(.headline)
                         Text("Challenges")
@@ -80,6 +83,7 @@ struct FriendProfileView: View {
                             .minimumScaleFactor(0.5)
                     }
                 }
+                .padding(.trailing)
             }
             .padding(.trailing)
         }

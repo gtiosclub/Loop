@@ -169,7 +169,7 @@ struct CreateLoginView: View {
             }
             
             if HavePicture {
-                FirebaseUploader.uploadPhoto(image: selectedImage, id: profilePicID)
+                FirebaseUploader.uploadPhoto(image: selectedImage, uid: profilePicID)
             } else {
                 print("No profile pic")
             }
@@ -186,6 +186,7 @@ struct CreateLoginView: View {
         }
 
     }
+
 }
 
 #Preview {

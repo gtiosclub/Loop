@@ -1,5 +1,3 @@
-//
-//  ContentView.swift
 //  Loop
 //
 //  Created by Max Ko on 9/13/24.
