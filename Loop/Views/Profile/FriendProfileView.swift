@@ -13,6 +13,7 @@ struct FriendProfileView: View {
     @State private var friendCount: Int = 0
     @State private var winCount: Int = 0
     @State private var challengesCount: Int = 0
+    
     var body: some View {
         VStack {
             
