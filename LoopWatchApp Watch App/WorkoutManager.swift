@@ -11,6 +11,7 @@ import os
 
 class WorkoutManager: NSObject, ObservableObject {
     @Published var isRunning = false
+    @Published var isPaused = false
     @Published var distance = 0.0  // Distance in meters
     @Published var calories = 0.0  // Calories in kcal
     
@@ -20,6 +21,8 @@ class WorkoutManager: NSObject, ObservableObject {
     private var builder: HKLiveWorkoutBuilder?
 
     func startWorkout() {
+        distance = 0
+        calories = 0
         let configuration = HKWorkoutConfiguration()
         configuration.activityType = .running
         configuration.locationType = .outdoor
@@ -37,6 +40,7 @@ class WorkoutManager: NSObject, ObservableObject {
             builder?.beginCollection(withStart: Date(), completion: { (success, error) in
                 DispatchQueue.main.sync {
                     self.isRunning = true
+                    self.isPaused = false
                     print("Successfully started workout")
                 }
             })
@@ -46,14 +50,56 @@ class WorkoutManager: NSObject, ObservableObject {
         }
     }
 
-    func endWorkout() {
-        session?.end()
-        builder?.endCollection(withEnd: Date(), completion: { (success, error) in
-            print("Workout ended")
-        })
-        distance = 0
-        calories = 0
+    func pauseWorkout() {
+        guard let session = session else { return }
+        
+        if session.state == .running {
+            session.pause()
+            DispatchQueue.main.async {
+                print("Session paused on Queue")
+                self.isPaused = true
+                self.isRunning = false
+            }
+        }
     }
+    
+    func resumeWorkout() {
+        guard let session = session else { return }
+
+        if session.state == .paused {
+            session.resume()
+            DispatchQueue.main.async {
+                print("Session resumed on Queue")
+                self.isPaused = false
+                self.isRunning = true
+            }
+        }
+    }
+
+    
+    func endWorkout() {
+        guard let session = session, let builder = builder else { return }
+
+        // First, end the session
+        session.end()
+
+        // Then, end the data collection
+        builder.endCollection(withEnd: Date()) { success, error in
+            if success {
+                // Finalize the workout
+                self.builder?.finishWorkout(completion: { (finalWorkout, error) in
+                    if let error = error {
+                        print("Error finishing workout: \(error.localizedDescription)")
+                    } else {
+                        print("Workout successfully finished!")
+                    }
+                })
+            } else if let error = error {
+                print("Error ending workout collection: \(error.localizedDescription)")
+            }
+        }
+    }
+
 }
 
 extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate {
@@ -65,6 +111,7 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
             builder?.endCollection(withEnd: date, completion: { (success, error) in
                 self.builder?.finishWorkout(completion: { (workout, error) in
                     DispatchQueue.main.async {
+                        self.isPaused = false
                         self.isRunning = false
                         print("Successfully ended workout")
                     }
@@ -90,9 +137,9 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
                 if quantityType == HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning) {
                     if let distance = workoutBuilder.statistics(for: quantityType)?.sumQuantity() {
                         DispatchQueue.main.sync {
-                            let distanceInMeters = distance.doubleValue(for: HKUnit.meter())
-                            print("Distance: \(distanceInMeters) meters")
-                            self.distance = distanceInMeters
+                            let distanceInYards = distance.doubleValue(for: HKUnit.mile())
+                            print("Distance: \(distanceInYards) yards")
+                            self.distance = distanceInYards
                         }
                     }
                 }
