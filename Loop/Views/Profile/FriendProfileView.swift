@@ -74,9 +74,6 @@ struct FriendProfileView: View {
             }.padding([.leading, .trailing])
             
             HStack {
-                Text("Jane Doe")
-                    .font(.title)
-                    .fontWeight(.bold)
 
                 
                 Spacer()

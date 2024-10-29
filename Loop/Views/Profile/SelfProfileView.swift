@@ -87,7 +87,16 @@ struct SelfProfileView: View {
                 }.foregroundStyle(.black)
                 
                 Spacer()
-                
+                NavigationLink(destination: AddFriendsView()){
+                    ZStack {
+                        Rectangle()
+                            .foregroundColor(Color(UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1)))
+                            .frame(width: 35, height: 35)
+                            .cornerRadius(10)
+                        Image(systemName: "person.badge.plus")
+                            .foregroundStyle(.black)
+                    }
+                }
             }.padding([.leading, .trailing])
             
             HStack {
