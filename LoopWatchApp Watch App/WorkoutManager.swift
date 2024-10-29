@@ -144,9 +144,19 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
     static let shared = WorkoutManager()
     private let healthStore = HKHealthStore()
     private var session: HKWorkoutSession?
+    var builder: HKLiveWorkoutBuilder?
+    @Published var backToHome: Bool = false
+    @Published var showingSummaryView: Bool = false {
+        didSet {
+            if showingSummaryView == false {
+                resetWorkout()
+                
+            }
+        }
+    }
 
     #if os(watchOS)
-    private var builder: HKLiveWorkoutBuilder?
+    var builder: HKLiveWorkoutBuilder?
     #endif
     // Init the WC session
     override init() {
@@ -295,6 +305,18 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
         }
     }
 
+    func resetWorkout() {
+#if os(watchOS)
+        builder = nil
+        session = nil
+        activeEnergy = 0
+        averageHeartRate = 0
+        heartRate = 0
+        distance = 0
+        backToHome = true
+        #endif
+    }
+
     
     func endWorkout(_ workoutType: String) {
         #if os(watchOS)
@@ -335,6 +357,33 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
         }
         // Update iPhone app
         self.sendWorkoutEndedMessage()
+        showingSummaryView = true
+        print("showingSummaryView set to \(showingSummaryView)")
+    }
+    @Published var averageHeartRate: Double = 0
+    @Published var heartRate: Double = 0
+    @Published var activeEnergy: Double = 0
+    @Published var distance2: Double = 0
+    func updateForStatistics(_ statistics: HKStatistics?) {
+        guard let statistics = statistics else { return }
+
+        DispatchQueue.main.async {
+            switch statistics.quantityType {
+            case HKQuantityType.quantityType(forIdentifier: .heartRate):
+                let heartRateUnit = HKUnit.count().unitDivided(by: HKUnit.minute())
+                self.heartRate = statistics.mostRecentQuantity()?.doubleValue(for: heartRateUnit) ?? 0
+                self.averageHeartRate = statistics.averageQuantity()?.doubleValue(for: heartRateUnit) ?? 0
+            case HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned):
+                let energyUnit = HKUnit.kilocalorie()
+                self.activeEnergy = statistics.sumQuantity()?.doubleValue(for: energyUnit) ?? 0
+            case HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning), HKQuantityType.quantityType(forIdentifier: .distanceCycling):
+                let meterUnit = HKUnit.meter()
+                self.distance = statistics.sumQuantity()?.doubleValue(for: meterUnit) ?? 0
+            default:
+                return
+            }
+        }
+    }
 
         #endif
     }
