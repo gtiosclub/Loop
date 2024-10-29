@@ -19,6 +19,7 @@
 		5B69BE202CC082C200B2337D /* statsViewSecondPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B69BE1D2CC082C200B2337D /* statsViewSecondPage.swift */; };
 		5B69BE222CC082C200B2337D /* statsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B69BE1C2CC082C200B2337D /* statsView.swift */; };
 		5B69BE282CC0844400B2337D /* watchTypesOfExcercises.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B69BE262CC0837700B2337D /* watchTypesOfExcercises.swift */; };
+		5B9BA5642CD1AC0200087E64 /* SessionPagingView 2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9BA5632CD1AC0200087E64 /* SessionPagingView 2.swift */; };
 		7C0B1FC62C9CB17E0076B590 /* SelfProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B1FC52C9CB17E0076B590 /* SelfProfileView.swift */; };
 		7C0B1FC82C9CB1950076B590 /* FriendProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B1FC72C9CB1950076B590 /* FriendProfileView.swift */; };
 		7C0B1FCA2C9CB1AB0076B590 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B1FC92C9CB1AB0076B590 /* SettingsView.swift */; };
@@ -110,6 +111,7 @@
 		5B69BE1C2CC082C200B2337D /* statsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = statsView.swift; sourceTree = "<group>"; };
 		5B69BE1D2CC082C200B2337D /* statsViewSecondPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = statsViewSecondPage.swift; sourceTree = "<group>"; };
 		5B69BE262CC0837700B2337D /* watchTypesOfExcercises.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = watchTypesOfExcercises.swift; sourceTree = "<group>"; };
+		5B9BA5632CD1AC0200087E64 /* SessionPagingView 2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionPagingView 2.swift"; sourceTree = "<group>"; };
 		7C0B1FC52C9CB17E0076B590 /* SelfProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfProfileView.swift; sourceTree = "<group>"; };
 		7C0B1FC72C9CB1950076B590 /* FriendProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendProfileView.swift; sourceTree = "<group>"; };
 		7C0B1FC92C9CB1AB0076B590 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -283,6 +285,7 @@
 			isa = PBXGroup;
 			children = (
 				2B42FDAD2CE125450015D263 /* LoopWatchApp-Watch-App-Info.plist */,
+				5B9BA5632CD1AC0200087E64 /* SessionPagingView 2.swift */,
 				91B4AE532CC9626C00CDED63 /* LoopWatchApp Watch App.entitlements */,
 				91B4AE512CC95ADE00CDED63 /* WorkoutManager.swift */,
 				5B69BE262CC0837700B2337D /* watchTypesOfExcercises.swift */,
@@ -492,6 +495,7 @@
 				5B69BE202CC082C200B2337D /* statsViewSecondPage.swift in Sources */,
 				5B69BE282CC0844400B2337D /* watchTypesOfExcercises.swift in Sources */,
 				5B69BE222CC082C200B2337D /* statsView.swift in Sources */,
+				5B9BA5642CD1AC0200087E64 /* SessionPagingView 2.swift in Sources */,
 				91B4AE522CC95AE300CDED63 /* WorkoutManager.swift in Sources */,
 				9AB55D352CA5374F00C48C32 /* ContentView.swift in Sources */,
 				9AB55D362CA5374F00C48C32 /* LoopWatchAppApp.swift in Sources */,
