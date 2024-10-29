@@ -27,15 +27,16 @@
 		7C0B1FD72C9CB24E0076B590 /* ExploreChallengeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B1FD62C9CB24E0076B590 /* ExploreChallengeView.swift */; };
 		7C0B1FD92C9CB61C0076B590 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B1FD82C9CB61C0076B590 /* ViewModel.swift */; };
 		7C0B1FDB2C9CE9270076B590 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B1FDA2C9CE9270076B590 /* User.swift */; };
-		91B4AE522CC95AE300CDED63 /* WorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B4AE512CC95ADE00CDED63 /* WorkoutManager.swift */; };
 		7C2D02D92CC75D5500D0FA76 /* RecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2D02D82CC75D5500D0FA76 /* RecordView.swift */; };
 		7C2D02DB2CC7685100D0FA76 /* AddParticipantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2D02DA2CC7685100D0FA76 /* AddParticipantView.swift */; };
+		91B4AE522CC95AE300CDED63 /* WorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B4AE512CC95ADE00CDED63 /* WorkoutManager.swift */; };
 		96354F592CA38686003DD6F8 /* ChalLeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96354F582CA3867E003DD6F8 /* ChalLeaderboardView.swift */; };
 		9AB55D2A2CA5373B00C48C32 /* LoopWatchApp Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 9AB55D1D2CA5373A00C48C32 /* LoopWatchApp Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		9AB55D352CA5374F00C48C32 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB55D322CA5374F00C48C32 /* ContentView.swift */; };
 		9AB55D362CA5374F00C48C32 /* LoopWatchAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB55D332CA5374F00C48C32 /* LoopWatchAppApp.swift */; };
 		9AB55D372CA5374F00C48C32 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AB55D2F2CA5374F00C48C32 /* Preview Assets.xcassets */; };
 		9AB55D382CA5374F00C48C32 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AB55D312CA5374F00C48C32 /* Assets.xcassets */; };
+		AA4EA81B2CD067AD00528E9C /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4EA81A2CD067AD00528E9C /* Map.swift */; };
 		AA53DE7A2CB312B50029B7DB /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA53DE792CB312B50029B7DB /* EditProfileView.swift */; };
 		AAA11A552CAF64CC00445880 /* AddFriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA11A542CAF64CC00445880 /* AddFriendsView.swift */; };
 		B5B40E672C94EAE100BD9131 /* LoopApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B40E662C94EAE100BD9131 /* LoopApp.swift */; };
@@ -107,16 +108,17 @@
 		7C0B1FD62C9CB24E0076B590 /* ExploreChallengeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreChallengeView.swift; sourceTree = "<group>"; };
 		7C0B1FD82C9CB61C0076B590 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		7C0B1FDA2C9CE9270076B590 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		91B4AE512CC95ADE00CDED63 /* WorkoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutManager.swift; sourceTree = "<group>"; };
-		91B4AE532CC9626C00CDED63 /* LoopWatchApp Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "LoopWatchApp Watch App.entitlements"; sourceTree = "<group>"; };
 		7C2D02D82CC75D5500D0FA76 /* RecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordView.swift; sourceTree = "<group>"; };
 		7C2D02DA2CC7685100D0FA76 /* AddParticipantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddParticipantView.swift; sourceTree = "<group>"; };
+		91B4AE512CC95ADE00CDED63 /* WorkoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutManager.swift; sourceTree = "<group>"; };
+		91B4AE532CC9626C00CDED63 /* LoopWatchApp Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "LoopWatchApp Watch App.entitlements"; sourceTree = "<group>"; };
 		96354F582CA3867E003DD6F8 /* ChalLeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChalLeaderboardView.swift; sourceTree = "<group>"; };
 		9AB55D1D2CA5373A00C48C32 /* LoopWatchApp Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LoopWatchApp Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AB55D2F2CA5374F00C48C32 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		9AB55D312CA5374F00C48C32 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9AB55D322CA5374F00C48C32 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		9AB55D332CA5374F00C48C32 /* LoopWatchAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopWatchAppApp.swift; sourceTree = "<group>"; };
+		AA4EA81A2CD067AD00528E9C /* Map.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
 		AA53DE792CB312B50029B7DB /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		AAA11A542CAF64CC00445880 /* AddFriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendsView.swift; sourceTree = "<group>"; };
 		B5B40E632C94EAE100BD9131 /* Loop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Loop.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -189,6 +191,7 @@
 			isa = PBXGroup;
 			children = (
 				BF0FEFF92CACA1E1002B4C58 /* Activity.swift */,
+				AA4EA81A2CD067AD00528E9C /* Map.swift */,
 				D49F42092CA20BCA003607BB /* Challenge.swift */,
 				7C0B1FDA2C9CE9270076B590 /* User.swift */,
 			);
@@ -480,6 +483,7 @@
 				7C0B1FD72C9CB24E0076B590 /* ExploreChallengeView.swift in Sources */,
 				195087992CAF60F900AB3EE3 /* ChangePasswordView.swift in Sources */,
 				7C0B1FD12C9CB2050076B590 /* ChallengeListView.swift in Sources */,
+				AA4EA81B2CD067AD00528E9C /* Map.swift in Sources */,
 				AA53DE7A2CB312B50029B7DB /* EditProfileView.swift in Sources */,
 				19BE4C012CB587300068F0B4 /* CreateLoginView.swift in Sources */,
 				DF1CD2B02CACB98D00451888 /* FeedView.swift in Sources */,
