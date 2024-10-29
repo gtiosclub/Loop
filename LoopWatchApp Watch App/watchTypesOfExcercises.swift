@@ -7,14 +7,17 @@
 import SwiftUI
 
 struct WatchTypesOfExerciseView: View {
-    @EnvironmentObject var manager:HealthManager
     @StateObject var exercisesList = ExercisesList()
     @EnvironmentObject var workoutManager: WorkoutManager
     
     var body: some View {
         NavigationStack {
             List(exercisesList.lists) { item in
-                NavigationLink(destination: statsView(activity: ActivityData(type: item.type, timeCount: 0, isTimerRunning: true)).environmentObject(manager)) {
+                NavigationLink(destination:statsView(type:item.type, timeCount: 0, isTimerRunning: true)
+                            .environmentObject(workoutManager)
+                            .onAppear {
+                                workoutManager.startWorkout()
+                            }) {
                     VStack {
                         Image(systemName: item.image)
                             .resizable()
@@ -28,9 +31,6 @@ struct WatchTypesOfExerciseView: View {
                     .cornerRadius(10)
                 }
                 .buttonStyle(PlainButtonStyle())
-                .onTapGesture {
-                    workoutManager.startWorkout()
-                }
             }
             .listStyle(CarouselListStyle())
         }

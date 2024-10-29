@@ -19,11 +19,15 @@ class HealthKitManager {
         }
 
         let readTypes: Set<HKObjectType> = [
-            HKObjectType.workoutType()
+            HKObjectType.workoutType(),
+            HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!,
+            HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
         ]
 
         let writeTypes: Set<HKSampleType> = [
-            HKObjectType.workoutType()
+            HKObjectType.workoutType(),
+            HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!,
+            HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
         ]
 
         healthStore.requestAuthorization(toShare: writeTypes, read: readTypes) { success, error in

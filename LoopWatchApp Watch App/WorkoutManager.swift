@@ -10,12 +10,14 @@ import SwiftUI
 import os
 
 class WorkoutManager: NSObject, ObservableObject {
+    @Published var isRunning = false
+    @Published var distance = 0.0  // Distance in meters
+    @Published var calories = 0.0  // Calories in kcal
+    
     static let shared = WorkoutManager()
     private let healthStore = HKHealthStore()
     private var session: HKWorkoutSession?
     private var builder: HKLiveWorkoutBuilder?
-
-    @Published var isRunning = false
 
     func startWorkout() {
         let configuration = HKWorkoutConfiguration()
@@ -33,9 +35,12 @@ class WorkoutManager: NSObject, ObservableObject {
 
             session?.startActivity(with: Date())
             builder?.beginCollection(withStart: Date(), completion: { (success, error) in
-                self.isRunning = true
-                print("Successfully started workout")
+                DispatchQueue.main.sync {
+                    self.isRunning = true
+                    print("Successfully started workout")
+                }
             })
+            
         } catch {
             print("Failed to start workout: \(error.localizedDescription)")
         }
@@ -43,6 +48,11 @@ class WorkoutManager: NSObject, ObservableObject {
 
     func endWorkout() {
         session?.end()
+        builder?.endCollection(withEnd: Date(), completion: { (success, error) in
+            print("Workout ended")
+        })
+        distance = 0
+        calories = 0
     }
 }
 
@@ -73,5 +83,115 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
 
     func workoutBuilder(_ workoutBuilder: HKLiveWorkoutBuilder, didCollectDataOf collectedTypes: Set<HKSampleType>) {
         // Handle collected data if needed
+        for type in collectedTypes {
+            if let quantityType = type as? HKQuantityType {
+                
+                // Track distance traveled
+                if quantityType == HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning) {
+                    if let distance = workoutBuilder.statistics(for: quantityType)?.sumQuantity() {
+                        DispatchQueue.main.sync {
+                            let distanceInMeters = distance.doubleValue(for: HKUnit.meter())
+                            print("Distance: \(distanceInMeters) meters")
+                            self.distance = distanceInMeters
+                        }
+                    }
+                }
+                
+                // Track active calories burned
+                if quantityType == HKObjectType.quantityType(forIdentifier: .activeEnergyBurned) {
+                    if let calories = workoutBuilder.statistics(for: quantityType)?.sumQuantity() {
+                        DispatchQueue.main.sync {
+                            let caloriesInKilocalories = calories.doubleValue(for: HKUnit.kilocalorie())
+                            print("Calories Burned: \(caloriesInKilocalories) kcal")
+                            self.calories = caloriesInKilocalories
+                        }
+                        
+                    }
+                }
+            }
+        }
     }
 }
+/*
+//
+//  HealthManager.swift
+//  LoopWatchApp Watch App
+//
+//  Created by Amiire kolawole on 2024-10-23.
+//
+
+import Foundation
+import HealthKit
+
+extension Date {
+    static var startOfDay: Date {
+        Calendar.current.startOfDay(for: Date())
+    }
+}
+
+class HealthManager: ObservableObject {
+    
+    let healthStore = HKHealthStore()
+    init() {
+        let steps = HKQuantityType(.stepCount)
+        let distance = HKQuantityType(.distanceWalkingRunning)
+        let calories = HKQuantityType(.activeEnergyBurned)
+
+        
+        let healthTypes: Set = [steps, distance, calories]
+        
+        Task {
+            do {
+                try await healthStore.requestAuthorization(toShare: [], read: healthTypes)
+            } catch{
+                    print("Error fetching data")
+            }
+            
+        }
+    }
+    
+    func fetchTodayCalories() {
+        let caloriesToday = HKQuantityType(.activeEnergyBurned)
+        let predicate = HKQuery.predicateForSamples(withStart: .startOfDay, end: Date())
+        let query = HKStatisticsQuery(quantityType: caloriesToday, quantitySamplePredicate: predicate) { _, result, error in
+            guard let quantity = result?.sumQuantity(), error == nil else {
+                print("Error fetching calories data")
+                return
+            }
+            
+            let caloriesBurned = quantity.doubleValue(for: .count())
+            print(caloriesBurned)
+        }
+    }
+    
+    func fetchTodaySteps() -> Int {
+        let stepsToday = HKQuantityType(.stepCount)
+        let predicate = HKQuery.predicateForSamples(withStart: .startOfDay, end: Date())
+        let query = HKStatisticsQuery(quantityType: stepsToday, quantitySamplePredicate: predicate) { _, result, error in
+            guard let quantity = result?.sumQuantity(), error == nil else {
+                print("Error fetching steps data")
+                return
+            }
+            
+            let stepsTotal = quantity.doubleValue(for: .count())
+            print(stepsTotal)
+            return
+        }
+        
+        return 0
+    }
+    func fetchTodayDistance() {
+        let distanceToday = HKQuantityType(.distanceWalkingRunning)
+        let predicate = HKQuery.predicateForSamples(withStart: .startOfDay, end: Date())
+        let query = HKStatisticsQuery(quantityType: distanceToday, quantitySamplePredicate: predicate) { _, result, error in
+            guard let quantity = result?.sumQuantity(), error == nil else {
+                print("Error fetching distance data")
+                return
+            }
+            
+            let distanceTotal = quantity.doubleValue(for: .count())
+            print(distanceTotal)
+        }
+    }
+}
+*/
