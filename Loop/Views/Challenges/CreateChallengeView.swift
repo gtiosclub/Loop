@@ -12,12 +12,13 @@ struct CreateChallengeView: View {
     @State private var challengeName: String = ""
     @State private var challengeActivity: ChallengeActivity = .Running
     @State private var challengeMetric: ChallengeMetric = .Distance
-    @State private var attendees: [String] = []
+//    @State private var attendees: [String] = []
     @State private var endDate: Date = Date()
     @State private var isDatePickerVisible = false
     @State private var searchText: String = ""
+    @State private var joinCode: String = ""
     
-    @State private var popUpOpen = false
+//    @State private var popUpOpen = false
     
     
     var body: some View {
@@ -138,48 +139,31 @@ struct CreateChallengeView: View {
                         .background(.gray)
                     
                     
-                    Text("Manage Participants")
+                    Text("Create Join Code")
                         .font(.title2)
                         .bold()
                         .padding(.top, 20)
                     
+                    Text("Enter a code that participants will need to enter to join your challenge")
+                        .font(.system(size: 13))
+                        .foregroundColor(.gray)
                     
-                    HStack {
-                        Image(systemName: "magnifyingglass").foregroundColor(.gray)
-                        TextField("Search Participants", text: $searchText).padding(8).background(Color.gray.opacity(0.15)).cornerRadius(8)
+                    HStack{
+                        TextField("Join Code", text: $joinCode)
+                            .font(.title3)
+                            .bold()
+                            .padding(10)
                     }
-                    .padding(.bottom, 15)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(.black, lineWidth:1)
+                            .padding(1)
+                    )
                     
-                    ScrollView {
-                        ParticipantCardView(name:"Max Ko", email: "maxko123@gatech.edu")
-                        ParticipantCardView(name:"Max Ko", email: "maxko123@gatech.edu")
-                        ParticipantCardView(name:"Max Ko", email: "maxko123@gatech.edu")
-                        ParticipantCardView(name:"Max Ko", email: "maxko123@gatech.edu")
-                        ParticipantCardView(name:"Max Ko", email: "maxko123@gatech.edu")
-                        ParticipantCardView(name:"Max Ko", email: "maxko123@gatech.edu")
-                        ParticipantCardView(name:"Max Ko", email: "maxko123@gatech.edu")
-                    }
-                    .frame(height: 350)
-                    
-                    
-                    Button(action: {
-                        withAnimation {
-                            popUpOpen = true
-                        }
-                    }){
-                        HStack {
-                            Image(systemName: "plus")
-                                .bold()
-                            Text("Add Participants")
-                                .bold()
-                        }
-                        .foregroundStyle(.black)
                     }
                     
                     Button(action: {
-                        print("activity: \(challengeActivity.rawValue)")
                         
-                        var newChallenge = Challenge(title: challengeName, attendees: attendees, lengthInMinutes: 999, theme: .bubblegum, endDate: endDate, challengeType: challengeActivity.rawValue, dataMeasured: challengeMetric.rawValue, dateCreated: Date(), host:"userID")
                     }){
                         Text("CREATE CHALLENGE")
                             .font(.system(size:22))
@@ -198,21 +182,9 @@ struct CreateChallengeView: View {
             .toolbar(.hidden, for: .tabBar)
             .scrollIndicators(.hidden)
             
-            if popUpOpen {
-                Color.gray.opacity(0.5)
-                    .edgesIgnoringSafeArea(.all)
-                    .onTapGesture {
-                        withAnimation {
-                            popUpOpen = false
-                        }
-                    }
-                AddParticipantView(isShown: $popUpOpen)
-                    .transition(.move(edge: .bottom))
-            }
         }
         
     }
-}
 
 enum ChallengeActivity: String, CaseIterable, Identifiable {
     var id: Self {self}
@@ -232,37 +204,37 @@ enum ChallengeMetric: String, CaseIterable, Identifiable
     case Speed
 }
 
-struct ParticipantCardView: View {
-    let name: String
-    let email: String
-    
-    var body: some View {
-        HStack {
-            Circle()
-                .fill(.gray)
-                .frame(width:40, height: 40)
-            
-            VStack(alignment: .leading){
-                Text(name)
-                Text(email)
-                    .opacity(0.5)
-            }
-            .padding(.leading, 15)
-            Spacer()
-            Button {
-                
-            } label: {
-                Text("Remove")
-                    .foregroundColor(.black)
-            }
-            .frame(width: 100, height: 40)
-            .background(.gray)
-            .opacity(0.6)
-            .cornerRadius(10)
-        }
-        .frame(height:50)
-    }
-}
+//struct ParticipantCardView: View {
+//    let name: String
+//    let email: String
+//    
+//    var body: some View {
+//        HStack {
+//            Circle()
+//                .fill(.gray)
+//                .frame(width:40, height: 40)
+//            
+//            VStack(alignment: .leading){
+//                Text(name)
+//                Text(email)
+//                    .opacity(0.5)
+//            }
+//            .padding(.leading, 15)
+//            Spacer()
+//            Button {
+//                
+//            } label: {
+//                Text("Remove")
+//                    .foregroundColor(.black)
+//            }
+//            .frame(width: 100, height: 40)
+//            .background(.gray)
+//            .opacity(0.6)
+//            .cornerRadius(10)
+//        }
+//        .frame(height:50)
+//    }
+//}
 
 #Preview {
     CreateChallengeView()
