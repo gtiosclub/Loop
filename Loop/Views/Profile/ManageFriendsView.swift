@@ -13,7 +13,7 @@ struct FriendRow: View {
     
     var body: some View {
         HStack {
-            NavigationLink(destination: FriendProfileView()) {
+            NavigationLink(destination: FriendProfileView(name: friendName)) {
                 Image(systemName: "person.circle.fill").font(.system(size: 40)).foregroundColor(.gray)
                 VStack(alignment: .leading) {
                     Text(friendName).font(.headline)
@@ -28,7 +28,7 @@ struct FriendRow: View {
 struct ManageFriendsView: View {
     @State private var searchText: String = ""
     @State private var onlineFriends: [String] = ["Kevin", "Ethan", "Jason"]
-    @State private var offlineFriends: [String] = ["Kevin", "Ethan", "Jason", "Seohyun", "Dennis", "Aryun", "Dennis", "Dennis", "Dennis"]
+    @State private var offlineFriends: [String] = ["Kevin", "Ethan", "Jason", "Seohyun", "Dennis", "Aryun", "John"]
     @State private var allFriends: [String] = ["Kevin", "Ethan", "Jason", "Seohyun", "Dennis", "Aryun", "Dennis", "Dennis", "Dennis"]
     @State private var filteredFriends: [String] = []
     @Environment(\.presentationMode) var presentationMode
