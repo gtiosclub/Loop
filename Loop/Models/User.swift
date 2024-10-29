@@ -12,7 +12,9 @@ import FirebaseFirestore
 // TODO: 3) Change incomingRequest to [User] type.
 // TODO: 4) Implement a removeChallenge() method so that the user can
 // TODO:    can remove a challenge from the challengeIds.
-class User {
+class User: ObservableObject {
+    static var shared = User(uid: "", name: "", username: "", challengeIds: [], profilePictureId: "", friends: [], incomingRequest: [])
+    
     var uid: String
     var name: String
     var username: String
@@ -251,5 +253,17 @@ class User {
             print("Error updating the user and challenge to the Firebase database: \(error).")
         }
         return nil
+    }
+    
+    static func updateShared(user: User) {
+        DispatchQueue.main.async {
+            shared.uid = user.uid
+            shared.name = user.name
+            shared.username = user.username
+            shared.challengeIds = user.challengeIds
+            shared.profilePictureId = user.profilePictureId
+            shared.friends = user.friends
+            shared.incomingRequest = user.incomingRequest
+        }
     }
 }

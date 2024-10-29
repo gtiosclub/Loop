@@ -161,7 +161,7 @@ struct CreateLoginView: View {
         }
         
         Task {
-            var result = await authManager.signUp(email: Email, password: Password)
+            var result = await authManager.signUp(email: Email, password: Password, user: user)
             if (!result) {
                 alertMessage = authManager.errorMessage ?? "Unknown error occured"
                 showAlert.toggle()
