@@ -5,13 +5,32 @@
 //  Created by Danny Byrd on 10/8/24.
 //
 
-import Foundation
+import SwiftUI
 import FirebaseAuth
 
 class AuthManager: ObservableObject {
-    @Published var isAuthenticated: Bool = false
+    @AppStorage("isAuthenticated") var isAuthenticated: Bool = false
     @Published var errorMessage: String?
 
+    init() {
+        if isAuthenticated {
+            if let id = Auth.auth().currentUser?.uid {
+                Task {
+                    do {
+                        User.updateShared(user: try await FirebaseManager.fetchUserFromFirestore(uid: id))
+                    } catch {
+                        print("Fetch error: \(error)")
+                    }
+                }
+            } else {
+                print("Couldn't update user")
+            }
+            
+        } else {
+            print("User not authenticated")
+        }
+    }
+    
     func signIn(email: String, password: String, completion: @escaping (Bool) -> Void) {
         // Validate email and password are not empty
         guard !email.isEmpty, !password.isEmpty else {
@@ -38,20 +57,37 @@ class AuthManager: ObservableObject {
         }
     }
     
-    func signUp(email: String, password: String) async -> Bool {
+    func signUp(email: String, password: String, user: User) async -> Bool {
         // Validate email and password are not empty
         guard !email.isEmpty, !password.isEmpty else {
-            self.errorMessage = "Email and Password cannot be empty."
+            DispatchQueue.main.async {
+                self.errorMessage = "Email and Password cannot be empty."
+            }
+            
             return false
         }
 
         do {
             let result = try await Auth.auth().createUser(withEmail: email, password: password)
-            self.isAuthenticated = true
-            self.errorMessage = nil
+            if let id = Auth.auth().currentUser?.uid {
+                print("Uploading user")
+                var didUpload = await FirebaseManager.addUserToFirebase(user: user)
+                User.updateShared(user: user)
+                print("DID UPLOAD: \(didUpload)")
+            } else {
+                print("User could not be UPLOADED")
+            }
+            DispatchQueue.main.async {
+                self.isAuthenticated = true
+                self.errorMessage = nil
+            }
             return true
         } catch {
-            self.errorMessage = "Account creation failed"
+            print("error ISHUDSBISDBUSBD: \(error)")
+            DispatchQueue.main.async {
+                self.errorMessage = "Account creation failed"
+            }
+            
             return false
         }
     }
@@ -84,6 +120,7 @@ class AuthManager: ObservableObject {
             self.isAuthenticated = false
         } catch let signOutError as NSError {
             self.errorMessage = signOutError.localizedDescription
+            print("FAILED SIGNOOUTTTTTT")
         }
     }
 }

@@ -6,8 +6,11 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct SettingsView: View {
+    @EnvironmentObject var authManager: AuthManager
+    
     @Environment(\.presentationMode) var presentationMode
     var body: some View {
         ZStack {
@@ -84,6 +87,7 @@ struct SettingsView: View {
                 VStack {
                     Button(action: {
                         //delete profile implementation
+                        authManager.signOut()
                     }) {
                         HStack{
                             Image(systemName: "trash.circle.fill").font(.system(size:40)).foregroundColor(.white)
