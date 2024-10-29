@@ -26,7 +26,6 @@ struct TrophyView: View {
                                     Text("Trophy \(index)")
                                         .font(.title2)
                                         .fontWeight(.bold)
-                                        .padding([.bottom, .top])
                                     Text("Accomplishment description")
                                     Text("October 10, 2024")
                                         .font(.subheadline)
