@@ -76,14 +76,15 @@ struct SelfProfileView: View {
                 }
                 
                 Spacer().frame(width: 40)
-                
-                VStack(alignment: .leading) {
-                    Text("Followers")
-                        .font(.subheadline)
-                    
-                    Text("\(followers)")
-                        .fontWeight(.bold)
-                }
+                NavigationLink(destination: ManageFriendsView()) {
+                    VStack(alignment: .leading) {
+                        Text("Followers")
+                            .font(.subheadline)
+                        
+                        Text("\(followers)")
+                            .fontWeight(.bold)
+                    }
+                }.foregroundStyle(.black)
                 
                 Spacer()
                 
