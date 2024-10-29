@@ -13,11 +13,7 @@ struct WatchTypesOfExerciseView: View {
     var body: some View {
         NavigationStack {
             List(exercisesList.lists) { item in
-                NavigationLink(destination:statsView(type:item.type, timeCount: 0, isTimerRunning: true)
-                            .environmentObject(workoutManager)
-                            .onAppear {
-                                workoutManager.startWorkout()
-                            }) {
+                NavigationLink(destination: statsView(timeCount: 0, isTimerRunning: true)) {
                     VStack {
                         Image(systemName: item.image)
                             .resizable()
@@ -31,6 +27,9 @@ struct WatchTypesOfExerciseView: View {
                     .cornerRadius(10)
                 }
                 .buttonStyle(PlainButtonStyle())
+                .onTapGesture {
+                    workoutManager.startWorkout()
+                }
             }
             .listStyle(CarouselListStyle())
         }
