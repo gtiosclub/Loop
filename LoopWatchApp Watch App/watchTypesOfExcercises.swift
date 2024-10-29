@@ -8,6 +8,7 @@ import SwiftUI
 
 struct WatchTypesOfExerciseView: View {
     @StateObject var exercisesList = ExercisesList()
+    @EnvironmentObject var workoutManager: WorkoutManager
     
     var body: some View {
         NavigationStack {
@@ -24,9 +25,11 @@ struct WatchTypesOfExerciseView: View {
                     .frame(maxWidth: .infinity)
                     .padding()
                     .cornerRadius(10)
-                    
                 }
                 .buttonStyle(PlainButtonStyle())
+                .onTapGesture {
+                    workoutManager.startWorkout()
+                }
             }
             .listStyle(CarouselListStyle())
         }
