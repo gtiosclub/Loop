@@ -45,6 +45,24 @@ struct SelfProfileView: View {
                 }
                 
                 Spacer()
+                VStack {
+                    NavigationLink(destination: SettingsView()) {
+                        VStack(spacing: 5) {
+                            Rectangle()
+                                .frame(height: 4)
+                                .foregroundColor(.black)
+                            Rectangle()
+                                .frame(height: 4)
+                                .foregroundColor(.black)
+                            Rectangle()
+                                .frame(height: 4)
+                                .foregroundColor(.black)
+                        }
+                        .frame(width: 30)
+                        .padding(.trailing, 20)
+                    }
+                }
+                .padding(.bottom, 20)
             }
             HStack {
                 Spacer().frame(width: 20)
