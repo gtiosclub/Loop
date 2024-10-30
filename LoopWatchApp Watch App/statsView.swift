@@ -56,7 +56,7 @@ struct statsView: View {
                 if (workoutManager.isRunning || workoutManager.isPaused) {
                     isTimerRunning = false
                     workoutManager.resumeWorkout()
-                    workoutManager.endWorkout()
+                    workoutManager.endWorkout(type)
                 }
             }) {
                 var open = workoutManager.isRunning || workoutManager.isPaused
