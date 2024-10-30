@@ -153,7 +153,7 @@ struct CreateLoginView: View {
     func signup() {
         let uid = UUID().uuidString
         var profilePicID = HavePicture ? uid : "None"
-        let user = User(uid: uid, name: Name, username: Username, challengeIds: [], profilePictureId: profilePicID, friends: [])
+        let user = User(uid: uid, name: Name, username: Username, challengeIds: [], profilePictureId: profilePicID, friends: [], incomingRequest: [])
         
         if (Password != ConfirmPassword) {
             alertMessage = "Passwords do not match"
@@ -161,7 +161,7 @@ struct CreateLoginView: View {
         }
         
         Task {
-            var result = await authManager.signUp(email: Email, password: Password)
+            var result = await authManager.signUp(email: Email, password: Password, user: user)
             if (!result) {
                 alertMessage = authManager.errorMessage ?? "Unknown error occured"
                 showAlert.toggle()
@@ -169,7 +169,7 @@ struct CreateLoginView: View {
             }
             
             if HavePicture {
-                FirebaseUploader.uploadPhoto(image: selectedImage, id: profilePicID)
+                FirebaseUploader.uploadPhoto(image: selectedImage, uid: profilePicID)
             } else {
                 print("No profile pic")
             }
@@ -186,6 +186,7 @@ struct CreateLoginView: View {
         }
 
     }
+
 }
 
 #Preview {

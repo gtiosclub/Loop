@@ -11,6 +11,11 @@
 		195087992CAF60F900AB3EE3 /* ChangePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 195087982CAF60ED00AB3EE3 /* ChangePasswordView.swift */; };
 		1950879D2CAF646C00AB3EE3 /* ChangeEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1950879C2CAF646800AB3EE3 /* ChangeEmailView.swift */; };
 		19BE4C012CB587300068F0B4 /* CreateLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19BE4C002CB5872B0068F0B4 /* CreateLoginView.swift */; };
+		5B69BE1E2CC082C200B2337D /* excercises.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B69BE192CC082C200B2337D /* excercises.swift */; };
+		5B69BE1F2CC082C200B2337D /* excercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B69BE182CC082C200B2337D /* excercise.swift */; };
+		5B69BE202CC082C200B2337D /* statsViewSecondPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B69BE1D2CC082C200B2337D /* statsViewSecondPage.swift */; };
+		5B69BE222CC082C200B2337D /* statsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B69BE1C2CC082C200B2337D /* statsView.swift */; };
+		5B69BE282CC0844400B2337D /* watchTypesOfExcercises.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B69BE262CC0837700B2337D /* watchTypesOfExcercises.swift */; };
 		7C0B1FC62C9CB17E0076B590 /* SelfProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B1FC52C9CB17E0076B590 /* SelfProfileView.swift */; };
 		7C0B1FC82C9CB1950076B590 /* FriendProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B1FC72C9CB1950076B590 /* FriendProfileView.swift */; };
 		7C0B1FCA2C9CB1AB0076B590 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B1FC92C9CB1AB0076B590 /* SettingsView.swift */; };
@@ -22,6 +27,12 @@
 		7C0B1FD72C9CB24E0076B590 /* ExploreChallengeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B1FD62C9CB24E0076B590 /* ExploreChallengeView.swift */; };
 		7C0B1FD92C9CB61C0076B590 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B1FD82C9CB61C0076B590 /* ViewModel.swift */; };
 		7C0B1FDB2C9CE9270076B590 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B1FDA2C9CE9270076B590 /* User.swift */; };
+		7C2D02D92CC75D5500D0FA76 /* RecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2D02D82CC75D5500D0FA76 /* RecordView.swift */; };
+		7C2D02DB2CC7685100D0FA76 /* AddParticipantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2D02DA2CC7685100D0FA76 /* AddParticipantView.swift */; };
+		91B4AE522CC95AE300CDED63 /* WorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B4AE512CC95ADE00CDED63 /* WorkoutManager.swift */; };
+		93C0945F2CD14A3E0078E349 /* SelfProfileStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0945E2CD14A3E0078E349 /* SelfProfileStatsView.swift */; };
+		93C094612CD14C2E0078E349 /* SelfProfileActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C094602CD14C2E0078E349 /* SelfProfileActivityView.swift */; };
+		93C094632CD14DAA0078E349 /* TrophyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C094622CD14DAA0078E349 /* TrophyView.swift */; };
 		96354F592CA38686003DD6F8 /* ChalLeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96354F582CA3867E003DD6F8 /* ChalLeaderboardView.swift */; };
 		96D331D72CD1A42700D4D6A7 /* PodiumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D331D62CD1A42100D4D6A7 /* PodiumView.swift */; };
 		9AB55D2A2CA5373B00C48C32 /* LoopWatchApp Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 9AB55D1D2CA5373A00C48C32 /* LoopWatchApp Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -43,6 +54,7 @@
 		BF9588A22C99E73100FF34A1 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = BF9588A12C99E73100FF34A1 /* FirebaseDatabase */; };
 		BF9588A42C99E73100FF34A1 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = BF9588A32C99E73100FF34A1 /* FirebaseFirestore */; };
 		BF9588A62C99E73100FF34A1 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = BF9588A52C99E73100FF34A1 /* FirebaseStorage */; };
+		BFF749BE2CD18A9D007C4308 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF749BD2CD18A99007C4308 /* FirebaseManager.swift */; };
 		D49F42062CA20A86003607BB /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49F42052CA20A86003607BB /* Theme.swift */; };
 		D49F420A2CA20BCA003607BB /* Challenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49F42092CA20BCA003607BB /* Challenge.swift */; };
 		D49F420C2CA20C03003607BB /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49F420B2CA20C03003607BB /* CardView.swift */; };
@@ -84,6 +96,11 @@
 		195087982CAF60ED00AB3EE3 /* ChangePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordView.swift; sourceTree = "<group>"; };
 		1950879C2CAF646800AB3EE3 /* ChangeEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailView.swift; sourceTree = "<group>"; };
 		19BE4C002CB5872B0068F0B4 /* CreateLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateLoginView.swift; sourceTree = "<group>"; };
+		5B69BE182CC082C200B2337D /* excercise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = excercise.swift; sourceTree = "<group>"; };
+		5B69BE192CC082C200B2337D /* excercises.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = excercises.swift; sourceTree = "<group>"; };
+		5B69BE1C2CC082C200B2337D /* statsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = statsView.swift; sourceTree = "<group>"; };
+		5B69BE1D2CC082C200B2337D /* statsViewSecondPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = statsViewSecondPage.swift; sourceTree = "<group>"; };
+		5B69BE262CC0837700B2337D /* watchTypesOfExcercises.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = watchTypesOfExcercises.swift; sourceTree = "<group>"; };
 		7C0B1FC52C9CB17E0076B590 /* SelfProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfProfileView.swift; sourceTree = "<group>"; };
 		7C0B1FC72C9CB1950076B590 /* FriendProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendProfileView.swift; sourceTree = "<group>"; };
 		7C0B1FC92C9CB1AB0076B590 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -95,6 +112,13 @@
 		7C0B1FD62C9CB24E0076B590 /* ExploreChallengeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreChallengeView.swift; sourceTree = "<group>"; };
 		7C0B1FD82C9CB61C0076B590 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		7C0B1FDA2C9CE9270076B590 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		7C2D02D82CC75D5500D0FA76 /* RecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordView.swift; sourceTree = "<group>"; };
+		7C2D02DA2CC7685100D0FA76 /* AddParticipantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddParticipantView.swift; sourceTree = "<group>"; };
+		91B4AE512CC95ADE00CDED63 /* WorkoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutManager.swift; sourceTree = "<group>"; };
+		91B4AE532CC9626C00CDED63 /* LoopWatchApp Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "LoopWatchApp Watch App.entitlements"; sourceTree = "<group>"; };
+		93C0945E2CD14A3E0078E349 /* SelfProfileStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfProfileStatsView.swift; sourceTree = "<group>"; };
+		93C094602CD14C2E0078E349 /* SelfProfileActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfProfileActivityView.swift; sourceTree = "<group>"; };
+		93C094622CD14DAA0078E349 /* TrophyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrophyView.swift; sourceTree = "<group>"; };
 		96354F582CA3867E003DD6F8 /* ChalLeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChalLeaderboardView.swift; sourceTree = "<group>"; };
 		96D331D62CD1A42100D4D6A7 /* PodiumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodiumView.swift; sourceTree = "<group>"; };
 		9AB55D1D2CA5373A00C48C32 /* LoopWatchApp Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LoopWatchApp Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -113,6 +137,8 @@
 		BF0FEFF92CACA1E1002B4C58 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
 		BF7005F62CB726090057A8BF /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		BF95889A2C99E6DC00FF34A1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		BFF749BD2CD18A99007C4308 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
+		CE3D5C042CC869DF0033F349 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D49F42052CA20A86003607BB /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		D49F42092CA20BCA003607BB /* Challenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Challenge.swift; sourceTree = "<group>"; };
 		D49F420B2CA20C03003607BB /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
@@ -151,6 +177,7 @@
 		7C0B1FBE2C9CB05E0076B590 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				7C2D02D62CC75D2500D0FA76 /* RecordActivity */,
 				DF1CD2AE2CACB97800451888 /* HomePage */,
 				7C0B1FC32C9CB0880076B590 /* Profile */,
 				7C0B1FC22C9CB07F0076B590 /* Activities */,
@@ -190,6 +217,7 @@
 				7C0B1FD42C9CB2270076B590 /* CreateChallengeView.swift */,
 				7C0B1FD62C9CB24E0076B590 /* ExploreChallengeView.swift */,
 				D49F420B2CA20C03003607BB /* CardView.swift */,
+				7C2D02DA2CC7685100D0FA76 /* AddParticipantView.swift */,
 			);
 			path = Challenges;
 			sourceTree = "<group>";
@@ -215,8 +243,19 @@
 				7C0B1FCB2C9CB1C30076B590 /* ManageFriendsView.swift */,
 				AAA11A542CAF64CC00445880 /* AddFriendsView.swift */,
 				AA53DE792CB312B50029B7DB /* EditProfileView.swift */,
+				93C0945E2CD14A3E0078E349 /* SelfProfileStatsView.swift */,
+				93C094602CD14C2E0078E349 /* SelfProfileActivityView.swift */,
+				93C094622CD14DAA0078E349 /* TrophyView.swift */,
 			);
 			path = Profile;
+			sourceTree = "<group>";
+		};
+		7C2D02D62CC75D2500D0FA76 /* RecordActivity */ = {
+			isa = PBXGroup;
+			children = (
+				7C2D02D82CC75D5500D0FA76 /* RecordView.swift */,
+			);
+			path = RecordActivity;
 			sourceTree = "<group>";
 		};
 		9AB55D302CA5374F00C48C32 /* Preview Content */ = {
@@ -230,6 +269,13 @@
 		9AB55D342CA5374F00C48C32 /* LoopWatchApp Watch App */ = {
 			isa = PBXGroup;
 			children = (
+				91B4AE532CC9626C00CDED63 /* LoopWatchApp Watch App.entitlements */,
+				91B4AE512CC95ADE00CDED63 /* WorkoutManager.swift */,
+				5B69BE262CC0837700B2337D /* watchTypesOfExcercises.swift */,
+				5B69BE182CC082C200B2337D /* excercise.swift */,
+				5B69BE192CC082C200B2337D /* excercises.swift */,
+				5B69BE1C2CC082C200B2337D /* statsView.swift */,
+				5B69BE1D2CC082C200B2337D /* statsViewSecondPage.swift */,
 				9AB55D332CA5374F00C48C32 /* LoopWatchAppApp.swift */,
 				9AB55D322CA5374F00C48C32 /* ContentView.swift */,
 				9AB55D312CA5374F00C48C32 /* Assets.xcassets */,
@@ -259,6 +305,7 @@
 		B5B40E652C94EAE100BD9131 /* Loop */ = {
 			isa = PBXGroup;
 			children = (
+				CE3D5C042CC869DF0033F349 /* Info.plist */,
 				BF0FEFFD2CACE491002B4C58 /* Util */,
 				7C0B1FC02C9CB06A0076B590 /* Models */,
 				7C0B1FBF2C9CB0630076B590 /* ViewModels */,
@@ -284,6 +331,7 @@
 		BF0FEFFD2CACE491002B4C58 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				BFF749BD2CD18A99007C4308 /* FirebaseManager.swift */,
 				BF7005F62CB726090057A8BF /* AuthManager.swift */,
 				E25FF94D2CA629C2006FF61C /* FirebaseUploader.swift */,
 				E25FF94B2CA61DC2006FF61C /* ImagePicker.swift */,
@@ -365,7 +413,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1600;
-				LastUpgradeCheck = 1540;
+				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					9AB55D1C2CA5373A00C48C32 = {
 						CreatedOnToolsVersion = 16.0;
@@ -424,6 +472,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5B69BE1E2CC082C200B2337D /* excercises.swift in Sources */,
+				5B69BE1F2CC082C200B2337D /* excercise.swift in Sources */,
+				5B69BE202CC082C200B2337D /* statsViewSecondPage.swift in Sources */,
+				5B69BE282CC0844400B2337D /* watchTypesOfExcercises.swift in Sources */,
+				5B69BE222CC082C200B2337D /* statsView.swift in Sources */,
+				91B4AE522CC95AE300CDED63 /* WorkoutManager.swift in Sources */,
 				9AB55D352CA5374F00C48C32 /* ContentView.swift in Sources */,
 				9AB55D362CA5374F00C48C32 /* LoopWatchAppApp.swift in Sources */,
 			);
@@ -451,7 +505,10 @@
 				DF1CD2B22CACB9C200451888 /* FeedViewModel.swift in Sources */,
 				7C0B1FD32C9CB2110076B590 /* ChallengeView.swift in Sources */,
 				96354F592CA38686003DD6F8 /* ChalLeaderboardView.swift in Sources */,
+				93C0945F2CD14A3E0078E349 /* SelfProfileStatsView.swift in Sources */,
 				E25FF94C2CA61DC2006FF61C /* ImagePicker.swift in Sources */,
+				93C094612CD14C2E0078E349 /* SelfProfileActivityView.swift in Sources */,
+				93C094632CD14DAA0078E349 /* TrophyView.swift in Sources */,
 				E25FF94E2CA629C2006FF61C /* FirebaseUploader.swift in Sources */,
 				B5B40E672C94EAE100BD9131 /* LoopApp.swift in Sources */,
 				7C0B1FC82C9CB1950076B590 /* FriendProfileView.swift in Sources */,
@@ -459,8 +516,11 @@
 				DF95BDB92CAF61F400CBDA32 /* StatsPageModel.swift in Sources */,
 				DF95BDB72CAF607400CBDA32 /* StatsPage.swift in Sources */,
 				D49F42062CA20A86003607BB /* Theme.swift in Sources */,
+				BFF749BE2CD18A9D007C4308 /* FirebaseManager.swift in Sources */,
+				7C2D02D92CC75D5500D0FA76 /* RecordView.swift in Sources */,
 				BF7005F72CB7260F0057A8BF /* AuthManager.swift in Sources */,
 				1950879D2CAF646C00AB3EE3 /* ChangeEmailView.swift in Sources */,
+				7C2D02DB2CC7685100D0FA76 /* AddParticipantView.swift in Sources */,
 				7C0B1FD92C9CB61C0076B590 /* ViewModel.swift in Sources */,
 				191745362CACBC9700ECC352 /* LoginView.swift in Sources */,
 				D49F420C2CA20C03003607BB /* CardView.swift in Sources */,
@@ -485,21 +545,24 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "LoopWatchApp Watch App/LoopWatchApp Watch App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LoopWatchApp Watch App/Preview Content\"";
-				DEVELOPMENT_TEAM = YN82V53CTG;
+				DEVELOPMENT_TEAM = JCY34ZWF85;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = LoopWatchApp;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Loop needs access to your health data.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Loop needs to update your health data on your behalf.";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = dannyByrd123.Loop;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = dannyByrd.Loop;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dannyByrd123.Loop.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = dannyByrd.Loop.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -515,21 +578,24 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "LoopWatchApp Watch App/LoopWatchApp Watch App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LoopWatchApp Watch App/Preview Content\"";
-				DEVELOPMENT_TEAM = YN82V53CTG;
+				DEVELOPMENT_TEAM = JCY34ZWF85;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = LoopWatchApp;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Loop needs access to your health data.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Loop needs to update your health data on your behalf.";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = dannyByrd123.Loop;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = dannyByrd.Loop;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dannyByrd123.Loop.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = dannyByrd.Loop.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -575,6 +641,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -636,6 +703,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -663,11 +731,15 @@
 				CODE_SIGN_ENTITLEMENTS = Loop/Loop.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Loop/Preview Content\"";
 				DEVELOPMENT_TEAM = JCY34ZWF85;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Loop wants to access health data for your workouts.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Loop wants to add workouts on your behalf.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -683,7 +755,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dannyByrd123.Loop;
+				PRODUCT_BUNDLE_IDENTIFIER = dannyByrd.Loop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -702,11 +774,15 @@
 				CODE_SIGN_ENTITLEMENTS = Loop/Loop.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Loop/Preview Content\"";
 				DEVELOPMENT_TEAM = JCY34ZWF85;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Loop wants to access health data for your workouts.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Loop wants to add workouts on your behalf.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -722,7 +798,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dannyByrd123.Loop;
+				PRODUCT_BUNDLE_IDENTIFIER = dannyByrd.Loop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
