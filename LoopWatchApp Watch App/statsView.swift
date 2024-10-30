@@ -13,7 +13,7 @@ struct statsView: View {
     @State var timeCount: TimeInterval
     @State var isTimerRunning = false
     @State var timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
-    
+    @State private var navigateToStatsView = false
     @EnvironmentObject var workoutManager: WorkoutManager
 
     var body: some View {
@@ -64,6 +64,19 @@ struct statsView: View {
                     .foregroundColor(open ? .red : .white)
             }
             
+            
+        }
+        .gesture(
+            DragGesture(minimumDistance: 50)
+                .onEnded { value in
+                    print(value)
+                    if value.translation.width > 0 { // Swipe right
+                        navigateToStatsView = true
+                        
+                    }
+                })
+        NavigationLink(destination: statsViewSecondPage(isTimerRunning: $isTimerRunning), isActive: $navigateToStatsView) {
+            EmptyView()
         }
     }
     
