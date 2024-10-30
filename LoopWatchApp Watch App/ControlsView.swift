@@ -23,7 +23,7 @@ struct ControlsView: View {
             }
             VStack {
                 Button {
-                    workoutManager.togglePause()
+                    workoutManager.isRunning ? workoutManager.pauseWorkout() : workoutManager.resumeWorkout()
                 } label: {
                     Image(systemName: workoutManager.isRunning ? "Pause" : "Resume")
                 }

@@ -270,6 +270,7 @@
 		9AB55D342CA5374F00C48C32 /* LoopWatchApp Watch App */ = {
 			isa = PBXGroup;
 			children = (
+				5B42498C2CD2E73B0003F5E9 /* ControlsView.swift */,
 				5B9BA5632CD1AC0200087E64 /* SessionPagingView 2.swift */,
 				91B4AE532CC9626C00CDED63 /* LoopWatchApp Watch App.entitlements */,
 				91B4AE512CC95ADE00CDED63 /* WorkoutManager.swift */,
@@ -282,7 +283,6 @@
 				9AB55D322CA5374F00C48C32 /* ContentView.swift */,
 				9AB55D312CA5374F00C48C32 /* Assets.xcassets */,
 				9AB55D302CA5374F00C48C32 /* Preview Content */,
-				5B42498C2CD2E73B0003F5E9 /* ControlsView.swift */,
 			);
 			path = "LoopWatchApp Watch App";
 			sourceTree = "<group>";
