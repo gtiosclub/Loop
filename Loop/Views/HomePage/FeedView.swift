@@ -8,46 +8,68 @@
 import SwiftUI
 
 struct FeedView: View {
+    @ObservedObject var workoutManager = WorkoutManager.shared
+    @State private var workoutInProgress = false
+
     var body: some View {
         NavigationView {
-            ScrollView {
-                VStack(spacing: 16) {
-                    ForEach(0..<6) { index in
-                        if index % 3 == 0 {
-                            WorkoutCardView(
-                                name: "Sydney Sweeney",
-                                avatar: "avatar1",
-                                miles: "3.5",
-                                pace: "10:45",
-                                time: "34:56",
-                                date: "Today at 9:16 PM"
-                            )
-                            .padding(.horizontal)
-                        } else if index % 3 == 1 {
-                            CompetitionCardView(
-                                name: "Johnny Appleseed",
-                                avatar: "avatar2",
-                                competition: "Marathon Challenge",
-                                result: "John Placed 2nd!",
-                                date: "Yesterday at 6:45 PM"
-                            )
-                            .padding(.horizontal)
-                        } else {
-                            WorkoutCardView(
-                                name: "Thomas Da TankEngine",
-                                avatar: "avatar3",
-                                miles: "5.2",
-                                pace: "9:30",
-                                time: "45:20",
-                                date: "Today at 7:30 AM"
-                            )
-                            .padding(.horizontal)
-                        }
+            VStack {
+                VStack {
+                    if workoutInProgress {
+                        Text("Workout in Progress")
+                            .padding()
+                            .background(Color.yellow)
+                            .cornerRadius(8)
+                            .padding(.top)
                     }
+                    ScrollView {
+                        VStack(spacing: 16) {
+                            ForEach(0..<6) { index in
+                                if index % 3 == 0 {
+                                    WorkoutCardView(
+                                        name: "Sydney Sweeney",
+                                        avatar: "avatar1",
+                                        miles: "3.5",
+                                        pace: "10:45",
+                                        time: "34:56",
+                                        date: "Today at 9:16 PM"
+                                    )
+                                    .padding(.horizontal)
+                                } else if index % 3 == 1 {
+                                    CompetitionCardView(
+                                        name: "Johnny Appleseed",
+                                        avatar: "avatar2",
+                                        competition: "Marathon Challenge",
+                                        result: "John Placed 2nd!",
+                                        date: "Yesterday at 6:45 PM"
+                                    )
+                                    .padding(.horizontal)
+                                } else {
+                                    WorkoutCardView(
+                                        name: "Thomas Da TankEngine",
+                                        avatar: "avatar3",
+                                        miles: "5.2",
+                                        pace: "9:30",
+                                        time: "45:20",
+                                        date: "Today at 7:30 AM"
+                                    )
+                                    .padding(.horizontal)
+                                }
+                            }
+                        }
+                        .padding(.top)
+                        .onAppear {
+                                 print("Workout in progress: \(workoutInProgress)")
+                                 workoutInProgress = workoutManager.isWorkoutInProgress
+                                print("View Opened")
+                            }
+                    }
+                    .navigationTitle("Home Feed")
+                    
                 }
-                .padding(.top)
+                
             }
-            .navigationTitle("Home Feed")
+           
         }
     }
 }
