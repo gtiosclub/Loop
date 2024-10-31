@@ -13,7 +13,9 @@ struct ControlsView: View {
         HStack {
             VStack {
                 Button {
-                    workoutManager.endWorkout()
+                    DispatchQueue.main.async {
+                            workoutManager.endWorkout()
+                        }
                 } label: {
                     Image(systemName: "xmark")
                 }
@@ -33,5 +35,6 @@ struct ControlsView: View {
             }
             
         }
+       
     }
 }

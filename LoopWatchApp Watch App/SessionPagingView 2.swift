@@ -27,16 +27,26 @@ struct SessionPagingView: View {
         //.navigationTitle(item.type)
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(selection == .nowPlaying)
-        .onChange(of: workoutManager.isRunning) { _ in
+        .onChange(of: workoutManager.isRunning) { oldValue, newValue in
+            print("isRunning changed to \(newValue)")
             displayMetricsView()
         }
+        .onAppear {
+            print("SessionPagingView appeared")
+        }
+        
+
+
     }
+        
+
     private func displayMetricsView() {
-        if selection != .metrics {
-            withAnimation {
-                selection = .metrics
-            }
+        guard selection != .metrics else { return }
+        
+        withAnimation {
+            selection = .metrics
         }
     }
+
 
 }
