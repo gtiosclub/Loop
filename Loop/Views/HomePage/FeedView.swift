@@ -58,11 +58,18 @@ struct FeedView: View {
                             }
                         }
                         .padding(.top)
-                        .onAppear {
-                                 print("Workout in progress: \(workoutInProgress)")
-                                 workoutInProgress = workoutManager.isWorkoutInProgress
-                                print("View Opened")
-                            }
+                         .onAppear {
+                                  print("Workout in progress: \(workoutInProgress)")
+                                  workoutInProgress = workoutManager.isWorkoutInProgress
+                                 print("View Opened")
+                         }
+//                         .onReceive(workoutManager.$isWorkoutInProgress) { inProgress in
+//                             print("Workout in progress: \(inProgress)")
+//                             workoutInProgress = inProgress
+//                         }
+                        //bugs carousel and watch connection out
+                        
+                        
                     }
                     .navigationTitle("Home Feed")
                     
