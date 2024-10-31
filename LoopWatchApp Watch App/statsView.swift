@@ -29,19 +29,19 @@ struct statsView: View {
                             timeCount += 1.0 // Increment time by 1 second
                         }
                     }.frame(width:160)
-                Button(action: {
-                    if (buttonEnable) {
-                        isTimerRunning.toggle()
-                        if (isTimerRunning) {
-                            workoutManager.resumeWorkout()
-                        } else {
-                            workoutManager.pauseWorkout()
-                        }
-                    }
-                }) {
-                    Image(systemName: isTimerRunning ? "pause.circle" : "play.circle.fill")
-                }
-                .buttonStyle(PlainButtonStyle())
+//                Button(action: {
+//                    if (workoutManager.isRunning || workoutManager.isPaused) {
+//                        isTimerRunning.toggle()
+//                        if (isTimerRunning) {
+//                            workoutManager.resumeWorkout()
+//                        } else {
+//                            workoutManager.pauseWorkout()
+//                        }
+//                    }
+//                }) {
+//                    Image(systemName: isTimerRunning ? "pause.circle" : "play.circle.fill")
+//                }
+//                .buttonStyle(PlainButtonStyle())
             }
             Text(type)
                 .font(.system(size: 30))
