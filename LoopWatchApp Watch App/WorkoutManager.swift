@@ -8,6 +8,7 @@
 import HealthKit
 import SwiftUI
 import os
+import WatchConnectivity
 
 class WorkoutManager: NSObject, ObservableObject {
     @Published var isRunning = false
@@ -19,6 +20,7 @@ class WorkoutManager: NSObject, ObservableObject {
     private let healthStore = HKHealthStore()
     private var session: HKWorkoutSession?
     private var builder: HKLiveWorkoutBuilder?
+    private let connectivityProvider = WatchConnectivityProvider.shared
 
     func startWorkout() {
         distance = 0
@@ -41,7 +43,8 @@ class WorkoutManager: NSObject, ObservableObject {
                 DispatchQueue.main.sync {
                     self.isRunning = true
                     self.isPaused = false
-                    print("Successfully started workout")
+                    self.connectivityProvider.sendMessage(["workoutStatus": "started"])
+                    print("Successfully started workout - WC Flag")
                 }
             })
             
