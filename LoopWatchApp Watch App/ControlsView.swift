@@ -11,29 +11,43 @@ struct ControlsView: View {
     @EnvironmentObject var workoutManager: WorkoutManager
     var body: some View {
         HStack {
-            VStack {
-                Button {
-                    DispatchQueue.main.async {
-                            workoutManager.endWorkout()
-                        }
-                } label: {
-                    Image(systemName: "xmark")
-                }
-                tint(Color.red)
-                .font(.title2)
-                Text ("End")
+            Button {
+                workoutManager.endWorkout()
+            } label: {
+                Image(systemName: "xmark")
             }
-            VStack {
-                Button {
-                    workoutManager.isRunning ? workoutManager.pauseWorkout() : workoutManager.resumeWorkout()
-                } label: {
-                    Image(systemName: workoutManager.isRunning ? "pause" : "play")
-                }
-                tint(Color.yellow)
+            tint(Color.red)
                 .font(.title2)
-                Text (workoutManager.isRunning ? "Pause" : "Resume")
-            }
             
+            Button {
+                
+            } label: {
+                
+            }
+//            //VStack {
+//                Button {
+////                    DispatchQueue.main.async {
+////                            workoutManager.endWorkout()
+////                        }
+//                    Text("Hi")
+//                } label: {
+//                    Image(systemName: "xmark")
+//                }
+//                tint(Color.red)
+//                .font(.title2)
+//                Text ("End")
+//            //}
+////            VStack {
+////                Button {
+////                    workoutManager.isRunning ? workoutManager.pauseWorkout() : workoutManager.resumeWorkout()
+////                } label: {
+////                    Image(systemName: workoutManager.isRunning ? "pause" : "play")
+////                }
+////                tint(Color.yellow)
+////                .font(.title2)
+////                Text (workoutManager.isRunning ? "Pause" : "Resume")
+////            }
+//            
         }
        
     }
