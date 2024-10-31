@@ -52,32 +52,32 @@ struct statsView: View {
             
             
             // Stop Workout Button
-            Button(action: {
-                if (workoutManager.isRunning || workoutManager.isPaused) {
-                    isTimerRunning = false
-                    workoutManager.resumeWorkout()
-                    workoutManager.endWorkout()
-                }
-            }) {
-                var open = workoutManager.isRunning || workoutManager.isPaused
-                Text(open ? "End Workout" : "Workout Ended")
-                    .foregroundColor(open ? .red : .white)
-            }
+//            Button(action: {
+//                if (workoutManager.isRunning || workoutManager.isPaused) {
+//                    isTimerRunning = false
+//                    workoutManager.resumeWorkout()
+//                    workoutManager.endWorkout()
+//                }
+//            }) {
+//                var open = workoutManager.isRunning || workoutManager.isPaused
+//                Text(open ? "End Workout" : "Workout Ended")
+//                    .foregroundColor(open ? .red : .white)
+//            }
             
             
         }
-        .gesture(
-            DragGesture(minimumDistance: 50)
-                .onEnded { value in
-                    print(value)
-                    if value.translation.width > 0 { // Swipe right
-                        navigateToStatsView = true
-                        
-                    }
-                })
-        NavigationLink(destination: statsViewSecondPage(isTimerRunning: $isTimerRunning), isActive: $navigateToStatsView) {
-            EmptyView()
-        }
+//        .gesture(
+//            DragGesture(minimumDistance: 50)
+//                .onEnded { value in
+//                    print(value)
+//                    if value.translation.width > 0 { // Swipe right
+//                        navigateToStatsView = true
+//                        
+//                    }
+//                })
+//        NavigationLink(destination: statsViewSecondPage(isTimerRunning: $isTimerRunning), isActive: $navigateToStatsView) {
+//            EmptyView()
+//        }
     }
     
     func formatTime(time: TimeInterval) -> String {

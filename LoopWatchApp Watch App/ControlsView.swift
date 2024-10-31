@@ -25,7 +25,7 @@ struct ControlsView: View {
                 Button {
                     workoutManager.isRunning ? workoutManager.pauseWorkout() : workoutManager.resumeWorkout()
                 } label: {
-                    Image(systemName: workoutManager.isRunning ? "Pause" : "Resume")
+                    Image(systemName: workoutManager.isRunning ? "pause" : "play")
                 }
                 tint(Color.yellow)
                 .font(.title2)
