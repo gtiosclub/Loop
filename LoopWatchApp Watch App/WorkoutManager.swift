@@ -18,8 +18,16 @@ class WorkoutManager: NSObject, ObservableObject {
     static let shared = WorkoutManager()
     private let healthStore = HKHealthStore()
     private var session: HKWorkoutSession?
-    private var builder: HKLiveWorkoutBuilder?
-    @Published var showingSummaryView: Bool = false
+    var builder: HKLiveWorkoutBuilder?
+    @Published var backToHome: Bool = false
+    @Published var showingSummaryView: Bool = false {
+        didSet {
+            if showingSummaryView == false {
+                resetWorkout()
+                
+            }
+        }
+    }
 
     func startWorkout() {
         distance = 0
@@ -77,7 +85,15 @@ class WorkoutManager: NSObject, ObservableObject {
         }
     }
 
-    
+    func resetWorkout() {
+        builder = nil
+        session = nil
+        activeEnergy = 0
+        averageHeartRate = 0
+        heartRate = 0
+        distance = 0
+        backToHome = true
+    }
     func endWorkout() {
         guard let session = session, let builder = builder else { return }
 

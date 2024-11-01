@@ -50,7 +50,7 @@ struct LoopWatchApp_Watch_AppApp: App {
     }
     //@StateObject var wk = WorkoutManager()
     // Initialize managers here
-    @StateObject private var workoutManager = WorkoutManager.shared
+    @StateObject var workoutManager = WorkoutManager.shared
     private let exercisesList = ExercisesList()
 
     var body: some Scene {
@@ -63,6 +63,7 @@ struct LoopWatchApp_Watch_AppApp: App {
                 .environmentObject(exercisesList)
                 .sheet(isPresented: $workoutManager.showingSummaryView) {
                     SummaryView()
+                        .environmentObject(workoutManager)
                 }
         }
     }

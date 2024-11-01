@@ -20,8 +20,8 @@ struct SessionPagingView2: View {
     var body: some View {
         TabView(selection: $selection) {
             ControlsView().tag(Tab.controls)
-            statsView(type:item.type, timeCount: 0, isTimerRunning: true).tag(Tab.metrics)
-            
+            //statsView(type:item.type, timeCount: 0, isTimerRunning: true).tag(Tab.metrics)
+            statsView().tag(Tab.metrics)
             NowPlayingView().tag(Tab.nowPlaying)
         }
         //.navigationTitle(item.type)
@@ -32,7 +32,14 @@ struct SessionPagingView2: View {
             displayMetricsView()
         }
         .onAppear {
+            
             print("SessionPagingView appeared")
+        }
+        .onChange(of: workoutManager.backToHome) { oldValue, newValue in
+                        if newValue {
+                            WatchTypesOfExerciseView()
+                            workoutManager.backToHome = false // Reset the flag
+                        }
         }
         
 
