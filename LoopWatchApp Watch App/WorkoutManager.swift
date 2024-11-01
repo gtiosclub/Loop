@@ -11,17 +11,22 @@ import os
 import WatchConnectivity
 
 class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
+    //Ignore all of the if-else OS blocks - iOS doesn't support a lot of these HK methods
+    // but it needs to see this class to compile.
+
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: (any Error)?) {
-        print("Session")
+        print("Session started from Watch")
     }
     
     #if os(iOS)
     func sessionDidBecomeInactive(_ session: WCSession) {
-        print("Inactive")
+        //stub method
+        print("Session Became Inactive")
     }
     
     func sessionDidDeactivate(_ session: WCSession) {
-        print("Deactivate")
+        //stub method
+        print("Session Deactivated")
     }
     #endif
     
@@ -39,6 +44,7 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
     private var builder: HKLiveWorkoutBuilder?
     #endif
 
+    // Init the WC session
     override init() {
         super.init()
         if WCSession.isSupported() {
@@ -70,6 +76,7 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
                 DispatchQueue.main.sync {
                     self.isRunning = true
                     self.isPaused = false
+                    // communication variables
                     self.isWorkoutInProgress = true
                     self.sendWorkoutStartedMessage()
                     print("Successfully started workout")
@@ -82,6 +89,7 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
         #endif
     }
 
+    // Functions to send the boolean via WC
     private func sendWorkoutStartedMessage() {
         if WCSession.default.isReachable {
             WCSession.default.sendMessage(["workoutStarted": true], replyHandler: nil, errorHandler: { error in
@@ -159,6 +167,8 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
                 print("Error ending workout collection: \(error.localizedDescription)")
             }
         }
+
+        // Update iPhone app
         self.sendWorkoutEndedMessage()
 
         #endif

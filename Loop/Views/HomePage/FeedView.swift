@@ -16,6 +16,7 @@ struct FeedView: View {
         NavigationView {
             VStack {
                 VStack {
+                    //UI for workout in progress on the watch
                     if viewModel.workoutInProgress {
                         Text("Workout in Progress")
                             .padding()

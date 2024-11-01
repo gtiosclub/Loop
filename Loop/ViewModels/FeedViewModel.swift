@@ -1,7 +1,15 @@
+//
+//  FeedViewModel.swift
+//  Loop
+//
+//  Created by Jason Nair on 9/17/24.
+//
+
 import Foundation
 import WatchConnectivity
 
 class FeedViewModel: NSObject, ObservableObject, WCSessionDelegate {
+    // boolean from the watch to indicate if a workout is in progress
     @Published var workoutInProgress = false
 
     override init() {
@@ -21,6 +29,7 @@ class FeedViewModel: NSObject, ObservableObject, WCSessionDelegate {
         print("WCSession activated with state: \(activationState.rawValue)")
     }
 
+    //stub methods
     func sessionDidBecomeInactive(_ session: WCSession) {
         print("WCSession did become inactive")
     }
@@ -35,6 +44,7 @@ class FeedViewModel: NSObject, ObservableObject, WCSessionDelegate {
         if let workoutStarted = message["workoutStarted"] as? Bool {
             DispatchQueue.main.async {
                 self.workoutInProgress = workoutStarted
+                print("Recieved message from watch: \(workoutStarted)")
             }
         }
     }
