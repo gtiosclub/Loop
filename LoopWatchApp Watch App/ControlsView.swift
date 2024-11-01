@@ -9,46 +9,28 @@ import SwiftUI
 
 struct ControlsView: View {
     @EnvironmentObject var workoutManager: WorkoutManager
+
     var body: some View {
         HStack {
             Button {
+                print("Ending workout...")
                 workoutManager.endWorkout()
             } label: {
                 Image(systemName: "xmark")
             }
-            tint(Color.red)
-                .font(.title2)
+            .tint(Color.red)
+            .font(.title2)
             
             Button {
-                
+                print("Pausing workout...")
+                workoutManager.pauseWorkout()
+                // Call pauseWorkout logic here
             } label: {
-                
+                Image(systemName: "pause")
             }
-//            //VStack {
-//                Button {
-////                    DispatchQueue.main.async {
-////                            workoutManager.endWorkout()
-////                        }
-//                    Text("Hi")
-//                } label: {
-//                    Image(systemName: "xmark")
-//                }
-//                tint(Color.red)
-//                .font(.title2)
-//                Text ("End")
-//            //}
-////            VStack {
-////                Button {
-////                    workoutManager.isRunning ? workoutManager.pauseWorkout() : workoutManager.resumeWorkout()
-////                } label: {
-////                    Image(systemName: workoutManager.isRunning ? "pause" : "play")
-////                }
-////                tint(Color.yellow)
-////                .font(.title2)
-////                Text (workoutManager.isRunning ? "Pause" : "Resume")
-////            }
-//            
+            .tint(Color.yellow)
+            .font(.title2)
         }
-       
     }
 }
+

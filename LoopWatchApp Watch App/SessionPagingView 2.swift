@@ -9,7 +9,7 @@
 
 import SwiftUI
 import WatchKit
-struct SessionPagingView: View {
+struct SessionPagingView2: View {
     @EnvironmentObject var workoutManager: WorkoutManager
     @State var item: excercise
     @State private var selection: Tab = .metrics
