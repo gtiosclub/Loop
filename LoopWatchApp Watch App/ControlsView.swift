@@ -22,11 +22,16 @@ struct ControlsView: View {
             .font(.title2)
             
             Button {
-                print("Pausing workout...")
-                workoutManager.pauseWorkout()
-                // Call pauseWorkout logic here
+                print("Pausing/Resuming workout...")
+                
+                if (workoutManager.isPaused) {
+                        workoutManager.resumeWorkout()
+                    } else {
+                        workoutManager.pauseWorkout()
+                    }
+                
             } label: {
-                Image(systemName: "pause")
+                Image(systemName: workoutManager.isPaused ? "play" :"pause")
             }
             .tint(Color.yellow)
             .font(.title2)
