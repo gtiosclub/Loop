@@ -1,23 +1,41 @@
-//
-//  FeedViewModel.swift
-//  Loop
-//
-//  Created by Jason Nair on 9/17/24.
-//
-
 import Foundation
+import WatchConnectivity
 
-/*
- This is the viewmodel that will connect the model of posts to the view where they will be displayed
- */
-class FeedViewModel: ObservableObject{
-    
-    //the init should call a function called loadPosts that will contain an array of mock data Posts
-    init(){
-        //TODO
+class FeedViewModel: NSObject, ObservableObject, WCSessionDelegate {
+    @Published var workoutInProgress = false
+
+    override init() {
+        super.init()
+        if WCSession.isSupported() {
+            let session = WCSession.default
+            session.delegate = self
+            session.activate()
+        }
     }
-    //fill in this function, an array posts of Post()
-    func loadPosts() {
-        //TODO
+
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+        if let error = error {
+            print("WCSession activation failed with error: \(error.localizedDescription)")
+            return
+        }
+        print("WCSession activated with state: \(activationState.rawValue)")
+    }
+
+    func sessionDidBecomeInactive(_ session: WCSession) {
+        print("WCSession did become inactive")
+    }
+
+    func sessionDidDeactivate(_ session: WCSession) {
+        print("WCSession did deactivate")
+        // Re-activate the session
+        session.activate()
+    }
+
+    func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
+        if let workoutStarted = message["workoutStarted"] as? Bool {
+            DispatchQueue.main.async {
+                self.workoutInProgress = workoutStarted
+            }
+        }
     }
 }

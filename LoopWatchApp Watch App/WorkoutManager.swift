@@ -8,8 +8,23 @@
 import HealthKit
 import SwiftUI
 import os
+import WatchConnectivity
 
-class WorkoutManager: NSObject, ObservableObject {
+class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: (any Error)?) {
+        print("Session")
+    }
+    
+    #if os(iOS)
+    func sessionDidBecomeInactive(_ session: WCSession) {
+        print("Inactive")
+    }
+    
+    func sessionDidDeactivate(_ session: WCSession) {
+        print("Deactivate")
+    }
+    #endif
+    
     @Published var isRunning = false
     @Published var isPaused = false
     @Published var distance = 0.0  // Distance in meters
@@ -23,6 +38,15 @@ class WorkoutManager: NSObject, ObservableObject {
     #if os(watchOS)
     private var builder: HKLiveWorkoutBuilder?
     #endif
+
+    override init() {
+        super.init()
+        if WCSession.isSupported() {
+            let session = WCSession.default
+            session.delegate = self
+            session.activate()
+        }
+    }
 
     func startWorkout() {
         #if os(watchOS)
@@ -47,6 +71,7 @@ class WorkoutManager: NSObject, ObservableObject {
                     self.isRunning = true
                     self.isPaused = false
                     self.isWorkoutInProgress = true
+                    self.sendWorkoutStartedMessage()
                     print("Successfully started workout")
                 }
             })
@@ -55,6 +80,28 @@ class WorkoutManager: NSObject, ObservableObject {
             print("Failed to start workout: \(error.localizedDescription)")
         }
         #endif
+    }
+
+    private func sendWorkoutStartedMessage() {
+        if WCSession.default.isReachable {
+            WCSession.default.sendMessage(["workoutStarted": true], replyHandler: nil, errorHandler: { error in
+                print("Error sending message: \(error.localizedDescription)")
+            })
+            print("Message sent")
+        } else {
+            print("Session is not reachable")
+        }
+    }
+
+    private func sendWorkoutEndedMessage() {
+        if WCSession.default.isReachable {
+            WCSession.default.sendMessage(["workoutStarted": false], replyHandler: nil, errorHandler: { error in
+                print("Error sending message: \(error.localizedDescription)")
+            })
+            print("Message sent")
+        } else {
+            print("Session is not reachable")
+        }
     }
 
     func pauseWorkout() {
@@ -112,6 +159,8 @@ class WorkoutManager: NSObject, ObservableObject {
                 print("Error ending workout collection: \(error.localizedDescription)")
             }
         }
+        self.sendWorkoutEndedMessage()
+
         #endif
     }
 

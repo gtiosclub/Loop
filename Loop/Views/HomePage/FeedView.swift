@@ -6,16 +6,17 @@
 //
 
 import SwiftUI
+import WatchConnectivity
 
 struct FeedView: View {
-    @ObservedObject var workoutManager = WorkoutManager.shared
-    @State private var workoutInProgress = false
+    @StateObject private var viewModel = FeedViewModel()
+    
 
     var body: some View {
         NavigationView {
             VStack {
                 VStack {
-                    if workoutInProgress {
+                    if viewModel.workoutInProgress {
                         Text("Workout in Progress")
                             .padding()
                             .background(Color.yellow)
@@ -58,18 +59,11 @@ struct FeedView: View {
                             }
                         }
                         .padding(.top)
-                         .onAppear {
-                                  print("Workout in progress: \(workoutInProgress)")
-                                  workoutInProgress = workoutManager.isWorkoutInProgress
-                                 print("View Opened")
-                         }
-//                         .onReceive(workoutManager.$isWorkoutInProgress) { inProgress in
-//                             print("Workout in progress: \(inProgress)")
-//                             workoutInProgress = inProgress
-//                         }
-                        //bugs carousel and watch connection out
-                        
-                        
+                        .onAppear {
+                            //   print("Workout in progress: \(workoutInProgress)")
+                            //   workoutInProgress = workoutManager.isWorkoutInProgress
+                             print("View Opened")
+                        }                        
                     }
                     .navigationTitle("Home Feed")
                     
