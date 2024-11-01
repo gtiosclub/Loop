@@ -22,12 +22,13 @@ struct SummaryView: View {
             VStack (alignment: .leading) {
                 SummaryMetricView(
                     title: "Total Time",
-                    value: durationFormatter.string(from: $workoutManager.workout.duration ?? 0.0) ?? ""
+                    value: durationFormatter.string(from: workoutManager.builder?.elapsedTime ?? 0.0) ?? ""
                 ).accentColor(Color.yellow)
-                
                 SummaryMetricView(
-                    title: "Total Distance", value: Measurement(
-                        value: 1625,
+                    title: "Total Distance",
+                    value: Measurement(
+                        value: workoutManager.distance,
+                            
                         unit: UnitLength.meters
                     ).formatted(
                         .measurement(
@@ -36,44 +37,28 @@ struct SummaryView: View {
                         )
                     )
                 ).accentColor(Color.green)
-                
                 SummaryMetricView(
                     title: "Total Energy",
-                    value: Measurement (
-                        value: 96,
+                    value: Measurement(
+                        value: workoutManager.activeEnergy,
                         unit: UnitEnergy.kilocalories
                     ).formatted(
                         .measurement(
                             width: .abbreviated,
                             usage: .workout,
                             numberFormatStyle: .number.precision(.fractionLength(0))
-                            
                         )
                     )
                 ).accentColor(Color.pink)
                 SummaryMetricView(
                     title: "Avg. Heart Rate",
-                    value: 143
+                    value: workoutManager.averageHeartRate
                         .formatted(
                             .number.precision(.fractionLength(0))
                         )
                     + " bpm"
                 ).accentColor(Color.red)
-                
-                Text("Activity Rings")
-                ActivityRingsView(
-                    healthStore: HKHealthStore()
-                ).frame(width: 50, height: 50)
-                
-                
-                
-                Button("Done") {
-                    dismiss()
-                }
-                .scenePadding()
             }
-            .navigationTitle("Summary")
-            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }

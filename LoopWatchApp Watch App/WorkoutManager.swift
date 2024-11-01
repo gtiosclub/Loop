@@ -144,8 +144,16 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
     static let shared = WorkoutManager()
     private let healthStore = HKHealthStore()
     private var session: HKWorkoutSession?
-    private var builder: HKLiveWorkoutBuilder?
-    @Published var showingSummaryView: Bool = false
+    var builder: HKLiveWorkoutBuilder?
+    @Published var backToHome: Bool = false
+    @Published var showingSummaryView: Bool = false {
+        didSet {
+            if showingSummaryView == false {
+                resetWorkout()
+                
+            }
+        }
+    }
 
     #if os(watchOS)
     private var builder: HKLiveWorkoutBuilder?
@@ -297,6 +305,15 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
         }
     }
 
+    func resetWorkout() {
+        builder = nil
+        session = nil
+        activeEnergy = 0
+        averageHeartRate = 0
+        heartRate = 0
+        distance = 0
+        backToHome = true
+    }
     
     func endWorkout(_ workoutType: String) {
         #if os(watchOS)
