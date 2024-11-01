@@ -100,6 +100,7 @@ class WorkoutManager: NSObject, ObservableObject {
             }
         }
         showingSummaryView = true
+        print("showingSummaryView set to \(showingSummaryView)")
     }
 
 }
