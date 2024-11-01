@@ -19,6 +19,7 @@ class WorkoutManager: NSObject, ObservableObject {
     private let healthStore = HKHealthStore()
     private var session: HKWorkoutSession?
     private var builder: HKLiveWorkoutBuilder?
+    @Published var showingSummaryView: Bool = false
 
     func startWorkout() {
         distance = 0
@@ -98,6 +99,7 @@ class WorkoutManager: NSObject, ObservableObject {
                 print("Error ending workout collection: \(error.localizedDescription)")
             }
         }
+        showingSummaryView = true
     }
 
 }
