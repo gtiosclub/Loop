@@ -8,6 +8,7 @@
 import SwiftUI
 import HealthKit
 struct SummaryView: View {
+    @EnvironmentObject var workoutManager: WorkoutManager
     @Environment(\.dismiss) var dismiss
     @State private var durationFormatter:
     DateComponentsFormatter = {
@@ -21,7 +22,7 @@ struct SummaryView: View {
             VStack (alignment: .leading) {
                 SummaryMetricView(
                     title: "Total Time",
-                    value: durationFormatter.string(from: 30 * 60 + 15) ?? ""
+                    value: durationFormatter.string(from: $workoutManager.workout.duration ?? 0.0) ?? ""
                 ).accentColor(Color.yellow)
                 
                 SummaryMetricView(
