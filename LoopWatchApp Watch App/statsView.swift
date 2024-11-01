@@ -69,6 +69,10 @@ struct statsView: View {
         .onChange(of: workoutManager.isPaused) { oldValue, isPaused in
                     isTimerRunning = !isPaused // Stop the timer when paused
                 }
+        .onChange(of: workoutManager.isRunning) { oldValue, isPaused in
+            isTimerRunning = workoutManager.isRunning // Stop the timer when paused
+                }
+        
 //        .gesture(
 //            DragGesture(minimumDistance: 50)
 //                .onEnded { value in
