@@ -144,6 +144,8 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
     static let shared = WorkoutManager()
     private let healthStore = HKHealthStore()
     private var session: HKWorkoutSession?
+    private var builder: HKLiveWorkoutBuilder?
+    @Published var showingSummaryView: Bool = false
 
     #if os(watchOS)
     private var builder: HKLiveWorkoutBuilder?
@@ -335,6 +337,8 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
         }
         // Update iPhone app
         self.sendWorkoutEndedMessage()
+        showingSummaryView = true
+    }
 
         #endif
     }
