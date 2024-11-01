@@ -14,17 +14,16 @@ struct FeedView: View {
 
     var body: some View {
         NavigationView {
-            VStack {
-                VStack {
-                    //UI for workout in progress on the watch
-                    if viewModel.workoutInProgress {
-                        Text("Workout in Progress")
-                            .padding()
-                            .background(Color.yellow)
-                            .cornerRadius(8)
-                            .padding(.top)
-                    }
-                    ScrollView {
+            ScrollView {
+                        //UI for workout in progress on the watch
+                        if viewModel.workoutInProgress {
+                            Text("Workout in Progress")
+                                .padding()
+                                .background(Color.yellow)
+                                .cornerRadius(8)
+                                .padding(.top)
+                        }
+
                         VStack(spacing: 16) {
                             ForEach(0..<6) { index in
                                 if index % 3 == 0 {
@@ -58,23 +57,17 @@ struct FeedView: View {
                                     .padding(.horizontal)
                                 }
                             }
-                        }
-                        .padding(.top)
-                        .onAppear {
-                            //   print("Workout in progress: \(workoutInProgress)")
-                            //   workoutInProgress = workoutManager.isWorkoutInProgress
-                             print("View Opened")
-                        }                        
                     }
-                    .navigationTitle("Home Feed")
-                    
-                }
-                
+                    .padding(.top)
+                }   
+                .navigationTitle("Home Feed")                     
             }
-           
+            
         }
+        
     }
-}
+
+
 
 struct WorkoutCardView: View {
     var name: String
