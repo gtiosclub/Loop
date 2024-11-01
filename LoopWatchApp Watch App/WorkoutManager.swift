@@ -338,6 +338,7 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
         // Update iPhone app
         self.sendWorkoutEndedMessage()
         showingSummaryView = true
+        print("showingSummaryView set to \(showingSummaryView)")
     }
 
         #endif
