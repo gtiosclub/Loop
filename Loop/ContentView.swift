@@ -18,7 +18,7 @@ struct ContentView: View {
         TabView(selection: $selectedView,
             content: {
             
-            FeedView().tabItem {
+            FeedView(userId: "05D19515-2423-41BA-A6DA-D13F60D9AF54").tabItem {
                 Label("Home", systemImage: "house.fill")
             }.tag(TabSelection.home)
             
