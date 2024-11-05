@@ -71,7 +71,7 @@ struct ManageFriendsView: View {
             // Friends List
             ScrollView {
                 ForEach(filteredFriends, id: \.self) { friend in
-                    FriendRow(friendName: friend, status: "Now Active")
+                    FriendRow(friendName: friend, status: "")
                 }
             }
             .padding(.top)
