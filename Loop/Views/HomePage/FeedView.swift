@@ -9,21 +9,14 @@ import SwiftUI
 import WatchConnectivity
 
 struct FeedView: View {
-    @StateObject private var viewModel = FeedViewModel()
+    
+    
+    
     
 
     var body: some View {
         NavigationView {
             ScrollView {
-                        //UI for workout in progress on the watch
-                        if viewModel.workoutInProgress {
-                            Text("Workout in Progress")
-                                .padding()
-                                .background(Color.yellow)
-                                .cornerRadius(8)
-                                .padding(.top)
-                        }
-
                         VStack(spacing: 16) {
                             ForEach(0..<6) { index in
                                 if index % 3 == 0 {

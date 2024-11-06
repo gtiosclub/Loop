@@ -30,6 +30,7 @@
 		7C2D02D92CC75D5500D0FA76 /* RecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2D02D82CC75D5500D0FA76 /* RecordView.swift */; };
 		7C2D02DB2CC7685100D0FA76 /* AddParticipantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2D02DA2CC7685100D0FA76 /* AddParticipantView.swift */; };
 		91B4AE522CC95AE300CDED63 /* WorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B4AE512CC95ADE00CDED63 /* WorkoutManager.swift */; };
+		91F24CB22CDBE26900ADC3E2 /* RecordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F24CB12CDBE26900ADC3E2 /* RecordViewModel.swift */; };
 		91F6A7362CD3F0A000562378 /* WorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B4AE512CC95ADE00CDED63 /* WorkoutManager.swift */; };
 		93C0945F2CD14A3E0078E349 /* SelfProfileStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C0945E2CD14A3E0078E349 /* SelfProfileStatsView.swift */; };
 		93C094612CD14C2E0078E349 /* SelfProfileActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C094602CD14C2E0078E349 /* SelfProfileActivityView.swift */; };
@@ -116,6 +117,7 @@
 		7C2D02DA2CC7685100D0FA76 /* AddParticipantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddParticipantView.swift; sourceTree = "<group>"; };
 		91B4AE512CC95ADE00CDED63 /* WorkoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutManager.swift; sourceTree = "<group>"; };
 		91B4AE532CC9626C00CDED63 /* LoopWatchApp Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "LoopWatchApp Watch App.entitlements"; sourceTree = "<group>"; };
+		91F24CB12CDBE26900ADC3E2 /* RecordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordViewModel.swift; sourceTree = "<group>"; };
 		93C0945E2CD14A3E0078E349 /* SelfProfileStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfProfileStatsView.swift; sourceTree = "<group>"; };
 		93C094602CD14C2E0078E349 /* SelfProfileActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfProfileActivityView.swift; sourceTree = "<group>"; };
 		93C094622CD14DAA0078E349 /* TrophyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrophyView.swift; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 				DF95BDB82CAF61EF00CBDA32 /* StatsPageModel.swift */,
 				7C0B1FD82C9CB61C0076B590 /* ViewModel.swift */,
 				DF1CD2B12CACB9C200451888 /* FeedViewModel.swift */,
+				91F24CB12CDBE26900ADC3E2 /* RecordViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -488,6 +491,7 @@
 				DDC500732CB5C55000C0EF97 /* DetailedStatsView.swift in Sources */,
 				7C0B1FDB2C9CE9270076B590 /* User.swift in Sources */,
 				7C0B1FCA2C9CB1AB0076B590 /* SettingsView.swift in Sources */,
+				91F24CB22CDBE26900ADC3E2 /* RecordViewModel.swift in Sources */,
 				7C0B1FCF2C9CB1F00076B590 /* HomeView.swift in Sources */,
 				7C0B1FCC2C9CB1C30076B590 /* ManageFriendsView.swift in Sources */,
 				D49F420A2CA20BCA003607BB /* Challenge.swift in Sources */,

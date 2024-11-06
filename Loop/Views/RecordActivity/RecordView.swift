@@ -6,10 +6,23 @@
 //
 
 import SwiftUI
+import WatchConnectivity
 
 struct RecordView: View {
+    @StateObject private var viewModel = RecordViewModel()
+    
     var body: some View {
-        Text("Record Activity Menu")
+        NavigationView {
+            ScrollView {
+                if viewModel.workoutInProgress {
+                    Text("Workout in Progress")
+                        .padding()
+                        .background(Color.yellow)
+                        .cornerRadius(8)
+                        .padding(.top)
+                }
+            }.navigationTitle("Record View")
+        }
     }
 }
 
