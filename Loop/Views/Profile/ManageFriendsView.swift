@@ -52,7 +52,7 @@ struct ManageFriendsView: View {
                 Button(action: { dismiss() }) {
                     Image(systemName: "arrow.left.circle.fill")
                         .font(.system(size: 30))
-                        .foregroundColor(.orange)
+                        .foregroundColor(.red)
                 }
                 Spacer()
                 Text("Manage Friends").font(.headline)
@@ -63,7 +63,7 @@ struct ManageFriendsView: View {
             // Search Bar
             TextField("Search Friends", text: $searchText)
                 .padding(8)
-                .background(Color.orange.opacity(0.3))
+                .background(Color.red.opacity(0.3))
                 .cornerRadius(8)
                 .padding(.horizontal)
                 .onChange(of: searchText) { _ in filterFriends() }
