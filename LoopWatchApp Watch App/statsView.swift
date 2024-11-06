@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct statsView: View {
+struct StatsView: View {
     @State var buttonEnable: Bool = true
     @State var type: String
     @State var timeCount: TimeInterval
@@ -24,6 +24,7 @@ struct statsView: View {
                         unit: UnitEnergy.kilocalories
                     ).formatted(
                         .measurement(
+                            
                             width: .abbreviated,
                             usage: .workout,
                             numberFormatStyle: .number.precision(.fractionLength(0))
