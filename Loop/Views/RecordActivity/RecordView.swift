@@ -13,8 +13,7 @@ struct RecordView: View {
     
     var body: some View {
         NavigationView {
-
-            
+            VStack{
                 if viewModel.workoutInProgress {
                     Text("Workout in Progress")
                         .padding()
@@ -22,60 +21,60 @@ struct RecordView: View {
                         .cornerRadius(8)
                         .padding(.top)
                 }
-            
-
-            VStack(spacing: 20) {
-                Text("Select Activity")
-                    .font(.title)
-                    .padding(.top)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-
-                Text("Most Recent")
-                    .frame(maxWidth: .infinity, alignment: .leading)
-
-                VStack(alignment: .leading) {
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 15) {
-                            ForEach(activityData, id: \.self) { activity in
-                                NavigationLink(destination: ActivityDetailView(activity: activity)) {
-                                    VStack {
-                                        Image(systemName: activity.iconName)
-                                            .resizable()
-                                            .scaledToFit()
-                                            .frame(width: 40, height: 40)
-                                            .foregroundColor(.black)
-
-                                        Text(activity.label)
+                VStack(spacing: 20) {
+                    Text("Select Activity")
+                        .font(.title)
+                        .padding(.top)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    Text("Most Recent")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    VStack(alignment: .leading) {
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 15) {
+                                ForEach(activityData, id: \.self) { activity in
+                                    NavigationLink(destination: ActivityDetailView(activity: activity)) {
+                                        VStack {
+                                            Image(systemName: activity.iconName)
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(width: 40, height: 40)
+                                                .foregroundColor(.black)
+                                            
+                                            Text(activity.label)
+                                        }
+                                        .frame(width: 80, height: 100)
+                                        .padding()
+                                        .background(Color.gray.opacity(0.2))
+                                        .cornerRadius(8)
+                                        .foregroundColor(.black)
                                     }
-                                    .frame(width: 80, height: 100)
-                                    .padding()
-                                    .background(Color.gray.opacity(0.2))
-                                    .cornerRadius(8)
-                                    .foregroundColor(.black)
                                 }
                             }
+                            .padding()
                         }
-                        .padding()
                     }
-                }
-
-                Text("Activities")
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                
-                List(activityData, id: \.self) { activity in
-                    HStack {
-                        Image(systemName: activity.iconName)
-                        Text(activity.label)
+                    
+                    Text("Activities")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    List(activityData, id: \.self) { activity in
+                        HStack {
+                            Image(systemName: activity.iconName)
+                            Text(activity.label)
+                        }
                     }
+                    .listStyle(PlainListStyle())
+                    
+                    Spacer()
                 }
-                .listStyle(PlainListStyle())
-                
-                Spacer()
+                .padding()
             }
-            .padding()
         }
     }
 }
+    
 
 struct ActivityDetailView: View {
     let activity: Activity
