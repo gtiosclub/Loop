@@ -22,7 +22,7 @@ struct ControlsView: View {
             .font(.title2)
             
             Button {
-                print("Pausing/Resuming workout...")
+                print("Pausing/Resuming workout")
                 
                 if (workoutManager.isPaused) {
                         workoutManager.resumeWorkout()

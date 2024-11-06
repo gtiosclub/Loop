@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct statsView: View {
+struct StatsView: View {
     @EnvironmentObject var workoutManager: WorkoutManager
     
     var body: some View {
@@ -18,6 +18,7 @@ struct statsView: View {
                         unit: UnitEnergy.kilocalories
                     ).formatted(
                         .measurement(
+                            
                             width: .abbreviated,
                             usage: .workout,
                             numberFormatStyle: .number.precision(.fractionLength(0))

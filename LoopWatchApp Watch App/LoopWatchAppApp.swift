@@ -48,7 +48,7 @@ struct LoopWatchApp_Watch_AppApp: App {
             }
         }
     }
-    //@StateObject var wk = WorkoutManager()
+    
     // Initialize managers here
     @StateObject var workoutManager = WorkoutManager.shared
     private let exercisesList = ExercisesList()

@@ -13,7 +13,7 @@ struct WatchTypesOfExerciseView: View {
     var body: some View {
         NavigationStack {
             List(exercisesList.lists) { item in
-                NavigationLink(destination:SessionPagingView2(item: item)
+                NavigationLink(destination:SessionPagingView(item: item)
                             .environmentObject(workoutManager)
                             .onAppear {
                                 workoutManager.startWorkout()
