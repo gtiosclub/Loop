@@ -10,6 +10,8 @@
 		191745362CACBC9700ECC352 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191745352CACBC9300ECC352 /* LoginView.swift */; };
 		195087992CAF60F900AB3EE3 /* ChangePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 195087982CAF60ED00AB3EE3 /* ChangePasswordView.swift */; };
 		1950879D2CAF646C00AB3EE3 /* ChangeEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1950879C2CAF646800AB3EE3 /* ChangeEmailView.swift */; };
+		199ED49D2CDA69CB006065EB /* WelcomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 199ED49C2CDA69C9006065EB /* WelcomView.swift */; };
+		199ED49F2CDA76C1006065EB /* GreetingssView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 199ED49E2CDA76BE006065EB /* GreetingssView.swift */; };
 		19BE4C012CB587300068F0B4 /* CreateLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19BE4C002CB5872B0068F0B4 /* CreateLoginView.swift */; };
 		5B69BE1E2CC082C200B2337D /* excercises.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B69BE192CC082C200B2337D /* excercises.swift */; };
 		5B69BE1F2CC082C200B2337D /* excercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B69BE182CC082C200B2337D /* excercise.swift */; };
@@ -27,9 +29,9 @@
 		7C0B1FD72C9CB24E0076B590 /* ExploreChallengeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B1FD62C9CB24E0076B590 /* ExploreChallengeView.swift */; };
 		7C0B1FD92C9CB61C0076B590 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B1FD82C9CB61C0076B590 /* ViewModel.swift */; };
 		7C0B1FDB2C9CE9270076B590 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0B1FDA2C9CE9270076B590 /* User.swift */; };
-		91B4AE522CC95AE300CDED63 /* WorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B4AE512CC95ADE00CDED63 /* WorkoutManager.swift */; };
 		7C2D02D92CC75D5500D0FA76 /* RecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2D02D82CC75D5500D0FA76 /* RecordView.swift */; };
 		7C2D02DB2CC7685100D0FA76 /* AddParticipantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2D02DA2CC7685100D0FA76 /* AddParticipantView.swift */; };
+		91B4AE522CC95AE300CDED63 /* WorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B4AE512CC95ADE00CDED63 /* WorkoutManager.swift */; };
 		96354F592CA38686003DD6F8 /* ChalLeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96354F582CA3867E003DD6F8 /* ChalLeaderboardView.swift */; };
 		9AB55D2A2CA5373B00C48C32 /* LoopWatchApp Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 9AB55D1D2CA5373A00C48C32 /* LoopWatchApp Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		9AB55D352CA5374F00C48C32 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB55D322CA5374F00C48C32 /* ContentView.swift */; };
@@ -90,6 +92,8 @@
 		191745352CACBC9300ECC352 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		195087982CAF60ED00AB3EE3 /* ChangePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordView.swift; sourceTree = "<group>"; };
 		1950879C2CAF646800AB3EE3 /* ChangeEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailView.swift; sourceTree = "<group>"; };
+		199ED49C2CDA69C9006065EB /* WelcomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomView.swift; sourceTree = "<group>"; };
+		199ED49E2CDA76BE006065EB /* GreetingssView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreetingssView.swift; sourceTree = "<group>"; };
 		19BE4C002CB5872B0068F0B4 /* CreateLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateLoginView.swift; sourceTree = "<group>"; };
 		5B69BE182CC082C200B2337D /* excercise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = excercise.swift; sourceTree = "<group>"; };
 		5B69BE192CC082C200B2337D /* excercises.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = excercises.swift; sourceTree = "<group>"; };
@@ -107,10 +111,10 @@
 		7C0B1FD62C9CB24E0076B590 /* ExploreChallengeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreChallengeView.swift; sourceTree = "<group>"; };
 		7C0B1FD82C9CB61C0076B590 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		7C0B1FDA2C9CE9270076B590 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		91B4AE512CC95ADE00CDED63 /* WorkoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutManager.swift; sourceTree = "<group>"; };
-		91B4AE532CC9626C00CDED63 /* LoopWatchApp Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "LoopWatchApp Watch App.entitlements"; sourceTree = "<group>"; };
 		7C2D02D82CC75D5500D0FA76 /* RecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordView.swift; sourceTree = "<group>"; };
 		7C2D02DA2CC7685100D0FA76 /* AddParticipantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddParticipantView.swift; sourceTree = "<group>"; };
+		91B4AE512CC95ADE00CDED63 /* WorkoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutManager.swift; sourceTree = "<group>"; };
+		91B4AE532CC9626C00CDED63 /* LoopWatchApp Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "LoopWatchApp Watch App.entitlements"; sourceTree = "<group>"; };
 		96354F582CA3867E003DD6F8 /* ChalLeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChalLeaderboardView.swift; sourceTree = "<group>"; };
 		9AB55D1D2CA5373A00C48C32 /* LoopWatchApp Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LoopWatchApp Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AB55D2F2CA5374F00C48C32 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -228,6 +232,8 @@
 				7C0B1FC92C9CB1AB0076B590 /* SettingsView.swift */,
 				19BE4C002CB5872B0068F0B4 /* CreateLoginView.swift */,
 				191745352CACBC9300ECC352 /* LoginView.swift */,
+				199ED49C2CDA69C9006065EB /* WelcomView.swift */,
+				199ED49E2CDA76BE006065EB /* GreetingssView.swift */,
 				7C0B1FCB2C9CB1C30076B590 /* ManageFriendsView.swift */,
 				AAA11A542CAF64CC00445880 /* AddFriendsView.swift */,
 				AA53DE792CB312B50029B7DB /* EditProfileView.swift */,
@@ -483,6 +489,7 @@
 				AA53DE7A2CB312B50029B7DB /* EditProfileView.swift in Sources */,
 				19BE4C012CB587300068F0B4 /* CreateLoginView.swift in Sources */,
 				DF1CD2B02CACB98D00451888 /* FeedView.swift in Sources */,
+				199ED49F2CDA76C1006065EB /* GreetingssView.swift in Sources */,
 				BF0FEFFA2CACA1E3002B4C58 /* Activity.swift in Sources */,
 				DF1CD2B22CACB9C200451888 /* FeedViewModel.swift in Sources */,
 				7C0B1FD32C9CB2110076B590 /* ChallengeView.swift in Sources */,
@@ -498,6 +505,7 @@
 				7C2D02D92CC75D5500D0FA76 /* RecordView.swift in Sources */,
 				BF7005F72CB7260F0057A8BF /* AuthManager.swift in Sources */,
 				1950879D2CAF646C00AB3EE3 /* ChangeEmailView.swift in Sources */,
+				199ED49D2CDA69CB006065EB /* WelcomView.swift in Sources */,
 				7C2D02DB2CC7685100D0FA76 /* AddParticipantView.swift in Sources */,
 				7C0B1FD92C9CB61C0076B590 /* ViewModel.swift in Sources */,
 				191745362CACBC9700ECC352 /* LoginView.swift in Sources */,

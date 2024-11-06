@@ -19,7 +19,7 @@ struct SettingsView: View {
                         }) {
                             Image(systemName: "arrow.left.circle.fill")
                                 .font(.system(size: 30))
-                                .foregroundColor(.orange)
+                                .foregroundColor(.red)
                         }
                         Spacer()
                     }
@@ -86,11 +86,12 @@ struct SettingsView: View {
                         //delete profile implementation
                     }) {
                         HStack{
-                            Image(systemName: "trash.circle.fill").font(.system(size:40)).foregroundColor(.white)
+                            Image(systemName: "rectangle.portrait.and.arrow.forward").font(.system(size:40)).foregroundColor(.white)
                                 .padding(.trailing, 3)
                                 .padding(.leading, 3)
+                                .scaleEffect(x: -1, y: 1)
                             VStack(alignment: .leading) {
-                                Text("Delete Account").font(.headline).foregroundColor(.white)
+                                Text("Log Out").font(.headline).foregroundColor(.white)
                             }
                             Spacer()
                         }.padding().background(Color.red).cornerRadius(10).shadow(radius: 2).padding(.horizontal);
