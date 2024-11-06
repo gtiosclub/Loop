@@ -20,6 +20,7 @@ struct LoginView: View {
     @EnvironmentObject var authManager: AuthManager
     
     var body: some View {
+
         NavigationStack {
             ZStack {
                 VStack {
@@ -183,7 +184,6 @@ struct LoginView: View {
             }
         } .navigationBarBackButtonHidden(true)
     }
-       
 }
 
 #Preview {

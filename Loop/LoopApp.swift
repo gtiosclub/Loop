@@ -22,7 +22,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 }
 
 // Manager for HealthKit permissions
-class HealthKitManager {
+class HealthKitManager: ObservableObject {
     static let shared = HealthKitManager()
     let healthStore = HKHealthStore()
 
