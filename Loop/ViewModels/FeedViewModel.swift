@@ -51,4 +51,3 @@ struct FriendPost {
     let content: String
     let date: String
 }
-

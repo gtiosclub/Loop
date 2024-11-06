@@ -6,14 +6,18 @@
 //
 
 import SwiftUI
+import WatchConnectivity
 
 struct FeedView: View {
+
     @StateObject private var viewModel = FeedViewModel()
     let userId: String
+
 
     var body: some View {
         NavigationView {
             ScrollView {
+
                 VStack(spacing: 16) {
                     ForEach(viewModel.friendPosts, id: \.id) { post in
                         TextCardView(
@@ -24,8 +28,9 @@ struct FeedView: View {
                         )
                         .padding(.horizontal)
                     }
-                }
-                .padding(.top)
+                    .padding(.top)
+                }   
+                .navigationTitle("Home Feed")                     
             }
             .navigationTitle("Home Feed")
             .onAppear {
