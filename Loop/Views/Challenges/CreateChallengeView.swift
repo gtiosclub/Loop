@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import FirebaseCore
+import FirebaseFirestore
 
 struct CreateChallengeView: View {
     @Environment(\.dismiss) private var dismiss
@@ -17,9 +19,53 @@ struct CreateChallengeView: View {
     @State private var isDatePickerVisible = false
     @State private var searchText: String = ""
     @State private var joinCode: String = ""
+    @State private var showAlert = false
+    @State private var alertMessage = ""
     
 //    @State private var popUpOpen = false
     
+    func createChallege() async {
+        let db = Firestore.firestore()
+        
+        //check if access code already exists
+        db.collection("challenges")
+            .whereField("accessCode", isEqualTo: joinCode)
+            .getDocuments { (querySnaphot, error) in
+                if let error = error {
+                    print("Error retrieving documents: \(error)")
+                    return
+                }
+            //if document exists with same access code
+                if let documents = querySnaphot?.documents, !documents.isEmpty {
+                    //access code already exists
+                    self.alertMessage = "A challenge with access code \(joinCode) already exists. Please use a different code."
+                    self.showAlert = true
+                    return
+                } else {
+                    Task {
+                        var challenge =
+                        Challenge(
+                            title: challengeName,
+                            host: User.shared.uid,
+                            attendees: [],
+                            challengeType: challengeActivity.rawValue, 
+                            lengthInMinutes: 0,
+                            dataMeasured: challengeMetric.rawValue,
+                            endDate: endDate,
+                            theme: .bubblegum,
+                            accessCode: joinCode
+                        )
+                        
+                        if let challengeId = await challenge.addChallenge() {
+                            print("Challenge created with ID: \(challengeId)")
+                            dismiss()
+                        } else {
+                            print("Failed to create challenge")
+                        }
+                    }
+                }
+            }
+    }
     
     var body: some View {
         ZStack {
@@ -163,7 +209,9 @@ struct CreateChallengeView: View {
                     }
                     
                     Button(action: {
-                        
+                        Task {
+                            await createChallege()
+                        }
                     }){
                         Text("CREATE CHALLENGE")
                             .font(.system(size:22))
@@ -177,6 +225,9 @@ struct CreateChallengeView: View {
                     
                 }
                 .padding([.leading,.trailing], 20)
+            }
+            .alert(isPresented: $showAlert) {
+                Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
             }
             .navigationBarBackButtonHidden(true)
             .toolbar(.hidden, for: .tabBar)
