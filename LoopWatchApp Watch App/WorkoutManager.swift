@@ -9,6 +9,83 @@ import HealthKit
 import SwiftUI
 import os
 
+enum WorkoutType {
+    case running(HKWorkoutActivityType, HKQuantityType, HKWorkoutSessionLocationType)
+    case biking(HKWorkoutActivityType, HKQuantityType, HKWorkoutSessionLocationType)
+    case swimming(HKWorkoutActivityType, HKQuantityType, HKWorkoutSwimmingLocationType)
+    case hiking(HKWorkoutActivityType, HKQuantityType, HKWorkoutSessionLocationType)
+
+    init(_ type: String) {
+        switch type {
+        case "running":
+            self = .running(HKWorkoutActivityType.running,
+                            HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning)!,
+                            HKWorkoutSessionLocationType.outdoor)
+        case "biking":
+            self = .biking(HKWorkoutActivityType.cycling,
+                           HKQuantityType.quantityType(forIdentifier: .distanceCycling)!,
+                           HKWorkoutSessionLocationType.outdoor)
+        case "swimming":
+            self = .swimming(HKWorkoutActivityType.swimming,
+                             HKQuantityType.quantityType(forIdentifier: .distanceSwimming)!,
+                             HKWorkoutSwimmingLocationType.pool)
+        case "hiking":
+            self = .hiking(HKWorkoutActivityType.hiking,
+                           HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning)!,
+                           HKWorkoutSessionLocationType.outdoor)
+        default:
+            fatalError("Unsupported workout type")
+        }
+    }
+    
+    func getType() -> HKWorkoutActivityType {
+        switch self {
+        case .running(let type, _, _),
+            .biking(let type, _, _),
+            .swimming(let type, _, _),
+            .hiking(let type, _, _):
+            return type
+        }
+    }
+    
+    func getQuantityType() -> HKQuantityType{
+        switch self {
+        case .running(_, let quantityType, _),
+            .biking(_, let quantityType, _),
+            .swimming(_, let quantityType, _),
+            .hiking(_, let quantityType, _):
+            return quantityType
+        }
+    }
+    
+    func getLocation() -> Any {
+        switch self {
+        case .running(_, _, let location),
+            .biking(_, _, let location),
+            .hiking(_, _, let location):
+            return location as Any
+        case .swimming(_, _, let location):
+            return location as Any
+        }
+    }
+    
+    func configure() -> HKWorkoutConfiguration {
+        let configuration = HKWorkoutConfiguration()
+        configuration.activityType = getType()
+        switch self {
+        case .running,
+            .biking,
+            .hiking:
+            configuration.locationType = getLocation() as! HKWorkoutSessionLocationType
+        case .swimming:
+            configuration.swimmingLocationType = getLocation() as! HKWorkoutSwimmingLocationType
+            configuration.lapLength = HKQuantity(unit: HKUnit.mile(), doubleValue: 0.1)
+        }
+        return configuration
+    }
+    
+}
+
 class WorkoutManager: NSObject, ObservableObject {
     @Published var isRunning = false
     @Published var isPaused = false
@@ -20,49 +97,10 @@ class WorkoutManager: NSObject, ObservableObject {
     private var session: HKWorkoutSession?
     private var builder: HKLiveWorkoutBuilder?
     
-    func getQuantityType(for workoutType: String) -> [Any] {
-        switch workoutType.lowercased() {
-        case "running":
-            return [
-                HKWorkoutActivityType.running,
-                HKWorkoutSessionLocationType.outdoor,
-                HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning) as Any]
-        case "biking":
-            return [
-                HKWorkoutActivityType.cycling,
-                HKWorkoutSessionLocationType.outdoor,
-                HKQuantityType.quantityType(forIdentifier: .distanceCycling) as Any]
-        case "swimming":
-            return [
-                HKWorkoutActivityType.swimming,
-                HKWorkoutSwimmingLocationType.pool,
-                HKQuantityType.quantityType(forIdentifier: .distanceSwimming) as Any]
-        case "hiking":
-            return [
-                HKWorkoutActivityType.hiking,
-                HKWorkoutSessionLocationType.outdoor,
-                HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning) as Any]
-        default:
-            return []
-        }
-    }
-
     func startWorkout(_ workoutType: String) {
         distance = 0
         calories = 0
-        let quantTypes = getQuantityType(for: workoutType)
-        let configuration = HKWorkoutConfiguration()
-        configuration.activityType = quantTypes[0] as! HKWorkoutActivityType
-        if workoutType.lowercased() == "swimming" {
-            configuration.swimmingLocationType = quantTypes[1] as! HKWorkoutSwimmingLocationType
-
-            if configuration.swimmingLocationType == .pool {
-                let lapLength = HKQuantity(unit: HKUnit.mile(), doubleValue: 0.1)
-                configuration.lapLength = lapLength
-            }
-        } else {
-            configuration.locationType = quantTypes[1] as! HKWorkoutSessionLocationType
-        }
+        let configuration:HKWorkoutConfiguration = WorkoutType(workoutType.lowercased()).configure()
 
         do {
             session = try HKWorkoutSession(healthStore: healthStore, configuration: configuration)
@@ -81,7 +119,7 @@ class WorkoutManager: NSObject, ObservableObject {
                     print("Successfully started workout")
                 }
             })
-            
+
         } catch {
             print("Failed to start workout: \(error.localizedDescription)")
         }
@@ -135,7 +173,6 @@ class WorkoutManager: NSObject, ObservableObject {
                         print("No workout generated")
                         return
                     }
-
                     
                     self.saveWorkoutToHealthStore(workout: workout, workoutType)
                 })
@@ -154,7 +191,7 @@ class WorkoutManager: NSObject, ObservableObject {
 
         // Create the distance sample
         let distanceSample = HKQuantitySample(
-            type: getQuantityType(for: workoutType)[2] as! HKQuantityType,
+            type: WorkoutType(workoutType.lowercased()).getQuantityType(),
             quantity: distanceQuantity,
             start: workout.startDate,
             end: workout.endDate
@@ -177,8 +214,6 @@ class WorkoutManager: NSObject, ObservableObject {
             }
         }
     }
-
-
 }
 
 extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate {
@@ -215,7 +250,7 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
                 // Track distance traveled for running
                 if quantityType == HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning) ||
                     quantityType == HKObjectType.quantityType(forIdentifier: .distanceCycling) ||
-                    quantityType == HKObjectType.quantityType(forIdentifier: .distanceSwimming){
+                    quantityType == HKObjectType.quantityType(forIdentifier: .distanceSwimming) {
                     if let distance = workoutBuilder.statistics(for: quantityType)?.sumQuantity() {
                         DispatchQueue.main.sync {
                             let distanceInYards = distance.doubleValue(for: HKUnit.mile())
