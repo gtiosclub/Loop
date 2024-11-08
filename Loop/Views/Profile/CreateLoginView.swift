@@ -146,6 +146,7 @@ struct CreateLoginView: View {
                                         }
                                         thirdRequirenment = (containsNoSpecialCharacters(in: Password)) && firstRequirenment
                                     }
+                                    .textContentType(.oneTimeCode)
                             } else {
                                 TextField("Password", text: $Password)
                                     .padding(.trailing, 32)
@@ -160,6 +161,7 @@ struct CreateLoginView: View {
                                         }
                                         thirdRequirenment = containsNoSpecialCharacters(in: Password) && firstRequirenment
                                     }
+                                    .textContentType(.oneTimeCode)
                             }
                             
                             Button(action: {
@@ -184,11 +186,15 @@ struct CreateLoginView: View {
                         
                         HStack {
                             if isSecure2 {
-                                SecureField("Comfirm Password", text: $ConfirmPassword)
+                                SecureField("Confirm Password", text: $ConfirmPassword)
+                                    .autocapitalization(.none)
                                     .padding(.trailing, 32) // Add padding to leave space for the button
+                                    .textContentType(.oneTimeCode)
                             } else {
-                                TextField("Comfirm Password", text: $ConfirmPassword)
+                                TextField("Confirm Password", text: $ConfirmPassword)
+                                    .autocapitalization(.none)
                                     .padding(.trailing, 32)
+                                    .textContentType(.oneTimeCode)
                             }
                             
                             Button(action: {
