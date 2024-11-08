@@ -59,7 +59,7 @@ struct YourApp: App {
           if authManager.isAuthenticated {
               ContentView()
           } else {
-              LoginView()
+              WelcomView()
           }
       }
       .environmentObject(authManager)

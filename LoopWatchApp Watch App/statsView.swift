@@ -1,6 +1,12 @@
 import SwiftUI
 
 struct StatsView: View {
+    @State var buttonEnable: Bool = true
+    @State var type: String
+    @State var timeCount: TimeInterval
+    @State var isTimerRunning = false
+    @State var timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
+    
     @EnvironmentObject var workoutManager: WorkoutManager
     
     var body: some View {
