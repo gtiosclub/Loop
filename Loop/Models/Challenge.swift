@@ -169,11 +169,17 @@ struct Challenge: Identifiable {  // Previously DailyScrum
 }
 
 extension Challenge {
+    static let calendar = Calendar.current
+    static var specificDate1 = calendar.date(from: DateComponents(year: 2024, month:12, day: 16))
+    static var specificDate2 =  calendar.date(from: DateComponents(year: 2024, month:12, day: 31))
+    static var specificDate3 =  calendar.date(from: DateComponents(year: 2024, month:12, day: 1))
+
+        
     static var sampleData: [Challenge] {
         [
-            Challenge(title: "iOS Run Club", host: "Danny", attendees: ["Cathy", "Daisy", "Simon", "Jonathan"], challengeType: "Accumulation", lengthInMinutes: 10, dataMeasured: "Miles", endDate: .distantFuture, theme: .yellow, accessCode: "1111"),
-            Challenge(title: "CoC Challenges", host: "Gray", attendees: ["Katie", "Gray", "Euna", "Luis", "Darla"], challengeType: "Best rep", lengthInMinutes: 5, dataMeasured: "1 Mile", endDate: .distantFuture, theme: .orange, accessCode: "2222"),
-            Challenge(title: "Joey vs Jason vs John", host: "Joey", attendees: ["Joey", "John", "Jason"], challengeType: "Accumulation", lengthInMinutes: 5, dataMeasured: "Calories Burned", endDate: .distantFuture, theme: .purple, accessCode: "3333")
+            Challenge(title: "iOS Run Club", host: "Danny", attendees: ["Cathy", "Daisy", "Simon", "Jonathan"], challengeType: "Accumulation", lengthInMinutes: 10, dataMeasured: "Miles", endDate: specificDate1! , theme: .yellow, accessCode: "1111"),
+            Challenge(title: "CoC Challenges", host: "Gray", attendees: ["Katie", "Gray", "Euna", "Luis", "Darla"], challengeType: "Best rep", lengthInMinutes: 5, dataMeasured: "1 Mile", endDate: specificDate2! , theme: .orange, accessCode: "2222"),
+            Challenge(title: "Joey vs Jason vs John", host: "Joey", attendees: ["Joey", "John", "Jason"], challengeType: "Accumulation", lengthInMinutes: 5, dataMeasured: "Calories Burned", endDate: specificDate3! , theme: .purple, accessCode: "3333")
         ]
     }
 }

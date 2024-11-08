@@ -14,15 +14,12 @@ struct CreateChallengeView: View {
     @State private var challengeName: String = ""
     @State private var challengeActivity: ChallengeActivity = .Running
     @State private var challengeMetric: ChallengeMetric = .Distance
-//    @State private var attendees: [String] = []
     @State private var endDate: Date = Date()
     @State private var isDatePickerVisible = false
     @State private var searchText: String = ""
     @State private var joinCode: String = ""
     @State private var showAlert = false
     @State private var alertMessage = ""
-    
-//    @State private var popUpOpen = false
     
     func createChallege() async {
         let db = Firestore.firestore()
@@ -189,10 +186,6 @@ struct CreateChallengeView: View {
                         .font(.title2)
                         .bold()
                         .padding(.top, 20)
-                    
-                    Text("Enter a code that participants will need to enter to join your challenge")
-                        .font(.system(size: 13))
-                        .foregroundColor(.gray)
                     
                     HStack{
                         TextField("Join Code", text: $joinCode)
