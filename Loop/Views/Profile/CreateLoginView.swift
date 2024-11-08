@@ -32,6 +32,7 @@ struct CreateLoginView: View {
     @State private var thirdRequirenment: Bool = false
     @State private var alerTitle: String = ""
     @State private var TOS: Bool = false
+    @State private var InvalidEmail: Bool = false
     
     
     var hasAllFields: Bool {
@@ -451,6 +452,11 @@ func containsNoSpecialCharacters(in string: String) -> Bool {
     // Check if the string is only made up of allowed characters
     return string.rangeOfCharacter(from: allowedCharacterSet.inverted) != nil
 }
+
+private func isValidEmail(_ email: String) -> Bool {
+        // Check if the email contains "@" and ends with ".com"
+        return email.contains("@") && email.hasSuffix(".com")
+    }
 
 
 #Preview {
