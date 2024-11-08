@@ -156,7 +156,7 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
     }
 
     #if os(watchOS)
-    private var builder: HKLiveWorkoutBuilder?
+    var builder: HKLiveWorkoutBuilder?
     #endif
     // Init the WC session
     override init() {
