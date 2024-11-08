@@ -9,125 +9,77 @@ import SwiftUI
 
 struct ChalLeaderboardView: View {
     var personList: [Person]
-    var colorList: [Color] = [.yellow, .gray, .orange]
-    
-    @State private var showMore: Bool = false
     
     var body: some View {
-        HStack {
-            Text("Leaderboard")
-                .font(.system(size: 32, weight: .bold))
-                .foregroundStyle(.orange)
-                .padding([.leading, .trailing, .bottom], 15)
-                .padding(.top, 30)
-            Spacer()
-        }
-        
         let sortedPersonList = personList.sorted(by: {$0.distance > $1.distance})
-        let maxProgressLength: Double = sortedPersonList[0].distance
-        let count: Int = {sortedPersonList.count > 3 ? 3 : sortedPersonList.count}()
         
-        ForEach(0..<count, id: \.self) { index in
-            HStack {
-                ZStack {
-                    Circle()
-                        .foregroundColor(colorList[index])
-                        .frame(width: 50, height: 50)
-                    Text(String(index + 1))
-                        .font(.system(size: 25, weight: .semibold))
-                        .foregroundColor(.black)
-                }
-                
-                VStack {
-                    HStack {
-                        Text(sortedPersonList[index].name)
-                            .font(.system(size: 20, weight: .bold))
-                        Spacer()
-                        Text(String(sortedPersonList[index].distance) + " mi")
-                            .font(.system(size: 14, weight: .bold))
-                            .padding(.trailing, 10)
-                    }
-                    .padding(.top, -5)
-                    
-                    HStack {
-                        RoundedRectangle(cornerRadius: 15)
-                            .fill(colorList[index])
-                            .frame(width: 295*(sortedPersonList[index].distance/maxProgressLength), height: 5)
-                            .padding(.top, -10)
-                        Spacer()
-                    }
-                }
-            }
-            .padding([.leading, .trailing], 15)
-        }
-        
+        PodiumView(personList: Array(sortedPersonList[0...2]))
+    
         ZStack {
-            if (!showMore && sortedPersonList.count > 3) {
+            RoundedRectangle(cornerRadius: 14)
+                .fill(Color(.lightGray))
+                .frame(width: 375, height: 50)
+            
+            HStack {
+                Text("You are currently rank")
+                    .fontWeight(.light)
+                
+                Spacer()
+                
+                Text(String(sortedPersonList[0].distance) + " miles")
+                    .fontWeight(.medium)
+                
                 HStack {
-                    Text("View more")
-                    Image(systemName: "chevron.down")
+                    Text("1")
+                    Image(systemName: "arrowtriangle.up.fill")
+                        .font(.system(size: 9, weight: .regular))
+                        .opacity(0.5)
                 }
-                .onTapGesture {
-                    if !showMore {
-                        withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                            showMore.toggle()
-                        }
-                    }
-                }
-            } else if (sortedPersonList.count > 3) {
-                VStack {
-                    ForEach(3..<sortedPersonList.count, id: \.self) { index in
-                        HStack {
-                            ZStack {
-                                Circle()
-                                    .foregroundColor(.cyan)
-                                    .frame(width: 50, height: 50)
-                                Text(String(index + 1))
-                                    .font(.system(size: 25, weight: .semibold))
-                                    .foregroundColor(.black)
-                            }
-                            
-                            VStack {
-                                HStack {
-                                    Text(sortedPersonList[index].name)
-                                        .font(.system(size: 20, weight: .bold))
-                                    Spacer()
-                                    Text(String(sortedPersonList[index].distance) + " mi")
-                                        .font(.system(size: 14, weight: .bold))
-                                        .padding(.trailing, 10)
-                                }
-                                .padding(.top, -5)
-                                
-                                HStack {
-                                    RoundedRectangle(cornerRadius: 15)
-                                        .fill(.cyan)
-                                        .frame(width: 295*(sortedPersonList[index].distance/maxProgressLength), height: 5)
-                                        .padding(.top, -10)
-                                    Spacer()
-                                }
-                            }
-                        }
-                        .padding([.leading, .trailing], 15)
-                    }
-                    
+                .padding(.leading, 30)
+                .fontWeight(.medium)
+                
+            }
+            .font(.system(size: 14))
+            .padding(.horizontal, 30)
+        }
+        .padding(.top, -30)
+        
+        VStack {
+            if (sortedPersonList.count > 3) {
+                ForEach(3..<sortedPersonList.count, id: \.self) { index in
                     HStack {
-                        Text("Show less")
-                        Image(systemName: "chevron.up")
-                    }
-                    .onTapGesture {
-                        if showMore {
-                            withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                                showMore.toggle()
-                            }
+                        Circle()
+                            .foregroundColor(.gray)
+                            .frame(width: 30, height: 30)
+                        
+                        Text(sortedPersonList[index].name)
+                            .fontWeight(.light)
+                        
+                        Spacer()
+                        
+                        Text(String(sortedPersonList[index].distance) + " miles")
+                            .fontWeight(.medium)
+                        
+                        HStack {
+                            Text(String(index + 1))
+                            Image(systemName: "arrowtriangle.up.fill")
+                                .font(.system(size: 9, weight: .regular))
+                                .opacity(0.5)
                         }
+                        .padding(.leading, 30)
+                        .fontWeight(.medium)
+                        
                     }
+                    .font(.system(size: 14))
+                    .padding(.horizontal, 30).padding(.vertical, 5)
+                    
+                    Divider().frame(width: 375).overlay(.gray)
                 }
             }
         }
-        
     }
 }
 
 #Preview {
-    ChalLeaderboardView(personList: [Person(name:"Ryan", distance: 50.2), Person(name:"Max", distance: 104.8), Person(name:"Jason", distance: 85), Person(name:"Sam", distance: 90.6), Person(name: "Joe", distance: 20.2)])
+    ChalLeaderboardView(personList: [Person(name:"Ryan", distance: 4.2), Person(name:"Max", distance: 14.8), Person(name:"Jason", distance: 7.1), Person(name:"Sam", distance: 11.4), Person(name: "Joe", distance: 5.5)])
 }

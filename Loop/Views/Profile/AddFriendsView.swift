@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+// struct to add friend
 struct AddFriendRow: View {
     var friendName: String
     var status: String
@@ -22,6 +22,7 @@ struct AddFriendRow: View {
             VStack {
                 Button(action: {
                     print("friend added")
+                    // code to add friend
                 }) {Image(systemName: "plus")
                         .font(.system(size: 24))
                         .padding()
@@ -33,6 +34,7 @@ struct AddFriendRow: View {
         }.padding().background(Color.white).cornerRadius(10).shadow(radius: 2).padding(.horizontal)
     }
 }
+// accept or deny friend request
 struct AcceptFriendRow: View {
     var friendName: String
     var status: String
@@ -48,6 +50,7 @@ struct AcceptFriendRow: View {
             VStack {
                 Button(action: {
                     print("friend added")
+                    // code to accept friend
                 }) {Image(systemName: "plus")
                         .font(.system(size: 24))
                         .padding()
@@ -59,6 +62,7 @@ struct AcceptFriendRow: View {
             VStack {
                 Button(action: {
                     print("friend removed")
+                    //code to reject friend
                 }) {Image(systemName: "xmark")
                         .font(.system(size: 24))
                         .padding()
@@ -75,13 +79,12 @@ struct AddFriendsView: View {
     @State private var searchText: String = ""
     @State private var allFriends: [String] = ["Kevin", "Ethan", "Jason"]
     @State private var requestingFriends: [String] = ["Me", "Kevin", "Ethan", "Jason"]
-    @State private var matchedFriends: [String] = []
+    @State private var matchedFriends: [String] = ["Kevin", "Ethan", "Jason"]
     @Environment(\.presentationMode) var presentationMode
     
     private func filterFriends() {
         if searchText.isEmpty {
-            // When search is empty, reset to the original friends list
-            matchedFriends = []
+            matchedFriends = allFriends
         } else {
             // Filter friends by search text
             matchedFriends = allFriends.filter { $0.lowercased().contains(searchText.lowercased()) && !$0.contains("1") }
