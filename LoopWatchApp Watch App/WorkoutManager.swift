@@ -125,9 +125,11 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
                 resetWorkout()
                 
             }
+        }
+    }
 
     #if os(watchOS)
-    private var builder: HKLiveWorkoutBuilder?
+    var builder: HKLiveWorkoutBuilder?
     #endif
           
     // Init the WC session
