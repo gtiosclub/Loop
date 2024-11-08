@@ -21,12 +21,16 @@ class HealthKitManager {
         let readTypes: Set<HKObjectType> = [
             HKObjectType.workoutType(),
             HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!,
+            HKObjectType.quantityType(forIdentifier: .distanceCycling)!,
+            HKObjectType.quantityType(forIdentifier: .distanceSwimming)!,
             HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
         ]
 
         let writeTypes: Set<HKSampleType> = [
             HKObjectType.workoutType(),
             HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!,
+            HKObjectType.quantityType(forIdentifier: .distanceCycling)!,
+            HKObjectType.quantityType(forIdentifier: .distanceSwimming)!,
             HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
         ]
 
