@@ -96,7 +96,7 @@ struct Challenge: Identifiable {  // Previously DailyScrum
                 let documentUser = try await docUserRef.getDocument()
                 if documentUser.exists {
                     if let dataDescription = documentUser.data() {
-                        if let challengeIds = dataDescription["challengeIds"] as? String{
+                        if let challengeIds = dataDescription["challengeIds"] as? [String] {
                             var challengeIdsArray = challengeIds
                             challengeIdsArray.append(id)
                             print("Added challenge id to user's challenge ids array.")
