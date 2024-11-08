@@ -119,6 +119,9 @@ struct CreateLoginView: View {
                             TextField("Email Address", text: $Email)
                                 .padding(.trailing, 32)
                                 .autocapitalization(.none)
+                                .onChange(of: Email, initial: true) {
+                                    InvalidEmail = !isValidEmail(Email)
+                                }
                             
                         }
                         .padding()
@@ -307,14 +310,19 @@ struct CreateLoginView: View {
                     } else if (Password == ""){
                         showAlert.toggle()
                         alerTitle = "Your Password is Empty"
+                    } else if (InvalidEmail) {
+                        showAlert.toggle()
+                        alerTitle = "Invalid Email Address"
+                        
                     } else if (ConfirmPassword != Password) {
                         showAlert.toggle()
                         alerTitle = "Comfirm Password is not the same as Password"
 
                     } else {
-                        alerTitle = "Password changed successfully"
+                        alerTitle = "Account created successfully"
+                        signup()
                     }
-                    signup()
+                   
                 }, label: {
                     Text("Create Account")
                         .font(.headline)
@@ -395,8 +403,8 @@ struct CreateLoginView: View {
             }
         }
         .alert(isPresented: $showAlert) {
-            Alert(title: Text("Login Failed"),
-                  message: Text(alertMessage),
+            Alert(title: Text(alerTitle),
+                  
                   dismissButton: .default(Text("OK")))
         }
     }
