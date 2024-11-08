@@ -16,7 +16,7 @@ struct WatchTypesOfExerciseView: View {
                 NavigationLink(destination:statsView(type:item.type, timeCount: 0, isTimerRunning: true)
                             .environmentObject(workoutManager)
                             .onAppear {
-                                workoutManager.startWorkout()
+                                workoutManager.startWorkout(item.type)
                             }) {
                     VStack {
                         Image(systemName: item.image)

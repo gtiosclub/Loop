@@ -9,7 +9,8 @@ import Foundation
 import SwiftUI
 
 struct statsView: View {
-    @State var type:String
+    @State var buttonEnable: Bool = true
+    @State var type: String
     @State var timeCount: TimeInterval
     @State var isTimerRunning = false
     @State var timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
@@ -29,7 +30,7 @@ struct statsView: View {
                         }
                     }.frame(width:160)
                 Button(action: {
-                    if (workoutManager.isRunning || workoutManager.isPaused) {
+                    if (buttonEnable) {
                         isTimerRunning.toggle()
                         if (isTimerRunning) {
                             workoutManager.resumeWorkout()
@@ -53,15 +54,15 @@ struct statsView: View {
             
             // Stop Workout Button
             Button(action: {
-                if (workoutManager.isRunning || workoutManager.isPaused) {
+                if (buttonEnable) {
                     isTimerRunning = false
                     workoutManager.resumeWorkout()
-                    workoutManager.endWorkout()
+                    workoutManager.endWorkout(type)
+                    buttonEnable = false;
                 }
             }) {
-                var open = workoutManager.isRunning || workoutManager.isPaused
-                Text(open ? "End Workout" : "Workout Ended")
-                    .foregroundColor(open ? .red : .white)
+                Text(buttonEnable ? "End Workout" : "Workout Ended")
+                    .foregroundColor(buttonEnable ? .red : .white)
             }
             
         }
