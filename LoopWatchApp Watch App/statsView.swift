@@ -5,50 +5,51 @@ struct StatsView: View {
     
     var body: some View {
         TimelineView(MetricsTimelineSchedule(from: workoutManager.builder?.startDate ?? Date())) { context in
-            VStack(alignment: .leading) {
-                ElapsedTimeView(
-                    elapsedTime: workoutManager.builder?.elapsedTime ?? 0,
-                    showSubseconds: context.cadence == .live
-                )
-                .foregroundColor(Color.yellow)
-                
-                Text(
-                    Measurement(
-                        value: workoutManager.activeEnergy,
-                        unit: UnitEnergy.kilocalories
-                    ).formatted(
-                        .measurement(
-                            
-                            width: .abbreviated,
-                            usage: .workout,
-                            numberFormatStyle: .number.precision(.fractionLength(0))
+            GeometryReader { geometry in
+                VStack(alignment: .leading) {
+                    ElapsedTimeView(
+                        elapsedTime: workoutManager.builder?.elapsedTime ?? 0,
+                        showSubseconds: context.cadence == .live
+                    )
+                    .foregroundColor(Color.yellow)
+                    
+                    Text(
+                        Measurement(
+                            value: workoutManager.activeEnergy,
+                            unit: UnitEnergy.kilocalories
+                        ).formatted(
+                            .measurement(
+                                width: .abbreviated,
+                                usage: .workout,
+                                numberFormatStyle: .number.precision(.fractionLength(0))
+                            )
                         )
                     )
-                )
-                
-                Text(
-                    workoutManager.heartRate.formatted(.number.precision(.fractionLength(0))) + " bpm"
-                )
-                
-                Text(
-                    Measurement(
-                        value: workoutManager.distance,
-                        unit: UnitLength.meters
-                    ).formatted(
-                        .measurement(
-                            width: .abbreviated,
-                            usage: .road
+                    
+                    Text(
+                        workoutManager.heartRate.formatted(.number.precision(.fractionLength(0))) + " bpm"
+                    )
+                    
+                    Text(
+                        Measurement(
+                            value: workoutManager.distance,
+                            unit: UnitLength.meters
+                        ).formatted(
+                            .measurement(
+                                width: .abbreviated,
+                                usage: .road
+                            )
                         )
                     )
+                }
+                .font(.system(.title, design: .rounded)
+                        .monospacedDigit()
+                        .lowercaseSmallCaps()
                 )
+                .frame(maxWidth: geometry.size.width * 0.9, alignment: .leading)
+                .ignoresSafeArea(edges: .bottom)
+                .scenePadding()
             }
-            .font(.system(.title, design: .rounded)
-                    .monospacedDigit()
-                    .lowercaseSmallCaps()
-            )
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .ignoresSafeArea(edges: .bottom)
-            .scenePadding()
         }
     }
 }
