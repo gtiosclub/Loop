@@ -145,6 +145,7 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
             session.activate()
         }
     }
+    
 
     func startWorkout(_ workoutType: String) {
         #if os(watchOS)
@@ -153,6 +154,7 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
                     self?.updateTotalTime()
                 }
+        
         let configuration:HKWorkoutConfiguration = WorkoutType(workoutType.lowercased()).configure()
 
         do {
@@ -165,6 +167,18 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
             builder?.dataSource = HKLiveWorkoutDataSource(healthStore: healthStore, workoutConfiguration: configuration)
 
             session?.startActivity(with: Date())
+            
+            guard CLLocationManager.locationServicesEnabled() else {
+                print("Location services are not enabled")
+                return
+            }
+            
+            print("Location services are enabled")
+            locationManager.requestWhenInUseAuthorization() // Ensure background location permission
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager.startUpdatingLocation()
+            
             builder?.beginCollection(withStart: Date(), completion: { (success, error) in
                 DispatchQueue.main.sync {
                     self.isRunning = true
@@ -188,7 +202,7 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
             WCSession.default.sendMessage(["workoutStarted": true], replyHandler: nil, errorHandler: { error in
                 print("Error sending message: \(error.localizedDescription)")
             })
-            print("Message sent")
+            print("Started: Message sent")
         } else {
             print("Session is not reachable")
         }
@@ -199,7 +213,7 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
             WCSession.default.sendMessage(["workoutStarted": false], replyHandler: nil, errorHandler: { error in
                 print("Error sending message: \(error.localizedDescription)")
             })
-            print("Message sent")
+            print("Ended: Message sent")
         } else {
             print("Session is not reachable")
         }
@@ -271,6 +285,7 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
 
         // Then, end the data collection
         builder.endCollection(withEnd: Date()) { success, error in
+            print("Here")
             if success {
                 // Finalize the workout
                 self.builder?.finishWorkout(completion: { (workout, error) in
@@ -294,7 +309,6 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
                 print("Error ending workout collection: \(error.localizedDescription)")
             }
         }
-
         // Update iPhone app
         self.sendWorkoutEndedMessage()
 
@@ -335,26 +349,56 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
                     end: date.addingTimeInterval(1) // 1 second duration for instant measurement
                 )
             }
+            
+            // Add average heart rate sample
+            let totalHeartRate = heartRatePoints.reduce(0.0) { $0 + $1.1 }
+            let averageHeartRate = totalHeartRate / Double(heartRatePoints.count)
+            let heartRateQuantity = HKQuantity(unit: HKUnit.count().unitDivided(by: .minute()), doubleValue: averageHeartRate)
+            
+            let averageHeartRateSample = HKQuantitySample(
+                type: heartRateType,
+                quantity: heartRateQuantity,
+                start: workout.startDate,
+                end: workout.endDate
+            )
+            
             samples.append(contentsOf: heartRateSamples)
+            samples.append(averageHeartRateSample)
         }
         
         // Route data
+        // Fix: More robust route saving
         if !routePoints.isEmpty {
             let routeBuilder = HKWorkoutRouteBuilder(healthStore: healthStore, device: .local())
-            routeBuilder.insertRouteData(routePoints) { success, error in
+            
+            // Save route data in batches to ensure all points are captured
+            let locations = routePoints.map { location in
+                // Include timestamp and other metadata
+                return CLLocation(
+                    coordinate: location.coordinate,
+                    altitude: location.altitude,
+                    horizontalAccuracy: location.horizontalAccuracy,
+                    verticalAccuracy: location.verticalAccuracy,
+                    timestamp: location.timestamp
+                )
+            }
+            
+            routeBuilder.insertRouteData(locations) { success, error in
                 if success {
                     routeBuilder.finishRoute(with: workout, metadata: nil) { route, error in
                         if let route = route {
                             samples.append(route)
                         }
                     }
+                } else if let error = error {
+                    print("Error inserting route data: \(error.localizedDescription)")
                 }
             }
         }
         
         // Add average pace sample
         if let paceType = HKQuantityType.quantityType(forIdentifier: .runningSpeed) {
-            let averagePace = (totalTime / 60) / distance
+            let averagePace = distance / (totalTime / 60)
             let paceQuantity = HKQuantity(unit: HKUnit.mile().unitDivided(by: HKUnit.second()),
                                   doubleValue: averagePace)
             
@@ -366,19 +410,6 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
             )
             samples.append(paceSample)
         }
-        
-        // Add average heart rate sample
-        let totalHeartRate = heartRatePoints.reduce(0.0) { $0 + $1.1 }
-        let averageHeartRate = totalHeartRate / Double(heartRatePoints.count)
-        let heartRateType = HKQuantityType.quantityType(forIdentifier: .heartRate)!
-        let heartRateQuantity = HKQuantity(unit: HKUnit.count().unitDivided(by: .minute()), doubleValue: averageHeartRate)
-        
-        let averageHeartRateSample = HKQuantitySample(
-            type: heartRateType,
-            quantity: heartRateQuantity,
-            start: workout.startDate,
-            end: workout.endDate
-        )
 
         // Save the workout and associated samples to HealthKit
         samples.append(workout)
@@ -453,24 +484,22 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
                 
                 // Track heart rate
                 if quantityType == HKObjectType.quantityType(forIdentifier: .heartRate) {
-                    if let heartRate = workoutBuilder.statistics(for: quantityType)?.mostRecentQuantity() {
+                    let heartRateUnit = HKUnit.count().unitDivided(by: .minute())
+                    
+                    // Get the statistics for heart rate
+                    if let statistics = workoutBuilder.statistics(for: quantityType),
+                       let heartRate = statistics.mostRecentQuantity() {
+                        let heartRateValue = heartRate.doubleValue(for: heartRateUnit)
+                        let timestamp = statistics.mostRecentQuantityDateInterval()?.start ?? Date()
+                        
                         DispatchQueue.main.async {
-                            let heartRateValue = heartRate.doubleValue(for: HKUnit.count().unitDivided(by: .minute()))
                             self.heartRate = heartRateValue
-                            
                             // Add point to heart rate chart data
-                            self.heartRatePoints.append((Date(), heartRateValue))
+                            self.heartRatePoints.append((timestamp, heartRateValue))
                         }
                     }
                 }
             }
-        }
-        // Add location tracking for map
-        func startLocationTracking() {
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest
-            locationManager.allowsBackgroundLocationUpdates = true
-            locationManager.startUpdatingLocation()
         }
         #endif
     }
