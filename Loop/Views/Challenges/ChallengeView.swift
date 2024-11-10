@@ -111,5 +111,5 @@ struct ChallengeView: View {
 }
 
 #Preview {
-    ChallengeListView(challenges: Challenge.sampleData)
+    ChallengeListView()
 }

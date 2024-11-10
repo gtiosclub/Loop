@@ -12,8 +12,13 @@ struct CardView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text(challenge.title)
-                .font(.headline)
+            if challenge.title.isEmpty {
+                Text("Unnamed Challenge")
+                    .font(.headline)
+            } else {
+                Text(challenge.title)
+                    .font(.headline)
+            }
             Spacer()
             HStack {
                 Label("\(challenge.attendees.count)", systemImage: "person.3")

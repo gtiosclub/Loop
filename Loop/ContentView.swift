@@ -13,7 +13,6 @@ struct ContentView: View {
         // Set the background color of UITabBar
         UITabBar.appearance().backgroundColor = UIColor.white
     }
-    
     @State var selectedView: TabSelection = .home
     @State private var userId: String? = nil
     var body: some View {
@@ -28,7 +27,7 @@ struct ContentView: View {
                     }.tag(TabSelection.home)
                 }
 
-                ChallengeListView(challenges: Challenge.sampleData).tabItem {
+                ChallengeListView().tabItem {
                     Label("Challenges", systemImage: "figure.run")
                 }.tag(TabSelection.challenges)
 

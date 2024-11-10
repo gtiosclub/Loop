@@ -40,6 +40,41 @@ struct CreateChallengeView: View {
                     return
                 } else {
                     Task {
+                        let random = Int.random(in: 0...14)
+                        var theme: Theme
+                        switch random {
+                        case 0:
+                            theme = .bubblegum
+                        case 1:
+                            theme = .buttercup
+                        case 2:
+                            theme = .indigo
+                        case 3:
+                            theme = .lavender
+                        case 4:
+                            theme = .magenta
+                        case 5:
+                            theme = .navy
+                        case 6:
+                            theme = .orange
+                        case 7:
+                            theme = .oxblood
+                        case 8:
+                            theme = .periwinkle
+                        case 9:
+                            theme = .purple
+                        case 10:
+                            theme = .purple
+                        case 11:
+                            theme = .seafoam
+                        case 12:
+                            theme = .teal
+                        case 13:
+                            theme = .tan
+                        default:
+                            theme = .yellow
+                        }
+                        
                         var challenge =
                         Challenge(
                             title: challengeName,
@@ -49,7 +84,7 @@ struct CreateChallengeView: View {
                             lengthInMinutes: 0,
                             dataMeasured: challengeMetric.rawValue,
                             endDate: endDate,
-                            theme: .bubblegum,
+                            theme: theme,
                             accessCode: joinCode
                         )
                         

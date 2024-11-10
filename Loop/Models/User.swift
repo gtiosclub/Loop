@@ -15,13 +15,15 @@ import FirebaseFirestore
 class User: ObservableObject {
     static var shared = User(uid: "", name: "", username: "", challengeIds: [], profilePictureId: "", friends: [], incomingRequest: [])
     
-    var uid: String
-    var name: String
-    var username: String
-    var challengeIds: [String]
-    var profilePictureId: String
-    var friends: [String]
-    var incomingRequest: [String] = []
+    @Published var uid: String
+    @Published var name: String
+    @Published var username: String
+    @Published var challengeIds: [String]
+    @Published var profilePictureId: String
+    @Published var friends: [String]
+    @Published var incomingRequest: [String] = []
+    
+    @Published var challenges = [Challenge]()
     
     /// Designated user initializer.
     ///
@@ -255,6 +257,45 @@ class User: ObservableObject {
         return nil
     }
     
+    func fetchChallenges() async -> [Challenge] {
+        if challengeIds.isEmpty {
+            print("NO CHALLENGES TO FETCH")
+            return []
+        }
+        let db = Firestore.firestore()
+        var challenges = [Challenge]()
+        for challengeId in challengeIds {
+            let challengeRef = db.collection("challenges").document(challengeId)
+            
+            do {
+                let document = try await challengeRef.getDocument()
+                
+                if document.exists, let data = document.data() {
+                    let challenge = Challenge(
+                        id: challengeId,
+                        title: data["title"] as? String ?? "",
+                        host: data["host"] as? String ?? "",
+                        attendees: data["attendees"] as? [String] ?? [],
+                        challengeType: data["challengeType"] as? String ?? "",
+                        lengthInMinutes: data["lengthInMinutes"] as? Int ?? 0,
+                        dataMeasured: data["dataMeasured"] as? String ?? "",
+                        dateCreated: (data["dateCreated"] as? Timestamp)?.dateValue() ?? Date(),
+                        endDate: (data["endDate"] as? Timestamp)?.dateValue() ?? Date(),
+                        theme: Theme(rawValue: data["theme"] as? String ?? "") ?? .bubblegum,
+                        accessCode: data["accessCode"] as? String ?? ""
+                    )
+                    challenges.append(challenge)
+                } else {
+                    print("Document does not exist for challengeId: \(challengeId)")
+                }
+            } catch {
+                print("Error fetching document for challengeId \(challengeId): \(error.localizedDescription)")
+            }
+        }
+        
+        return challenges
+    }
+    
     static func updateShared(user: User) {
         DispatchQueue.main.async {
             shared.uid = user.uid
@@ -264,6 +305,21 @@ class User: ObservableObject {
             shared.profilePictureId = user.profilePictureId
             shared.friends = user.friends
             shared.incomingRequest = user.incomingRequest
+            
+            print("User ID: \(User.shared.uid)")
+            print("User NAME: \(User.shared.username)")
+            print("User CHALLENGESIDS: \(User.shared.challengeIds)")
+            Task {
+                User.updateSharedChallenges(challenges: await User.shared.fetchChallenges())
+            }
+        }
+    }
+    
+    static func updateSharedChallenges(challenges: [Challenge]) {
+        DispatchQueue.main.async {
+            for challenge in challenges {
+                shared.challenges.append(challenge)
+            }
         }
     }
 }

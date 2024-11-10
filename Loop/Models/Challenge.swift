@@ -24,6 +24,31 @@ struct Challenge: Identifiable {  // Previously DailyScrum
     var theme: Theme
     var accessCode: String
     
+    ///full initializer
+    init(id: String = "",
+             title: String,
+             host: String,
+             attendees: [String],
+             challengeType: String,
+             lengthInMinutes: Int,
+             dataMeasured: String,
+             dateCreated: Date = .now,
+             endDate: Date,
+             theme: Theme,
+             accessCode: String) {
+            self.id = id
+            self.title = title
+            self.host = host
+            self.attendees = attendees
+            self.challengeType = challengeType
+            self.lengthInMinutes = lengthInMinutes
+            self.dataMeasured = dataMeasured
+            self.dateCreated = dateCreated
+            self.endDate = endDate
+            self.theme = theme
+            self.accessCode = accessCode
+        }
+    
     /// Designated challenge initializer.
     ///
     /// - Parameter title: The title of the challenge.
@@ -85,11 +110,6 @@ struct Challenge: Identifiable {  // Previously DailyScrum
             id = doc.documentID;
             try await doc.setData(docData);
             print("Added challenge to the Firestore Database.");
-            
-//            let docChallengeRef = db.collection("challenges").document()
-//            id = docChallengeRef.documentID
-//            try await docChallengeRef.setData(docData)
-//            print("Added challenge to the Firestore Database.")
             
             do {
                 let docUserRef = db.collection("users").document(host)
@@ -174,7 +194,6 @@ extension Challenge {
     static var specificDate2 =  calendar.date(from: DateComponents(year: 2024, month:12, day: 31))
     static var specificDate3 =  calendar.date(from: DateComponents(year: 2024, month:12, day: 1))
 
-        
     static var sampleData: [Challenge] {
         [
             Challenge(title: "iOS Run Club", host: "Danny", attendees: ["Cathy", "Daisy", "Simon", "Jonathan"], challengeType: "Accumulation", lengthInMinutes: 10, dataMeasured: "Miles", endDate: specificDate1! , theme: .yellow, accessCode: "1111"),
