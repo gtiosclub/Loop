@@ -19,6 +19,7 @@ struct StatsView: View {
                         showSubseconds: context.cadence == .live
                     )
                     .foregroundColor(Color.yellow)
+                    .font(.system(size: 30, design: .rounded))
                     
                     Text(
                         Measurement(
