@@ -19,16 +19,14 @@ struct SessionPagingView: View {
     }
     var body: some View {
         TabView(selection: $selection) {
-            ControlsView().tag(Tab.controls)
-            //statsView(type:item.type, timeCount: 0, isTimerRunning: true).tag(Tab.metrics)
-            StatsView().tag(Tab.metrics)
+            ControlsView(type:item.type).tag(Tab.controls)
+            StatsView(timeCount: 0, isTimerRunning: true).tag(Tab.metrics)
             NowPlayingView().tag(Tab.nowPlaying)
         }
         //.navigationTitle(item.type)
         .navigationBarBackButtonHidden(true)
         .navigationBarHidden(selection == .nowPlaying)
         .onChange(of: workoutManager.isRunning) { oldValue, newValue in
-            print("isRunning changed to \(newValue)")
             withAnimation(.easeInOut(duration: 0.3)) {
                 displayMetricsView()
             }

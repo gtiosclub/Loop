@@ -9,12 +9,13 @@ import SwiftUI
 
 struct ControlsView: View {
     @EnvironmentObject var workoutManager: WorkoutManager
+    @State var type: String
 
     var body: some View {
         HStack {
             Button {
                 print("Ending workout...")
-                workoutManager.endWorkout()
+                workoutManager.endWorkout(type)
             } label: {
                 Image(systemName: "xmark")
             }

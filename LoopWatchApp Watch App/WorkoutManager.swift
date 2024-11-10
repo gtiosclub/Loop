@@ -306,6 +306,7 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
     }
 
     func resetWorkout() {
+#if os(watchOS)
         builder = nil
         session = nil
         activeEnergy = 0
@@ -313,7 +314,9 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
         heartRate = 0
         distance = 0
         backToHome = true
+        #endif
     }
+
     
     func endWorkout(_ workoutType: String) {
         #if os(watchOS)
