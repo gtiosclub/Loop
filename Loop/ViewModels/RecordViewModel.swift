@@ -47,5 +47,15 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
                 print("Recieved message from watch: \(workoutStarted)")
             }
         }
+
+        if let updateFirestore = message["updateFirestore"] as? Bool {
+            DispatchQueue.main.async {
+                print("Recieved Firestore message from watch: \(updateFirestore)")
+                if updateFirestore {
+                    print("Uploading workout data to Firestore")
+                    //self.uploadWorkoutData()
+                }
+            }
+        }
     }
 }

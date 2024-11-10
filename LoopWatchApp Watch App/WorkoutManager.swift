@@ -172,6 +172,11 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
                 print("Error sending message: \(error.localizedDescription)")
             })
             print("Message sent")
+
+            WCSession.default.sendMessage(["updateFirestore": false], replyHandler: nil, errorHandler: { error in
+                print("Error sending message: \(error.localizedDescription)")
+            })
+
         } else {
             print("Session is not reachable")
         }
@@ -180,6 +185,10 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
     private func sendWorkoutEndedMessage() {
         if WCSession.default.isReachable {
             WCSession.default.sendMessage(["workoutStarted": false], replyHandler: nil, errorHandler: { error in
+                print("Error sending message: \(error.localizedDescription)")
+            })
+
+            WCSession.default.sendMessage(["updateFirestore": true], replyHandler: nil, errorHandler: { error in
                 print("Error sending message: \(error.localizedDescription)")
             })
             print("Message sent")
