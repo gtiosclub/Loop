@@ -11,7 +11,6 @@ import SwiftUI
 import os
 import WatchConnectivity
 
-
 enum WorkoutType {
     case running(HKWorkoutActivityType, HKQuantityType, HKWorkoutSessionLocationType)
     case biking(HKWorkoutActivityType, HKQuantityType, HKWorkoutSessionLocationType)
