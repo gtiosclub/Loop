@@ -102,6 +102,7 @@
 		199ED49C2CDA69C9006065EB /* WelcomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomView.swift; sourceTree = "<group>"; };
 		199ED49E2CDA76BE006065EB /* GreetingssView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreetingssView.swift; sourceTree = "<group>"; };
 		19BE4C002CB5872B0068F0B4 /* CreateLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateLoginView.swift; sourceTree = "<group>"; };
+		2B42FDAD2CE125450015D263 /* LoopWatchApp-Watch-App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "LoopWatchApp-Watch-App-Info.plist"; sourceTree = SOURCE_ROOT; };
 		5B69BE182CC082C200B2337D /* excercise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = excercise.swift; sourceTree = "<group>"; };
 		5B69BE192CC082C200B2337D /* excercises.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = excercises.swift; sourceTree = "<group>"; };
 		5B69BE1C2CC082C200B2337D /* statsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = statsView.swift; sourceTree = "<group>"; };
@@ -279,6 +280,7 @@
 		9AB55D342CA5374F00C48C32 /* LoopWatchApp Watch App */ = {
 			isa = PBXGroup;
 			children = (
+				2B42FDAD2CE125450015D263 /* LoopWatchApp-Watch-App-Info.plist */,
 				91B4AE532CC9626C00CDED63 /* LoopWatchApp Watch App.entitlements */,
 				91B4AE512CC95ADE00CDED63 /* WorkoutManager.swift */,
 				5B69BE262CC0837700B2337D /* watchTypesOfExcercises.swift */,
@@ -566,9 +568,11 @@
 				DEVELOPMENT_TEAM = JCY34ZWF85;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "LoopWatchApp-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = LoopWatchApp;
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Loop needs access to your health data.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Loop needs to update your health data on your behalf.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to track your workout";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = dannyByrdx.Loop;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -599,9 +603,11 @@
 				DEVELOPMENT_TEAM = JCY34ZWF85;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "LoopWatchApp-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = LoopWatchApp;
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Loop needs access to your health data.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Loop needs to update your health data on your behalf.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to track your workout";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = dannyByrdx.Loop;
 				LD_RUNPATH_SEARCH_PATHS = (

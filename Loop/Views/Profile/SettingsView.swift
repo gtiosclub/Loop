@@ -86,6 +86,7 @@ struct SettingsView: View {
                 
                 VStack {
                     Button(action: {
+                        //delete profile implementation
                         authManager.signOut()
                     }) {
                         HStack{

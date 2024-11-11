@@ -5,11 +5,11 @@
 //  Created by Joseph Masson on 10/23/24.
 //
 
+import CoreLocation
 import HealthKit
 import SwiftUI
 import os
 import WatchConnectivity
-
 
 enum WorkoutType {
     case running(HKWorkoutActivityType, HKQuantityType, HKWorkoutSessionLocationType)
@@ -113,7 +113,20 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
     @Published var isPaused = false
     @Published var distance = 0.0  // Distance in miles
     @Published var calories = 0.0  // Calories in kcal
+    @Published var heartRate = 0.0 // Heart Rate
     @Published var isWorkoutInProgress = false
+    
+    @Published var heartRatePoints: [(Date, Double)] = []
+    @Published var routePoints: [CLLocation] = []
+        
+    // Location manager for map
+    private let locationManager = CLLocationManager()
+    
+    private var pauseDate: Date?
+    private var accumulatedTime: TimeInterval = 0
+    @Published var totalTime: TimeInterval = 0
+    
+    private var timer: Timer?
     
     static let shared = WorkoutManager()
     private let healthStore = HKHealthStore()
@@ -131,11 +144,16 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
             session.activate()
         }
     }
+    
 
     func startWorkout(_ workoutType: String) {
         #if os(watchOS)
         distance = 0
         calories = 0
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+                    self?.updateTotalTime()
+                }
+        
         let configuration:HKWorkoutConfiguration = WorkoutType(workoutType.lowercased()).configure()
 
         do {
@@ -148,6 +166,18 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
             builder?.dataSource = HKLiveWorkoutDataSource(healthStore: healthStore, workoutConfiguration: configuration)
 
             session?.startActivity(with: Date())
+            
+            guard CLLocationManager.locationServicesEnabled() else {
+                print("Location services are not enabled")
+                return
+            }
+            
+            print("Location services are enabled")
+            locationManager.requestWhenInUseAuthorization() // Ensure background location permission
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager.startUpdatingLocation()
+            
             builder?.beginCollection(withStart: Date(), completion: { (success, error) in
                 DispatchQueue.main.sync {
                     self.isRunning = true
@@ -171,7 +201,13 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
             WCSession.default.sendMessage(["workoutStarted": true], replyHandler: nil, errorHandler: { error in
                 print("Error sending message: \(error.localizedDescription)")
             })
-            print("Message sent")
+
+
+            WCSession.default.sendMessage(["updateFirestore": false], replyHandler: nil, errorHandler: { error in
+                print("Error sending message: \(error.localizedDescription)")
+            })
+
+
         } else {
             print("Session is not reachable")
         }
@@ -182,7 +218,13 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
             WCSession.default.sendMessage(["workoutStarted": false], replyHandler: nil, errorHandler: { error in
                 print("Error sending message: \(error.localizedDescription)")
             })
+
+
+            WCSession.default.sendMessage(["updateFirestore": true], replyHandler: nil, errorHandler: { error in
+                print("Error sending message: \(error.localizedDescription)")
+            })
             print("Message sent")
+
         } else {
             print("Session is not reachable")
         }
@@ -194,6 +236,9 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
         
         if session.state == .running {
             session.pause()
+            pauseDate = Date()  // Store pause time
+            timer?.invalidate()  // Stop the timer
+            
             DispatchQueue.main.async {
                 print("Session paused on Queue")
                 self.isPaused = true
@@ -209,6 +254,17 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
 
         if session.state == .paused {
             session.resume()
+            // Calculate accumulated pause time
+            if let pauseDate = pauseDate {
+                accumulatedTime += Date().timeIntervalSince(pauseDate)
+            }
+            pauseDate = nil
+            
+            // Restart the timer
+            timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+                self?.updateTotalTime()
+            }
+            
             DispatchQueue.main.async {
                 print("Session resumed on Queue")
                 self.isPaused = false
@@ -216,6 +272,14 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
             }
         }
         #endif
+    }
+    
+    private func updateTotalTime() {
+        guard let startDate = session?.startDate else { return }
+        let elapsed = Date().timeIntervalSince(startDate)
+        DispatchQueue.main.async {
+            self.totalTime = elapsed - self.accumulatedTime
+        }
     }
 
     
@@ -225,9 +289,14 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
 
         // First, end the session
         session.end()
+        timer?.invalidate()
+        timer = nil
+        pauseDate = nil
+        accumulatedTime = 0
 
         // Then, end the data collection
         builder.endCollection(withEnd: Date()) { success, error in
+            print("Here")
             if success {
                 // Finalize the workout
                 self.builder?.finishWorkout(completion: { (workout, error) in
@@ -251,7 +320,6 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
                 print("Error ending workout collection: \(error.localizedDescription)")
             }
         }
-
         // Update iPhone app
         self.sendWorkoutEndedMessage()
 
@@ -259,30 +327,104 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
     }
     
     func saveWorkoutToHealthStore(workout: HKWorkout, _ workoutType: String) {
-        // Total distance in miles (example value, replace with actual calculated value)
-        let distanceQuantity = HKQuantity(unit: HKUnit.mile(), doubleValue: distance)
-
-        // Total calories burned (example value, replace with actual calculated value)
-        let energyQuantity = HKQuantity(unit: HKUnit.kilocalorie(), doubleValue: calories)
+        var samples: [HKSample] = []
 
         // Create the distance sample
+        let distanceQuantity = HKQuantity(unit: HKUnit.mile(), doubleValue: distance)
         let distanceSample = HKQuantitySample(
             type: WorkoutType(workoutType.lowercased()).getQuantityType(),
             quantity: distanceQuantity,
             start: workout.startDate,
             end: workout.endDate
         )
+        samples.append(distanceSample)
         
         // Create the energy sample
+        let energyQuantity = HKQuantity(unit: HKUnit.kilocalorie(), doubleValue: calories)
         let energySample = HKQuantitySample(
             type: HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!,
             quantity: energyQuantity,
             start: workout.startDate,
             end: workout.endDate
         )
+        samples.append(energySample)
+        
+        // Heart rate series data
+        if !heartRatePoints.isEmpty {
+            let heartRateType = HKQuantityType.quantityType(forIdentifier: .heartRate)!
+            let heartRateSamples = heartRatePoints.map { (date, value) in
+                HKQuantitySample(
+                    type: heartRateType,
+                    quantity: HKQuantity(unit: HKUnit.count().unitDivided(by: .minute()), doubleValue: value),
+                    start: date,
+                    end: date.addingTimeInterval(1) // 1 second duration for instant measurement
+                )
+            }
+            
+            // Add average heart rate sample
+            let totalHeartRate = heartRatePoints.reduce(0.0) { $0 + $1.1 }
+            let averageHeartRate = totalHeartRate / Double(heartRatePoints.count)
+            let heartRateQuantity = HKQuantity(unit: HKUnit.count().unitDivided(by: .minute()), doubleValue: averageHeartRate)
+            
+            let averageHeartRateSample = HKQuantitySample(
+                type: heartRateType,
+                quantity: heartRateQuantity,
+                start: workout.startDate,
+                end: workout.endDate
+            )
+            
+            samples.append(contentsOf: heartRateSamples)
+            samples.append(averageHeartRateSample)
+        }
+        
+        // Route data
+        // Fix: More robust route saving
+        if !routePoints.isEmpty {
+            let routeBuilder = HKWorkoutRouteBuilder(healthStore: healthStore, device: .local())
+            
+            // Save route data in batches to ensure all points are captured
+            let locations = routePoints.map { location in
+                // Include timestamp and other metadata
+                return CLLocation(
+                    coordinate: location.coordinate,
+                    altitude: location.altitude,
+                    horizontalAccuracy: location.horizontalAccuracy,
+                    verticalAccuracy: location.verticalAccuracy,
+                    timestamp: location.timestamp
+                )
+            }
+            
+            routeBuilder.insertRouteData(locations) { success, error in
+                if success {
+                    routeBuilder.finishRoute(with: workout, metadata: nil) { route, error in
+                        if let route = route {
+                            samples.append(route)
+                        }
+                    }
+                } else if let error = error {
+                    print("Error inserting route data: \(error.localizedDescription)")
+                }
+            }
+        }
+        
+        // Add average pace sample
+        if let paceType = HKQuantityType.quantityType(forIdentifier: .runningSpeed) {
+            let averagePace = distance / (totalTime / 60)
+            let paceQuantity = HKQuantity(unit: HKUnit.mile().unitDivided(by: HKUnit.second()),
+                                  doubleValue: averagePace)
+            
+            let paceSample = HKQuantitySample(
+                type: paceType,
+                quantity: paceQuantity,
+                start: workout.startDate,
+                end: workout.endDate
+            )
+            samples.append(paceSample)
+        }
 
         // Save the workout and associated samples to HealthKit
-        healthStore.save([workout, distanceSample, energySample]) { (success, error) in
+        samples.append(workout)
+        healthStore.save(samples) { (success, error) in
             if let error = error {
                 print("Error saving workout to HealthKit: \(error.localizedDescription)")
             } else {
@@ -332,9 +474,9 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
                     quantityType == HKObjectType.quantityType(forIdentifier: .distanceSwimming) {
                     if let distance = workoutBuilder.statistics(for: quantityType)?.sumQuantity() {
                         DispatchQueue.main.sync {
-                            let distanceInYards = distance.doubleValue(for: HKUnit.mile())
-                            print("Distance: \(distanceInYards) yards")
-                            self.distance = distanceInYards
+                            let distanceInMiles = distance.doubleValue(for: HKUnit.mile())
+                            print("Distance: \(distanceInMiles) miles")
+                            self.distance = distanceInMiles
                         }
                     }
                 }
@@ -350,9 +492,37 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
                         
                     }
                 }
+                
+                // Track heart rate
+                if quantityType == HKObjectType.quantityType(forIdentifier: .heartRate) {
+                    let heartRateUnit = HKUnit.count().unitDivided(by: .minute())
+                    
+                    // Get the statistics for heart rate
+                    if let statistics = workoutBuilder.statistics(for: quantityType),
+                       let heartRate = statistics.mostRecentQuantity() {
+                        let heartRateValue = heartRate.doubleValue(for: heartRateUnit)
+                        let timestamp = statistics.mostRecentQuantityDateInterval()?.start ?? Date()
+                        
+                        DispatchQueue.main.async {
+                            self.heartRate = heartRateValue
+                            // Add point to heart rate chart data
+                            self.heartRatePoints.append((timestamp, heartRateValue))
+                        }
+                    }
+                }
             }
         }
         #endif
+    }
+}
+
+// Location manager delegate for map tracking
+extension WorkoutManager: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.last else { return }
+        DispatchQueue.main.async {
+            self.routePoints.append(location)
+        }
     }
 }
 #endif
