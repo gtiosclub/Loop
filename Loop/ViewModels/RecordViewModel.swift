@@ -75,6 +75,7 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
             let heartRateType = HKObjectType.quantityType(forIdentifier: .heartRate)!
             let caloriesType = HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
             let distanceType = HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!
+            let routeType = HKSeriesType.workoutRoute()
             print ("Fetched Data")
 
             let heartRateQuery = HKSampleQuery(sampleType: heartRateType, predicate: HKQuery.predicateForObjects(from: workout), limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (query, samples, error) in
@@ -90,43 +91,67 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
                     heartRateSamples = [dummyHeartRate]
                     print("Using dummy heart rate data: \(heartRateSamples)")
                     #else
+                    //TODO: Still needed?
                     print("No heart rate data found or error: \(String(describing: error?.localizedDescription))")
                     return
                     #endif
                 }
 
-                
                 let heartRates = heartRateSamples.map { $0.quantity.doubleValue(for: HKUnit(from: "count/min")) }
                 let averageHeartRate = heartRates.reduce(0, +) / Double(heartRates.count)
 
                 print("Average heart rate: \(averageHeartRate)")
+            }
+
+            let caloriesQuery = HKSampleQuery(sampleType: caloriesType, predicate: HKQuery.predicateForObjects(from: workout), limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (query, samples, error) in
+                guard let caloriesSamples = samples as? [HKQuantitySample] else {
+                    print("No calories data found or error: \(String(describing: error?.localizedDescription))")
+                    return
+                }
                 
-                let caloriesQuery = HKSampleQuery(sampleType: caloriesType, predicate: HKQuery.predicateForObjects(from: workout), limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (query, samples, error) in
-                    guard let caloriesSamples = samples as? [HKQuantitySample] else {
-                        print("No calories data found or error: \(String(describing: error?.localizedDescription))")
-                        return
-                    }
-                    
-                    let totalCalories = caloriesSamples.map { $0.quantity.doubleValue(for: .kilocalorie()) }.reduce(0, +)
+                let totalCalories = caloriesSamples.map { $0.quantity.doubleValue(for: .kilocalorie()) }.reduce(0, +)
 
-                    print("Total calories: \(totalCalories)")
+                print("Total calories: \(totalCalories)")
+            }
 
-                    let distanceQuery = HKSampleQuery(sampleType: distanceType, predicate: HKQuery.predicateForObjects(from: workout), limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (query, samples, error) in
-                        guard let distanceSamples = samples as? [HKQuantitySample] else {
-                            print("No distance data found or error: \(String(describing: error?.localizedDescription))")
+            let distanceQuery = HKSampleQuery(sampleType: distanceType, predicate: HKQuery.predicateForObjects(from: workout), limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (query, samples, error) in
+                guard let distanceSamples = samples as? [HKQuantitySample] else {
+                    print("No distance data found or error: \(String(describing: error?.localizedDescription))")
+                    return
+                }
+                
+                let totalDistance = distanceSamples.map { $0.quantity.doubleValue(for: .mile()) }.reduce(0, +)
+                print("Total distance: \(totalDistance)")
+            }
+
+            let routeQuery = HKAnchoredObjectQuery(type: routeType, predicate: HKQuery.predicateForObjects(from: workout), anchor: nil, limit: HKObjectQueryNoLimit) { (query, samples, deletedObjects, newAnchor, error) in
+                guard let routeSamples = samples as? [HKWorkoutRoute] else {
+                    print("No route data found or error: \(String(describing: error?.localizedDescription))")
+                    return
+                }
+
+                for routeSample in routeSamples {
+                    let routeQuery = HKWorkoutRouteQuery(route: routeSample) { (query, locations, done, error) in
+                        guard let locations = locations else {
+                            print("No locations data found or error: \(String(describing: error?.localizedDescription))")
                             return
                         }
-                        
-                        let totalDistance = distanceSamples.map { $0.quantity.doubleValue(for: .mile()) }.reduce(0, +)
-                        print("Total distance: \(totalDistance)")
+
+                        for location in locations {
+                            print("Location: \(location.coordinate.latitude), \(location.coordinate.longitude)")
+                        }
                     }
-                    self.healthStore.execute(distanceQuery)
+                    self.healthStore.execute(routeQuery)
+                    
                 }
-                self.healthStore.execute(caloriesQuery)
             }
+
             self.healthStore.execute(heartRateQuery)
+            self.healthStore.execute(caloriesQuery)
+            self.healthStore.execute(distanceQuery)
+            self.healthStore.execute(routeQuery)
         }
         healthStore.execute(query)
-        
+        print("All queries executed")
     }
 }
