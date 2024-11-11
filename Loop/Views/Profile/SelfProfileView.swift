@@ -31,14 +31,16 @@ struct SelfProfileView: View {
                     HStack {
                         Text(location)
                             .padding(3)
-                            .background(Color.gray.opacity(0.2))
+                            .background(Color.red)
+                            .foregroundColor(Color.white)
                             .cornerRadius(4)
                         
                         Spacer().frame(width: 18)
                         
                         Text(createdDate)
                             .padding(3)
-                            .background(Color.gray.opacity(0.2))
+                            .background(Color.red)
+                            .foregroundColor(Color.white)
                             .cornerRadius(4)
                     }
                     .font(.subheadline)
@@ -90,11 +92,11 @@ struct SelfProfileView: View {
                 NavigationLink(destination: AddFriendsView()){
                     ZStack {
                         Rectangle()
-                            .foregroundColor(Color(UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1)))
+                            .foregroundColor(.red)
                             .frame(width: 35, height: 35)
                             .cornerRadius(10)
                         Image(systemName: "person.badge.plus")
-                            .foregroundStyle(.black)
+                            .foregroundStyle(.white)
                     }
                 }
             }.padding([.leading, .trailing])

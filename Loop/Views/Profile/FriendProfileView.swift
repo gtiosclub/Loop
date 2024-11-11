@@ -32,15 +32,17 @@ struct FriendProfileView: View {
                     HStack {
                         Text(location)
                             .padding(3)
-                            .background(Color.gray.opacity(0.2))
+                            .background(Color.red)
                             .cornerRadius(4)
+                            .foregroundColor(.white)
                         
                         Spacer().frame(width: 18)
                         
                         Text(createdDate)
                             .padding(3)
-                            .background(Color.gray.opacity(0.2))
+                            .background(Color.red)
                             .cornerRadius(4)
+                            .foregroundColor(.white)
                     }
                     .font(.subheadline)
                 }

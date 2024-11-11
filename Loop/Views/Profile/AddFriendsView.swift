@@ -97,7 +97,7 @@ struct AddFriendsView: View {
                 Button(action: {
                     self.presentationMode.wrappedValue.dismiss()
                 }) {
-                    Image(systemName: "arrow.left.circle.fill").font(.system(size: 30)).foregroundColor(.orange)
+                    Image(systemName: "arrow.left.circle.fill").font(.system(size: 30)).foregroundColor(.red)
                 }
                 
                 Spacer()
@@ -110,7 +110,7 @@ struct AddFriendsView: View {
             
             HStack {
                 Image(systemName: "magnifyingglass").foregroundColor(.gray)
-                TextField("Search Friends", text: $searchText).padding(8).background(Color.orange.opacity(0.3)).cornerRadius(8).onChange(of: searchText) { filterFriends() }
+                TextField("Search Friends", text: $searchText).padding(8).background(Color.red.opacity(0.3)).cornerRadius(8).onChange(of: searchText) { filterFriends() }
             }.padding(.horizontal)
             
             VStack(alignment: .leading) {
