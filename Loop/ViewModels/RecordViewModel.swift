@@ -79,22 +79,12 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
             print ("Fetched Data")
 
             let heartRateQuery = HKSampleQuery(sampleType: heartRateType, predicate: HKQuery.predicateForObjects(from: workout), limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (query, samples, error) in
-                // Possibly important - the heart rate data is not available when testing on a simulator,
-                // so I'm using dummy data. WorkoutManager does not record Heart Data as is?
                 var heartRateSamples: [HKQuantitySample] = []
                 if let samples = samples as? [HKQuantitySample], !samples.isEmpty {
                     heartRateSamples = samples
                 } else {
-                    #if targetEnvironment(simulator)
-                    // Use dummy data for simulator
-                    let dummyHeartRate = HKQuantitySample(type: heartRateType, quantity: HKQuantity(unit: HKUnit(from: "count/min"), doubleValue: 75), start: Date(), end: Date())
-                    heartRateSamples = [dummyHeartRate]
-                    print("Using dummy heart rate data: \(heartRateSamples)")
-                    #else
-                    //TODO: Still needed?
                     print("No heart rate data found or error: \(String(describing: error?.localizedDescription))")
                     return
-                    #endif
                 }
 
                 let heartRates = heartRateSamples.map { $0.quantity.doubleValue(for: HKUnit(from: "count/min")) }
