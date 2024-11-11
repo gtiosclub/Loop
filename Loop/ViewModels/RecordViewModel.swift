@@ -8,13 +8,18 @@
 import Foundation
 import WatchConnectivity
 import HealthKit
+import FirebaseFirestore
+import FirebaseAuth
 
 class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
     // boolean from the watch to indicate if a workout is in progress
     @Published var workoutInProgress = false
     let healthStore = HKHealthStore()
+    let db = Firestore.firestore()
+    var uid: String?
 
     override init() {
+        self.uid = Auth.auth().currentUser?.uid ""
         super.init()
         if WCSession.isSupported() {
             let session = WCSession.default
@@ -138,6 +143,26 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
             self.healthStore.execute(caloriesQuery)
             self.healthStore.execute(distanceQuery)
             self.healthStore.execute(routeQuery)
+
+            let workoutData: [String: Any] = [
+                "uid": self.uid,
+                "startDate": workout.startDate,
+                "endDate": workout.endDate,
+                "totalEnergyBurned": workout.totalEnergyBurned?.doubleValue(for: .kilocalorie()) ?? 0,
+                "totalDistance": workout.totalDistance?.doubleValue(for: .mile()) ?? 0,
+                "averageHeartRate": averageHeartRate,
+                "heartRatePoints": heartRatePoints.map { ["date": $0.0, "value": $0.1] },
+                "routeLocations": routeLocations.map { ["latitude": $0.latitude, "longitude": $0.longitude] }
+            ]
+
+            self.db.collection("activity").addDocument(data: workoutData) { error in
+                if let error = error {
+                    print("Error adding document: \(error.localizedDescription)")
+                } else {
+                    print("Document added successfully")
+                }
+            }
+            
         }
         healthStore.execute(query)
     }
