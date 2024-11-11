@@ -103,6 +103,10 @@ class FirebaseManager {
                 accessCode: data["accessCode"] as? String ?? "",
                 scores: data["scores"] as? [String: Double] ?? [:]
             )
+            if !challenge.attendees.contains(User.shared.uid) {
+                challenge.attendees.append(User.shared.uid)
+                challenge.attendeesFull.append(Person(id: User.shared.uid, name: User.shared.username, score: 0))
+            }
             
             _ = await User.shared.addChallenge(challenge: challenge)
         }

@@ -6,18 +6,21 @@
 //
 
 import SwiftUI
+import FirebaseCore
+import FirebaseFirestore
 
 struct CreateChallengeView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var challengeName: String = ""
     @State private var challengeActivity: ChallengeActivity = .Running
     @State private var challengeMetric: ChallengeMetric = .Distance
-//    @State private var attendees: [String] = []
     @State private var endDate: Date = Date()
     @State private var isDatePickerVisible = false
     @State private var searchText: String = ""
     @State private var joinCode: String = ""
-
+    @State private var showAlert = false
+    @State private var alertMessage = ""
+    
     func createChallege() async {
         let db = Firestore.firestore()
         
@@ -37,56 +40,25 @@ struct CreateChallengeView: View {
                     return
                 } else {
                     Task {
-                        let random = Int.random(in: 0...14)
-                        var theme: Theme
-                        switch random {
-                        case 0:
-                            theme = .bubblegum
-                        case 1:
-                            theme = .buttercup
-                        case 2:
-                            theme = .indigo
-                        case 3:
-                            theme = .lavender
-                        case 4:
-                            theme = .magenta
-                        case 5:
-                            theme = .navy
-                        case 6:
-                            theme = .orange
-                        case 7:
-                            theme = .oxblood
-                        case 8:
-                            theme = .periwinkle
-                        case 9:
-                            theme = .purple
-                        case 10:
-                            theme = .purple
-                        case 11:
-                            theme = .seafoam
-                        case 12:
-                            theme = .teal
-                        case 13:
-                            theme = .tan
-                        default:
-                            theme = .yellow
-                        }
-                        
                         var challenge =
                         Challenge(
                             title: challengeName,
                             host: User.shared.uid,
-                            attendees: [],
-                            challengeType: challengeActivity.rawValue, 
+                            attendees: [User.shared.uid],
+                            challengeType: challengeActivity.rawValue,
                             lengthInMinutes: 0,
                             dataMeasured: challengeMetric.rawValue,
                             endDate: endDate,
-                            theme: theme,
-                            accessCode: joinCode
+                            theme: .bubblegum,
+                            accessCode: joinCode,
+                            scores: [User.shared.uid:0]
                         )
+                        
+                        challenge.attendeesFull.append(Person(id: User.shared.uid, name: User.shared.username, score: 0))
                         
                         if let challengeId = await challenge.addChallenge() {
                             print("Challenge created with ID: \(challengeId)")
+                            _ = await User.shared.addChallenge(challenge: challenge)
                             dismiss()
                         } else {
                             print("Failed to create challenge")
@@ -219,10 +191,6 @@ struct CreateChallengeView: View {
                         .bold()
                         .padding(.top, 20)
                     
-                    Text("Enter a code that participants will need to enter to join your challenge")
-                        .font(.system(size: 13))
-                        .foregroundColor(.gray)
-                    
                     HStack{
                         TextField("Join Code", text: $joinCode)
                             .font(.title3)
@@ -238,7 +206,9 @@ struct CreateChallengeView: View {
                     }
                     
                     Button(action: {
-                        
+                        Task {
+                            await createChallege()
+                        }
                     }){
                         Text("CREATE CHALLENGE")
                             .font(.system(size:22))
@@ -252,6 +222,9 @@ struct CreateChallengeView: View {
                     
                 }
                 .padding([.leading,.trailing], 20)
+            }
+            .alert(isPresented: $showAlert) {
+                Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
             }
             .navigationBarBackButtonHidden(true)
             .toolbar(.hidden, for: .tabBar)
@@ -282,13 +255,13 @@ enum ChallengeMetric: String, CaseIterable, Identifiable
 //struct ParticipantCardView: View {
 //    let name: String
 //    let email: String
-//    
+//
 //    var body: some View {
 //        HStack {
 //            Circle()
 //                .fill(.gray)
 //                .frame(width:40, height: 40)
-//            
+//
 //            VStack(alignment: .leading){
 //                Text(name)
 //                Text(email)
@@ -297,7 +270,7 @@ enum ChallengeMetric: String, CaseIterable, Identifiable
 //            .padding(.leading, 15)
 //            Spacer()
 //            Button {
-//                
+//
 //            } label: {
 //                Text("Remove")
 //                    .foregroundColor(.black)

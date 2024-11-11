@@ -229,10 +229,10 @@ class User: ObservableObject {
     /// - Parameter challenge: The Challenge object.
     /// - Returns: The challenge id of the challenge added, otherwise nil.
     func addChallenge(challenge: Challenge) async -> String? {
-        if (uid == challenge.host) {
-            print("Cannot add challenge that you created.")
-            return nil
-        }
+//        if (uid == challenge.host) {
+//            print("Cannot add challenge that you created.")
+//            return nil
+//        }
         let challengeId = challenge.id
         DispatchQueue.main.async {
             self.challengeIds.append(challengeId)
@@ -259,6 +259,10 @@ class User: ObservableObject {
             try await docRefUser.setData(docDataUser, merge: true)
             try await docRefChallenge.setData(docDataChallenge, merge: true)
             print("Updated the user and challenge to the Firebase database.")
+            
+            User.addSharedChallenge(challenge: challenge)
+            
+            print("ADDDED SHARED CHALLENGE")
             return challenge.id
         } catch {
             print("Error updating the user and challenge to the Firebase database: \(error).")
@@ -283,7 +287,7 @@ class User: ObservableObject {
                     var scores: [String: Double]? = data["scores"] as? [String: Double]
                     var challenge = Challenge(
                         id: challengeId,
-                        title: data["title"] as? String ?? "",
+                        title: data["name"] as? String ?? "",
                         host: data["host"] as? String ?? "",
                         attendees: data["attendees"] as? [String] ?? [],
                         challengeType: data["challengeType"] as? String ?? "",
@@ -291,7 +295,7 @@ class User: ObservableObject {
                         dataMeasured: data["dataMeasured"] as? String ?? "",
                         dateCreated: (data["dateCreated"] as? Timestamp)?.dateValue() ?? Date(),
                         endDate: (data["endDate"] as? Timestamp)?.dateValue() ?? Date(),
-                        theme: Theme(rawValue: data["theme"] as? String ?? "") ?? .bubblegum,
+                        theme: Theme(rawValue: data["theme"] as? String ?? "") ?? .indigo,
                         accessCode: data["accessCode"] as? String ?? "",
                         scores: scores ?? [:]
                     )
@@ -344,6 +348,19 @@ class User: ObservableObject {
             for challenge in challenges {
                 shared.challenges.append(challenge)
             }
+        }
+    }
+    
+    static func addSharedChallenge(challenge: Challenge) {
+        DispatchQueue.main.async {
+            var chal = challenge
+            if !chal.attendees.contains(where: { a in
+                a == User.shared.uid
+            }) {
+//                chal.attendees.append(User.shared.uid)
+//                chal.attendeesFull.append(Person(id: User.shared.uid, name: User.shared.username, score: 0))
+            }
+            shared.challenges.append(chal)
         }
     }
 }

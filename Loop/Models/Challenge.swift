@@ -74,7 +74,7 @@ struct Challenge: Identifiable {  // Previously DailyScrum
         self.dataMeasured = dataMeasured
         self.endDate = endDate
         self.theme = theme
-        self.accessCode = accessCode
+        self.accessCode = ""
         self.scores = [:]
     }
     
