@@ -1,10 +1,3 @@
-//
-//  RecordViewModel.swift
-//  Loop
-//
-//  Created by Joseph Masson on 11/6/24.
-//
-
 import Foundation
 import WatchConnectivity
 import HealthKit
@@ -12,14 +5,13 @@ import FirebaseFirestore
 import FirebaseAuth
 
 class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
-    // boolean from the watch to indicate if a workout is in progress
     @Published var workoutInProgress = false
     let healthStore = HKHealthStore()
     let db = Firestore.firestore()
     var uid: String?
 
     override init() {
-        self.uid = Auth.auth().currentUser?.uid ""
+        self.uid = Auth.auth().currentUser?.uid
         super.init()
         if WCSession.isSupported() {
             let session = WCSession.default
@@ -36,14 +28,12 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
         print("WCSession activated with state: \(activationState.rawValue)")
     }
 
-    //stub methods
     func sessionDidBecomeInactive(_ session: WCSession) {
         print("WCSession did become inactive")
     }
 
     func sessionDidDeactivate(_ session: WCSession) {
         print("WCSession did deactivate")
-        // Re-activate the session
         session.activate()
     }
 
@@ -51,13 +41,13 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
         if let workoutStarted = message["workoutStarted"] as? Bool {
             DispatchQueue.main.async {
                 self.workoutInProgress = workoutStarted
-                print("Recieved message from watch: \(workoutStarted)")
+                print("Received message from watch: \(workoutStarted)")
             }
         }
 
         if let updateFirestore = message["updateFirestore"] as? Bool {
             DispatchQueue.main.async {
-                print("Recieved Firestore message from watch: \(updateFirestore)")
+                print("Received Firestore message from watch: \(updateFirestore)")
                 if updateFirestore {
                     self.uploadWorkoutData()
                 }
@@ -79,6 +69,10 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
             let distanceType = HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!
             let routeType = HKSeriesType.workoutRoute()
 
+            var averageHeartRate: Double = 0
+            var heartRatePoints: [(Date, Double)] = []
+            var routeLocations: [(latitude: Double, longitude: Double)] = []
+
             let heartRateQuery = HKSampleQuery(sampleType: heartRateType, predicate: HKQuery.predicateForObjects(from: workout), limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (query, samples, error) in
                 var heartRateSamples: [HKQuantitySample] = []
                 if let samples = samples as? [HKQuantitySample], !samples.isEmpty {
@@ -95,8 +89,8 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
                 }
 
                 let heartRates = heartRateSamples.map { $0.quantity.doubleValue(for: HKUnit(from: "count/min")) }
-                let averageHeartRate = heartRates.reduce(0, +) / Double(heartRates.count)
-                let heartRatePoints = heartRateSamples.map { ($0.startDate, $0.quantity.doubleValue(for: HKUnit(from: "count/min"))) }
+                averageHeartRate = heartRates.reduce(0, +) / Double(heartRates.count)
+                heartRatePoints = heartRateSamples.map { ($0.startDate, $0.quantity.doubleValue(for: HKUnit(from: "count/min"))) }
             }
 
             let caloriesQuery = HKSampleQuery(sampleType: caloriesType, predicate: HKQuery.predicateForObjects(from: workout), limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (query, samples, error) in
@@ -121,8 +115,6 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
                     return
                 }
 
-                var routeLocations: [(latitude: Double, longitude: Double)] = []
-                
                 for routeSample in routeSamples {
                     let routeQuery = HKWorkoutRouteQuery(route: routeSample) { (query, locations, done, error) in
                         guard let locations = locations else {
@@ -136,16 +128,16 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
                         }
                     }
                     self.healthStore.execute(routeQuery)
-                    
                 }
             }
+
             self.healthStore.execute(heartRateQuery)
             self.healthStore.execute(caloriesQuery)
             self.healthStore.execute(distanceQuery)
             self.healthStore.execute(routeQuery)
 
             let workoutData: [String: Any] = [
-                "uid": self.uid,
+                "uid": self.uid ?? "",
                 "startDate": workout.startDate,
                 "endDate": workout.endDate,
                 "totalEnergyBurned": workout.totalEnergyBurned?.doubleValue(for: .kilocalorie()) ?? 0,
@@ -162,7 +154,6 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
                     print("Document added successfully")
                 }
             }
-            
         }
         healthStore.execute(query)
     }
