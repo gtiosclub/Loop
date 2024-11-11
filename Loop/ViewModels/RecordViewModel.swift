@@ -1,3 +1,10 @@
+//
+//  RecordViewModel.swift
+//  Loop
+//
+//  Created by Joseph Masson on 11/6/24.
+//
+
 import Foundation
 import WatchConnectivity
 import HealthKit
