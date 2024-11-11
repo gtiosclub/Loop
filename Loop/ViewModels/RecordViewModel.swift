@@ -83,14 +83,25 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
                 if let samples = samples as? [HKQuantitySample], !samples.isEmpty {
                     heartRateSamples = samples
                 } else {
+                    #if targetEnvironment(simulator)
+                    // Use dummy data for simulator
+                    let dummyHeartRate = HKQuantitySample(type: heartRateType, quantity: HKQuantity(unit: HKUnit(from: "count/min"), doubleValue: 75), start: Date(), end: Date())
+                    heartRateSamples = [dummyHeartRate]
+                    print("Using dummy heart rate data: \(heartRateSamples)")
+                    #else
+                    //TODO: Still needed?
                     print("No heart rate data found or error: \(String(describing: error?.localizedDescription))")
                     return
+                    #endif
                 }
 
                 let heartRates = heartRateSamples.map { $0.quantity.doubleValue(for: HKUnit(from: "count/min")) }
                 let averageHeartRate = heartRates.reduce(0, +) / Double(heartRates.count)
 
                 print("Average heart rate: \(averageHeartRate)")
+
+                let heartRatePoints = heartRateSamples.map { ($0.startDate, $0.quantity.doubleValue(for: HKUnit(from: "count/min"))) }
+                print("Heart rate points: \(heartRatePoints)")
             }
 
             let caloriesQuery = HKSampleQuery(sampleType: caloriesType, predicate: HKQuery.predicateForObjects(from: workout), limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (query, samples, error) in
