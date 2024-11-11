@@ -100,7 +100,8 @@ class FirebaseManager {
                 dateCreated: (data["dateCreated"] as? Timestamp)?.dateValue() ?? Date(),
                 endDate: (data["endDate"] as? Timestamp)?.dateValue() ?? Date(),
                 theme: Theme(rawValue: data["theme"] as? String ?? "") ?? .bubblegum,
-                accessCode: data["accessCode"] as? String ?? ""
+                accessCode: data["accessCode"] as? String ?? "",
+                scores: data["scores"] as? [String: Double] ?? [:]
             )
             
             _ = await User.shared.addChallenge(challenge: challenge)

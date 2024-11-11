@@ -8,16 +8,27 @@
 import SwiftUI
 
 class Person {
+    var id: String
     var name: String
-    var distance: Double
+    var score: Double
     
-    init(name: String, distance: Double) {
+    //Testing purposes
+    init(name: String, score: Double) {
+        self.id = ""
         self.name = name
-        self.distance = distance
+        self.score = score
+    }
+    
+    //Full init
+    init(id: String, name: String, score: Double) {
+        self.id = id
+        self.name = name
+        self.score = score
     }
 }
 
 struct ChallengeView: View {
+    var participants: [Person]
     var challenge: Challenge
     
     @Environment(\.dismiss) private var dismiss
@@ -69,7 +80,7 @@ struct ChallengeView: View {
                 .padding(.top, 15).padding(.bottom, 20)
                 
                 if (selectedTab == "Leaderboard") {
-                    ChalLeaderboardView(personList: [Person(name:"Ryan", distance: 4.2), Person(name:"Max", distance: 14.8), Person(name:"Jason", distance: 7.1), Person(name:"Sam", distance: 11.4), Person(name: "Joe", distance: 5.5)])
+                    ChalLeaderboardView(personList: participants)
                 }
                 
                 if (selectedTab == "Description") {

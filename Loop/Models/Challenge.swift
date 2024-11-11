@@ -23,19 +23,22 @@ struct Challenge: Identifiable {  // Previously DailyScrum
     var endDate: Date
     var theme: Theme
     var accessCode: String
+    var scores: [String: Double]
+    var attendeesFull = [Person]()
     
     ///full initializer
     init(id: String = "",
-             title: String,
-             host: String,
-             attendees: [String],
-             challengeType: String,
-             lengthInMinutes: Int,
-             dataMeasured: String,
-             dateCreated: Date = .now,
-             endDate: Date,
-             theme: Theme,
-             accessCode: String) {
+         title: String,
+         host: String,
+         attendees: [String],
+         challengeType: String,
+         lengthInMinutes: Int,
+         dataMeasured: String,
+         dateCreated: Date = .now,
+         endDate: Date,
+         theme: Theme,
+         accessCode: String,
+         scores: [String: Double]) {
             self.id = id
             self.title = title
             self.host = host
@@ -47,6 +50,7 @@ struct Challenge: Identifiable {  // Previously DailyScrum
             self.endDate = endDate
             self.theme = theme
             self.accessCode = accessCode
+            self.scores = scores
         }
     
     /// Designated challenge initializer.
@@ -71,6 +75,7 @@ struct Challenge: Identifiable {  // Previously DailyScrum
         self.endDate = endDate
         self.theme = theme
         self.accessCode = accessCode
+        self.scores = [:]
     }
     
     /// Convenience challenge initializer.
@@ -102,7 +107,8 @@ struct Challenge: Identifiable {  // Previously DailyScrum
             "lengthInMinutes": lengthInMinutes,
             "dataMeasured": dataMeasured,
             "theme": theme.rawValue,
-            "accessCode": accessCode
+            "accessCode": accessCode,
+            "scores" : [host: 0]
         ]
         let db = Firestore.firestore();
         do {
@@ -184,8 +190,6 @@ struct Challenge: Identifiable {  // Previously DailyScrum
         }
         return nil;
     }
-    
-    
 }
 
 extension Challenge {

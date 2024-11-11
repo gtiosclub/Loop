@@ -56,15 +56,19 @@ struct ChallengeListView: View {
                     .padding(.leading, 20)
                 
                 if user.challenges.isEmpty {
-                    Text("JOIN SOME CHALLENGES!")
-                        .font(.title)
-                        .bold()
-                        .foregroundStyle(.black)
+                    VStack {
+                        Spacer()
+                        Text("JOIN SOME CHALLENGES!")
+                            .font(.title)
+                            .bold()
+                            .foregroundStyle(.black)
+                        Spacer()
+                    }
                 }
                 List {
                     ForEach(user.challenges, id: \.id) { challenge in
                         NavigationLink {
-                            ChallengeView(challenge: challenge)
+                            ChallengeView(participants: challenge.attendeesFull ,challenge: challenge)
                         } label: {
                             CardView(challenge: challenge)
                         }
@@ -117,7 +121,7 @@ struct ChallengeListView: View {
                                                 try await FirebaseManager.joinChallengeWithCode(accessCode)
                                                 print("Success?")
                                                 
-                                            } catch let firestoreError as FirebaseManager.FirestoreFetchError {
+                                            } catch _ as FirebaseManager.FirestoreFetchError {
                                                 withAnimation {
                                                     joinErrorMessage = "No challege found with that access code"
                                                 }

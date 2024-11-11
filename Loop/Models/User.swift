@@ -234,17 +234,26 @@ class User: ObservableObject {
             return nil
         }
         let challengeId = challenge.id
-        challengeIds.append(challengeId)
+        DispatchQueue.main.async {
+            self.challengeIds.append(challengeId)
+        }
+        
         var attendees = challenge.attendees
         attendees.append(uid)
+        
         let db = Firestore.firestore()
         let docRefUser = db.collection("users").document(uid)
         let docRefChallenge = db.collection("challenges").document(challengeId)
+        
+        var scores = challenge.scores
+        scores[uid] = 0
+        
         let docDataUser: [String: Any] = [
             "challengeIds": challengeIds
         ]
         let docDataChallenge: [String: Any] = [
-            "attendees": attendees
+            "attendees": attendees,
+            "scores": scores
         ]
         do {
             try await docRefUser.setData(docDataUser, merge: true)
@@ -271,7 +280,8 @@ class User: ObservableObject {
                 let document = try await challengeRef.getDocument()
                 
                 if document.exists, let data = document.data() {
-                    let challenge = Challenge(
+                    var scores: [String: Double]? = data["scores"] as? [String: Double]
+                    var challenge = Challenge(
                         id: challengeId,
                         title: data["title"] as? String ?? "",
                         host: data["host"] as? String ?? "",
@@ -282,8 +292,23 @@ class User: ObservableObject {
                         dateCreated: (data["dateCreated"] as? Timestamp)?.dateValue() ?? Date(),
                         endDate: (data["endDate"] as? Timestamp)?.dateValue() ?? Date(),
                         theme: Theme(rawValue: data["theme"] as? String ?? "") ?? .bubblegum,
-                        accessCode: data["accessCode"] as? String ?? ""
+                        accessCode: data["accessCode"] as? String ?? "",
+                        scores: scores ?? [:]
                     )
+                    if let scores {
+                        var fullAttendees = [Person]()
+                        for attendeeID in challenge.attendees {
+                            do {
+                                let attendee = try await FirebaseManager.fetchUserFromFirestore(uid: attendeeID)
+                                let attendeeFull = Person(id: attendeeID, name: attendee.username, score: scores[attendeeID] ?? -1)
+                                fullAttendees.append(attendeeFull)
+                            }
+                        }
+                        challenge.attendeesFull = fullAttendees.sorted(by: { a1, a2 in
+                            a1.score > a2.score
+                        })
+                    }
+                    
                     challenges.append(challenge)
                 } else {
                     print("Document does not exist for challengeId: \(challengeId)")
@@ -292,7 +317,6 @@ class User: ObservableObject {
                 print("Error fetching document for challengeId \(challengeId): \(error.localizedDescription)")
             }
         }
-        
         return challenges
     }
     
