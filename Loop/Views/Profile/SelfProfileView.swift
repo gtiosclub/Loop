@@ -6,14 +6,24 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct SelfProfileView: View {
-    @State private var name: String = "Jane Doe"
+    @State var user = User(uid: "String", name: "String", username: "String", challengeIds: ["String"], profilePictureId: "String", friends: ["String"], incomingRequest: ["String"])
+    var userId: String
+    @StateObject private var profileViewModel = ProfileViewModel()
+    @State private var name: String = "name"
     @State private var location: String = "Atlanta, GA"
     @State private var createdDate: String = "Oct 2024"
     @State private var following: Int = 30
     @State private var followers: Int = 30
     @State private var selectedTab = 0
+    @State private var incomingRequests : [String] = []
+    
+    init (userId: String) {
+        self.userId = userId
+    }
+    
     var body: some View {
         VStack {
             HStack {
@@ -76,7 +86,7 @@ struct SelfProfileView: View {
                 }
                 
                 Spacer().frame(width: 40)
-                NavigationLink(destination: ManageFriendsView()) {
+                NavigationLink(destination: ManageFriendsView(profileViewModel: profileViewModel)) {
                     VStack(alignment: .leading) {
                         Text("Followers")
                             .font(.subheadline)
@@ -87,7 +97,7 @@ struct SelfProfileView: View {
                 }.foregroundStyle(.black)
                 
                 Spacer()
-                NavigationLink(destination: AddFriendsView()){
+                NavigationLink(destination: AddFriendsView(profileViewModel: profileViewModel, requestingFriends: incomingRequests, userId: userId, user: user)){
                     ZStack {
                         Rectangle()
                             .foregroundColor(Color(UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1)))
@@ -168,10 +178,19 @@ struct SelfProfileView: View {
             
             Spacer()
             
+        }.onAppear {
+            profileViewModel.fetchFriendInfo(for: userId)
+            profileViewModel.fetchAllUsersExcludingFriends(for: userId)
+            Task {
+                var user = await profileViewModel.getUserInfo(userId: userId)
+                self.name = user?.name ?? "name"
+                self.incomingRequests = user?.incomingRequest.map(\.self) ?? []
+                self.user = user ?? User(uid: "String", name: "String", username: "String", challengeIds: ["String"], profilePictureId: "String", friends: ["String"], incomingRequest: ["String"])
+            }
         }
     }
 }
 
 #Preview {
-    SelfProfileView()
+    
 }

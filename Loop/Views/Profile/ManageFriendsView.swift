@@ -9,7 +9,8 @@ import SwiftUI
 
 struct FriendRow: View {
     var friendName: String
-    var status: String
+    var friendID: String
+    var friendAvatar: String?
     
     var body: some View {
         HStack {
@@ -17,7 +18,6 @@ struct FriendRow: View {
                 Image(systemName: "person.circle.fill").font(.system(size: 40)).foregroundColor(.gray)
                 VStack(alignment: .leading) {
                     Text(friendName).font(.headline)
-                    Text(status).font(.caption).foregroundColor(.gray)
                 }
                 Spacer()
             }.padding().background(Color.white).cornerRadius(10).shadow(radius: 2).padding(.horizontal)
@@ -25,25 +25,29 @@ struct FriendRow: View {
     }
 }
 
+
 struct ManageFriendsView: View {
+    @ObservedObject var profileViewModel: ProfileViewModel
     @State private var searchText: String = ""
-    @State private var onlineFriends: [String] = ["Kevin", "Ethan", "Jason"]
-    @State private var offlineFriends: [String] = ["Kevin", "Ethan", "Jason", "Seohyun", "Dennis", "Aryun", "John"]
-    @State private var allFriends: [String] = ["Kevin", "Ethan", "Jason", "Seohyun", "Dennis", "Aryun", "Dennis", "Dennis", "Dennis"]
-    @State private var filteredFriends: [String] = []
+    @State private var allFriends: [ProfileViewModel.Friend] = []
+    @State private var filteredFriends: [ProfileViewModel.Friend] = []
     @Environment(\.presentationMode) var presentationMode
-    @Environment(\.dismiss) private var dismiss
+    @Environment(\.dismiss) private var dismiss 
     
+    init(profileViewModel: ProfileViewModel) {
+        self.profileViewModel = profileViewModel
+        self.allFriends = profileViewModel.friends
+    }
     
     private func filterFriends() {
-            if searchText.isEmpty {
-                filteredFriends = allFriends
-            } else {
-                filteredFriends = allFriends.filter {
-                    $0.lowercased().contains(searchText.lowercased())
-                }
+        if searchText.isEmpty {
+            filteredFriends = allFriends
+        } else {
+            filteredFriends = allFriends.filter { friend in
+                friend.name.lowercased().contains(searchText.lowercased())
             }
         }
+    }
 
         var body: some View {
         VStack {
@@ -70,13 +74,13 @@ struct ManageFriendsView: View {
 
             // Friends List
             ScrollView {
-                ForEach(filteredFriends, id: \.self) { friend in
-                    FriendRow(friendName: friend, status: "")
+                ForEach(filteredFriends, id: \.id) { friend in
+                    FriendRow(friendName: friend.name, friendID: friend.id, friendAvatar: friend.avatar)
                 }
             }
             .padding(.top)
 
-            Spacer()
+            
         }
         .background(Color.gray.opacity(0.1).edgesIgnoringSafeArea(.all))
         .navigationBarBackButtonHidden(true)
@@ -85,5 +89,5 @@ struct ManageFriendsView: View {
 }
 
 #Preview {
-    ManageFriendsView()
+   
 }

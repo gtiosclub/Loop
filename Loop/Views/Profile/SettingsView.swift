@@ -87,6 +87,7 @@ struct SettingsView: View {
                 VStack {
                     Button(action: {
                         authManager.signOut()
+                        
                     }) {
                         HStack{
                             Image(systemName: "rectangle.portrait.and.arrow.forward").font(.system(size:40)).foregroundColor(.white)

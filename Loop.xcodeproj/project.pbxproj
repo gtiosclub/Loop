@@ -46,6 +46,7 @@
 		9AB55D382CA5374F00C48C32 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AB55D312CA5374F00C48C32 /* Assets.xcassets */; };
 		AA53DE7A2CB312B50029B7DB /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA53DE792CB312B50029B7DB /* EditProfileView.swift */; };
 		AAA11A552CAF64CC00445880 /* AddFriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA11A542CAF64CC00445880 /* AddFriendsView.swift */; };
+		AAB01A222CE1327A00E662C6 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB01A212CE1327A00E662C6 /* ProfileViewModel.swift */; };
 		B5B40E672C94EAE100BD9131 /* LoopApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B40E662C94EAE100BD9131 /* LoopApp.swift */; };
 		B5B40E692C94EAE100BD9131 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B40E682C94EAE100BD9131 /* ContentView.swift */; };
 		B5B40E6B2C94EAE400BD9131 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5B40E6A2C94EAE400BD9131 /* Assets.xcassets */; };
@@ -135,6 +136,7 @@
 		9AB55D332CA5374F00C48C32 /* LoopWatchAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopWatchAppApp.swift; sourceTree = "<group>"; };
 		AA53DE792CB312B50029B7DB /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		AAA11A542CAF64CC00445880 /* AddFriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendsView.swift; sourceTree = "<group>"; };
+		AAB01A212CE1327A00E662C6 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		B5B40E632C94EAE100BD9131 /* Loop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Loop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5B40E662C94EAE100BD9131 /* LoopApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopApp.swift; sourceTree = "<group>"; };
 		B5B40E682C94EAE100BD9131 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -200,6 +202,7 @@
 				7C0B1FD82C9CB61C0076B590 /* ViewModel.swift */,
 				DF1CD2B12CACB9C200451888 /* FeedViewModel.swift */,
 				91F24CB12CDBE26900ADC3E2 /* RecordViewModel.swift */,
+				AAB01A212CE1327A00E662C6 /* ProfileViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -515,6 +518,7 @@
 				DF1CD2B02CACB98D00451888 /* FeedView.swift in Sources */,
 				199ED49F2CDA76C1006065EB /* GreetingssView.swift in Sources */,
 				BF0FEFFA2CACA1E3002B4C58 /* Activity.swift in Sources */,
+				AAB01A222CE1327A00E662C6 /* ProfileViewModel.swift in Sources */,
 				DF1CD2B22CACB9C200451888 /* FeedViewModel.swift in Sources */,
 				7C0B1FD32C9CB2110076B590 /* ChallengeView.swift in Sources */,
 				96354F592CA38686003DD6F8 /* ChalLeaderboardView.swift in Sources */,
@@ -563,20 +567,20 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LoopWatchApp Watch App/Preview Content\"";
-				DEVELOPMENT_TEAM = JCY34ZWF85;
+				DEVELOPMENT_TEAM = N7JQF9LRA3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = LoopWatchApp;
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Loop needs access to your health data.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Loop needs to update your health data on your behalf.";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = dannyByrd.Loop;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = ethan.Loop;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dannyByrd.Loop.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = ethan.Loop.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -596,20 +600,20 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LoopWatchApp Watch App/Preview Content\"";
-				DEVELOPMENT_TEAM = JCY34ZWF85;
+				DEVELOPMENT_TEAM = N7JQF9LRA3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = LoopWatchApp;
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Loop needs access to your health data.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Loop needs to update your health data on your behalf.";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = dannyByrd.Loop;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = ethan.Loop;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dannyByrd.Loop.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = ethan.Loop.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -747,7 +751,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Loop/Preview Content\"";
-				DEVELOPMENT_TEAM = JCY34ZWF85;
+				DEVELOPMENT_TEAM = N7JQF9LRA3;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -769,7 +773,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dannyByrd.Loop;
+				PRODUCT_BUNDLE_IDENTIFIER = ethan.Loop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -790,7 +794,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Loop/Preview Content\"";
-				DEVELOPMENT_TEAM = JCY34ZWF85;
+				DEVELOPMENT_TEAM = N7JQF9LRA3;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -812,7 +816,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dannyByrd.Loop;
+				PRODUCT_BUNDLE_IDENTIFIER = ethan.Loop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

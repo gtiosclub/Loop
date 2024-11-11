@@ -35,10 +35,15 @@ struct ContentView: View {
                 RecordView().tabItem {
                     Label("Record", systemImage: "clock.fill")
                 }.tag(TabSelection.record)
-
-                SelfProfileView().tabItem {
-                    Label("Profile", systemImage: "person.crop.circle.fill")
-                }.tag(TabSelection.profile)
+                if let userId = userId {
+                    SelfProfileView(userId: userId).tabItem {
+                        Label("Profile", systemImage: "person.crop.circle.fill")
+                    }.tag(TabSelection.profile)
+                } else {
+                    Text("Loading...").tabItem {
+                        Label("Profile", systemImage: "person.crop.circle")
+                    }.tag(TabSelection.home)
+                }
             }
             .onAppear {
                 if let currentUser = Auth.auth().currentUser {
