@@ -108,7 +108,7 @@ struct FriendCardView: View {
     }
 }
 
-//#Preview {
-//    @Previewable @State var isShown = true
-//    AddParticipantView(isShown: $isShown)
-//}
+#Preview {
+    @Previewable @State var isShown = true
+    AddParticipantView(isShown: $isShown)
+}

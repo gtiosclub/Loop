@@ -22,22 +22,7 @@ struct ChallengeView: View {
     
     @Environment(\.dismiss) private var dismiss
     @State private var selectedTab: String = "Leaderboard"
-    var tabs = ["Leaderboard", "Description"]
-    
-    func formatTime(endDate: Date) -> String{
-        let curDate = Date()
-        let calendar = Calendar.current
-        
-        guard endDate > curDate else { return "00d 00h 00m"}
-        
-        let timeDifference = calendar.dateComponents([.day, .hour, .minute], from: curDate, to: endDate)
-        
-        let days = timeDifference.day ?? 0
-        let hours = timeDifference.hour ?? 0
-        let minutes = timeDifference.minute ?? 0
-            
-        return String(format: "%02dd %02dh %02dm", days, hours, minutes)
-    }
+    var tabs = ["Leaderboard", "Statistics", "Description"]
     
     var body: some View {
         ZStack {
@@ -47,7 +32,7 @@ struct ChallengeView: View {
                         if (tab == selectedTab) {
                             Text(tab)
                                 .font(.system(size: 17, weight: .medium))
-                                .frame(width: UIScreen.main.bounds.size.width / 2, alignment: .center)
+                                .frame(width: UIScreen.main.bounds.size.width / 3, alignment: .center)
                                 .overlay(VStack {
                                     Divider().frame(height: 2).background(Color.black).offset(x: 0, y: 20)
                                 })
@@ -57,7 +42,7 @@ struct ChallengeView: View {
                             } label: {
                                 Text(tab)
                                     .foregroundStyle(.gray)
-                                    .frame(width: UIScreen.main.bounds.size.width / 2, alignment: .center)
+                                    .frame(width: UIScreen.main.bounds.size.width / 3, alignment: .center)
                                     .overlay(VStack {
                                         Divider().frame(height: 2).background(Color.gray).opacity(0.5).offset(x: 0, y: 20)
                                     })
@@ -70,6 +55,10 @@ struct ChallengeView: View {
                 
                 if (selectedTab == "Leaderboard") {
                     ChalLeaderboardView(personList: [Person(name:"Ryan", distance: 4.2), Person(name:"Max", distance: 14.8), Person(name:"Jason", distance: 7.1), Person(name:"Sam", distance: 11.4), Person(name: "Joe", distance: 5.5)])
+                }
+                
+                if (selectedTab == "Statistics") {
+                    //stats view
                 }
                 
                 if (selectedTab == "Description") {
@@ -96,7 +85,7 @@ struct ChallengeView: View {
                     HStack {
                         Image(systemName: "clock")
                             .font(.system(size: 12))
-                        Text(formatTime(endDate: challenge.endDate))
+                        Text("04d 02h 44m")
                             .font(.system(size: 15))
                             .padding(.leading, -5)
                     }

@@ -22,7 +22,6 @@ struct Challenge: Identifiable {  // Previously DailyScrum
     var dateCreated: Date = .now
     var endDate: Date
     var theme: Theme
-    var accessCode: String
     
     /// Designated challenge initializer.
     ///
@@ -34,7 +33,7 @@ struct Challenge: Identifiable {  // Previously DailyScrum
     /// - Parameter dataMeasured: The data measured in the challenge. (?)
     /// - Parameter endDate: The date when the challenge will end.
     /// - Parameter theme: The theme of the challenge. (?)
-    init(title: String, host: String, attendees: [String], challengeType: String, lengthInMinutes: Int, dataMeasured: String, endDate: Date, theme: Theme, accessCode:String) {
+    init(title: String, host: String, attendees: [String], challengeType: String, lengthInMinutes: Int, dataMeasured: String, endDate: Date, theme: Theme) {
         id = UUID().uuidString
         self.title = title
         self.host = host
@@ -45,7 +44,6 @@ struct Challenge: Identifiable {  // Previously DailyScrum
         self.dataMeasured = dataMeasured
         self.endDate = endDate
         self.theme = theme
-        self.accessCode = accessCode
     }
     
     /// Convenience challenge initializer.
@@ -56,8 +54,8 @@ struct Challenge: Identifiable {  // Previously DailyScrum
     /// - Parameter lengthInMinutes: How long the challenge will last for. (?)
     /// - Parameter dateMeasured: The data measured in the challenge. (?)
     /// - Parameter endDate: The date when the challenge will end.
-    init(title: String, host: String, challengeType: String, lengthInMinutes: Int, dataMeasured: String, endDate: Date, accessCode: String) {
-        self.init(title: title, host: host, attendees: [], challengeType: challengeType, lengthInMinutes: lengthInMinutes, dataMeasured: dataMeasured, endDate: endDate, theme: Theme.bubblegum, accessCode: accessCode)
+    init(title: String, host: String, challengeType: String, lengthInMinutes: Int, dataMeasured: String, endDate: Date) {
+        self.init(title: title, host: host, attendees: [], challengeType: challengeType, lengthInMinutes: lengthInMinutes, dataMeasured: dataMeasured, endDate: endDate, theme: Theme.bubblegum)
     }
     
     /// Adds a challenge to the Firestore Database.
@@ -76,8 +74,7 @@ struct Challenge: Identifiable {  // Previously DailyScrum
             "host" : host,
             "lengthInMinutes": lengthInMinutes,
             "dataMeasured": dataMeasured,
-            "theme": theme.rawValue,
-            "accessCode": accessCode
+            "theme": theme.rawValue
         ]
         let db = Firestore.firestore();
         do {
@@ -86,18 +83,17 @@ struct Challenge: Identifiable {  // Previously DailyScrum
             try await doc.setData(docData);
             print("Added challenge to the Firestore Database.");
             
-//            let docChallengeRef = db.collection("challenges").document()
-//            id = docChallengeRef.documentID
-//            try await docChallengeRef.setData(docData)
-//            print("Added challenge to the Firestore Database.")
-            
+            let docChallengeRef = db.collection("challenges").document()
+            id = docChallengeRef.documentID
+            try await docChallengeRef.setData(docData)
+            print("Added challenge to the Firestore Database.")
             do {
                 let docUserRef = db.collection("users").document(host)
                 let documentUser = try await docUserRef.getDocument()
                 if documentUser.exists {
                     if let dataDescription = documentUser.data() {
-                        if let challengeIds = dataDescription["challengeIds"] as? [String] {
-                            var challengeIdsArray = challengeIds
+                        if let challengeIds = dataDescription["challengeIds"] {
+                            var challengeIdsArray = challengeIds as! [String]
                             challengeIdsArray.append(id)
                             print("Added challenge id to user's challenge ids array.")
                             let docUserData: [String: Any] = [
@@ -166,20 +162,16 @@ struct Challenge: Identifiable {  // Previously DailyScrum
     }
     
     
+    
+    
 }
 
 extension Challenge {
-    static let calendar = Calendar.current
-    static var specificDate1 = calendar.date(from: DateComponents(year: 2024, month:12, day: 16))
-    static var specificDate2 =  calendar.date(from: DateComponents(year: 2024, month:12, day: 31))
-    static var specificDate3 =  calendar.date(from: DateComponents(year: 2024, month:12, day: 1))
-
-        
     static var sampleData: [Challenge] {
         [
-            Challenge(title: "iOS Run Club", host: "Danny", attendees: ["Cathy", "Daisy", "Simon", "Jonathan"], challengeType: "Accumulation", lengthInMinutes: 10, dataMeasured: "Miles", endDate: specificDate1! , theme: .yellow, accessCode: "1111"),
-            Challenge(title: "CoC Challenges", host: "Gray", attendees: ["Katie", "Gray", "Euna", "Luis", "Darla"], challengeType: "Best rep", lengthInMinutes: 5, dataMeasured: "1 Mile", endDate: specificDate2! , theme: .orange, accessCode: "2222"),
-            Challenge(title: "Joey vs Jason vs John", host: "Joey", attendees: ["Joey", "John", "Jason"], challengeType: "Accumulation", lengthInMinutes: 5, dataMeasured: "Calories Burned", endDate: specificDate3! , theme: .purple, accessCode: "3333")
+            Challenge(title: "iOS Run Club", host: "Danny", attendees: ["Cathy", "Daisy", "Simon", "Jonathan"], challengeType: "Accumulation", lengthInMinutes: 10, dataMeasured: "Miles", endDate: .distantFuture, theme: .yellow),
+            Challenge(title: "CoC Challenges", host: "Gray", attendees: ["Katie", "Gray", "Euna", "Luis", "Darla"], challengeType: "Best rep", lengthInMinutes: 5, dataMeasured: "1 Mile", endDate: .distantFuture, theme: .orange),
+            Challenge(title: "Joey vs Jason vs John", host: "Joey", attendees: ["Joey", "John", "Jason"], challengeType: "Accumulation", lengthInMinutes: 5, dataMeasured: "Calories Burned", endDate: .distantFuture, theme: .purple)
         ]
     }
 }

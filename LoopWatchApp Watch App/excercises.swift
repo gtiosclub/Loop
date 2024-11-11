@@ -13,10 +13,10 @@ class ExercisesList: ObservableObject {
     var lists: [excercise]
     init() {
         lists = []
-        lists.append(excercise(workoutType: .running, type: "Running", image: "figure.run"))
-        lists.append(excercise(workoutType: .cycling, type: "Biking", image: "figure.outdoor.cycle"))
-        lists.append(excercise(workoutType: .swimming, type: "Swimming", image: "figure.open.water.swim"))
-        lists.append(excercise(workoutType: .hiking, type: "Hiking", image: "figure.hiking"))
+        lists.append(excercise(type: "Running", image: "figure.run"))
+        lists.append(excercise(type: "Biking", image: "figure.outdoor.cycle"))
+        lists.append(excercise(type: "Swimming", image: "figure.open.water.swim"))
+        lists.append(excercise(type: "Hiking", image: "figure.hiking"))
         
     }
 }
