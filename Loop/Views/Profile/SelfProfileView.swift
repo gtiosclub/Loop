@@ -13,10 +13,10 @@ struct SelfProfileView: View {
     var userId: String
     @StateObject private var profileViewModel = ProfileViewModel()
     @State private var name: String = "name"
+    @State private var profile_image : String = ""
     @State private var location: String = "Atlanta, GA"
     @State private var createdDate: String = "Oct 2024"
-    @State private var following: Int = 30
-    @State private var followers: Int = 30
+    @State private var friend_count: Int = 0
     @State private var selectedTab = 0
     @State private var incomingRequests : [String] = []
     
@@ -76,22 +76,12 @@ struct SelfProfileView: View {
             }
             HStack {
                 Spacer().frame(width: 20)
-
-                VStack(alignment: .leading) {
-                    Text("Following")
-                        .font(.subheadline)
-                    
-                    Text("\(following)")
-                        .fontWeight(.bold)
-                }
-                
-                Spacer().frame(width: 40)
-                NavigationLink(destination: ManageFriendsView(profileViewModel: profileViewModel)) {
+                NavigationLink(destination: ManageFriendsView(profileViewModel: profileViewModel, userId: userId)) {
                     VStack(alignment: .leading) {
-                        Text("Followers")
+                        Text("Friends")
                             .font(.subheadline)
                         
-                        Text("\(followers)")
+                        Text("\(friend_count)")
                             .fontWeight(.bold)
                     }
                 }.foregroundStyle(.black)
@@ -108,27 +98,6 @@ struct SelfProfileView: View {
                     }
                 }
             }.padding([.leading, .trailing])
-            
-            HStack {
-                
-                Spacer()
-                
-                ForEach(0..<4) { _ in
-                    
-                    Spacer().frame(width: 5)
-                    
-                    Image("profile")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 80, height: 120)
-                    
-                    Spacer().frame(width: 5)
-                    
-                }.padding(.bottom)
-                
-                Spacer()
-                
-            }
             
             HStack {
                 Spacer()
@@ -179,13 +148,14 @@ struct SelfProfileView: View {
             Spacer()
             
         }.onAppear {
-            profileViewModel.fetchFriendInfo(for: userId)
             profileViewModel.fetchAllUsersExcludingFriends(for: userId)
             Task {
+                friend_count = await profileViewModel.fetchFriendInfo(userId: userId)?.count ?? 0
                 var user = await profileViewModel.getUserInfo(userId: userId)
                 self.name = user?.name ?? "name"
                 self.incomingRequests = user?.incomingRequest.map(\.self) ?? []
                 self.user = user ?? User(uid: "String", name: "String", username: "String", challengeIds: ["String"], profilePictureId: "String", friends: ["String"], incomingRequest: ["String"])
+                self.profile_image = user?.profilePictureId ?? ""
             }
         }
     }

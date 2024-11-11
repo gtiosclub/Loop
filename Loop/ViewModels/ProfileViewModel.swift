@@ -47,18 +47,10 @@ class ProfileViewModel: ObservableObject {
         let friend = (await getUserInfo(userId: friendId))!
         await user?.declineFriendRequest(otherUser: friend)
     }
-    func fetchFriendInfo(for userId: String) {
-        db.collection("users").document(userId).getDocument { [weak self] (document, error) in
-            if let document = document, document.exists {
-                if let friends = document.data()?["friends"] as? [String] {
-                    for friendId in friends {
-                        self?.fetchFriend(friendId)
-                    }
-                }
-            } else {
-                print("User document does not exist")
-            }
-        }
+    
+    func fetchFriendInfo(userId: String) async -> [String]?{
+        var user = await getUserInfo(userId: userId)
+        return user?.friends
     }
     
     private func fetchFriend(_ friendId: String) {

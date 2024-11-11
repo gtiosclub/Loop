@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct FriendRow: View {
-    var friendName: String
+    @State var friendName: String
     var friendID: String
     var friendAvatar: String?
     
@@ -27,16 +27,17 @@ struct FriendRow: View {
 
 
 struct ManageFriendsView: View {
+    @State var userId: String
     @ObservedObject var profileViewModel: ProfileViewModel
     @State private var searchText: String = ""
-    @State private var allFriends: [ProfileViewModel.Friend] = []
-    @State private var filteredFriends: [ProfileViewModel.Friend] = []
+    @State private var allFriends: [String] = []
+    @State private var filteredFriends: [String] = []
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.dismiss) private var dismiss 
     
-    init(profileViewModel: ProfileViewModel) {
+    init(profileViewModel: ProfileViewModel, userId: String) {
         self.profileViewModel = profileViewModel
-        self.allFriends = profileViewModel.friends
+        self.userId = userId
     }
     
     private func filterFriends() {
@@ -44,7 +45,7 @@ struct ManageFriendsView: View {
             filteredFriends = allFriends
         } else {
             filteredFriends = allFriends.filter { friend in
-                friend.name.lowercased().contains(searchText.lowercased())
+                friend.lowercased().contains(searchText.lowercased())
             }
         }
     }
@@ -74,8 +75,8 @@ struct ManageFriendsView: View {
 
             // Friends List
             ScrollView {
-                ForEach(filteredFriends, id: \.id) { friend in
-                    FriendRow(friendName: friend.name, friendID: friend.id, friendAvatar: friend.avatar)
+                ForEach(filteredFriends, id: \.self) { friend in
+                    FriendRow(friendName: friend, friendID: friend, friendAvatar: friend)
                 }
             }
             .padding(.top)
@@ -84,7 +85,13 @@ struct ManageFriendsView: View {
         }
         .background(Color.gray.opacity(0.1).edgesIgnoringSafeArea(.all))
         .navigationBarBackButtonHidden(true)
-        .onAppear { filterFriends() }
+        .onAppear {
+            filterFriends()
+            Task{
+                allFriends = await profileViewModel.fetchFriendInfo(userId: userId) ?? ["No Friends"]
+                filteredFriends = allFriends
+            }
+        }
     }
 }
 
