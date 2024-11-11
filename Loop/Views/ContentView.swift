@@ -8,25 +8,10 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var selectedView: TabSelection = .home
     var user1 = User(uid: "user1", name: "Rexxwell", challengeIds: [], profilePictureId: "Profile Picture", friends: [], incomingRequest: []);
     var user2 = User(uid: "user2", name: "Danny", challengeIds: [], profilePictureId: "Profile Picture", friends: [], incomingRequest: []);
+    
     var body: some View {
-        TabView(selection: $selectedView,
-            content: {
-                HomeView().tabItem {
-                    Label("Home", systemImage: "house.fill")
-                }.tag(TabSelection.home)
-            
-            ChallengeListView(challenges: Challenge.sampleData).tabItem {
-                Label("Challenges", systemImage: "figure.run")
-            }.tag(TabSelection.challenges)
-            
-            SelfProfileView().tabItem {
-                Label("Profile", systemImage: "person.crop.circle.fill")
-            }.tag(TabSelection.profile)
-            }
-        )
         VStack {
             Button("Add user") {
                 Task {
@@ -53,10 +38,6 @@ struct ContentView: View {
             }
         }
     }
-}
-
-enum TabSelection {
-    case home, challenges, profile
 }
 
 #Preview {

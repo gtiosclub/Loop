@@ -8,105 +8,143 @@
 import SwiftUI
 
 struct FriendProfileView: View {
-    @State private var name: String = "My Name"
-    @State private var username: String = "username"
-    @State private var friendCount: Int = 0
-    @State private var winCount: Int = 0
-    @State private var challengesCount: Int = 0
+    @State var name: String
+    @State private var location: String = "Atlanta, GA"
+    @State private var createdDate: String = "Oct 2024"
+    @State private var following: Int = 30
+    @State private var followers: Int = 30
+    @State private var selectedTab = 0
+    
     var body: some View {
         VStack {
+            HStack {
+                Spacer().frame(width: 20)
+                Circle()
+                    .frame(width: 70, height: 70)
+                    .foregroundColor(.gray)
+                    .padding()
+                
+                VStack(alignment: .leading) {
+                    Text(name)
+                        .font(.title2)
+                        .fontWeight(.bold)
+                    
+                    HStack {
+                        Text(location)
+                            .padding(3)
+                            .background(Color.gray.opacity(0.2))
+                            .cornerRadius(4)
+                        
+                        Spacer().frame(width: 18)
+                        
+                        Text(createdDate)
+                            .padding(3)
+                            .background(Color.gray.opacity(0.2))
+                            .cornerRadius(4)
+                    }
+                    .font(.subheadline)
+                }
+                
+                Spacer()
+            }
+            HStack {
+                Spacer().frame(width: 20)
+
+                VStack(alignment: .leading) {
+                    Text("Following")
+                        .font(.subheadline)
+                    
+                    Text("\(following)")
+                        .fontWeight(.bold)
+                }
+                
+                Spacer().frame(width: 40)
+                NavigationLink(destination: ManageFriendsView()) {
+                    VStack(alignment: .leading) {
+                        Text("Followers")
+                            .font(.subheadline)
+                        
+                        Text("\(followers)")
+                            .fontWeight(.bold)
+                    }
+                }.foregroundStyle(.black)
+                
+                Spacer()
+                
+            }.padding([.leading, .trailing])
             
             HStack {
-                Text(name)
-                    .font(.title)
-                    .fontWeight(.bold)
+
+                
+                Spacer()
+                
+                ForEach(0..<4) { _ in
+                    
+                    Spacer().frame(width: 5)
+                    
+                    Image("profile")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 80, height: 120)
+                    
+                    Spacer().frame(width: 5)
+                    
+                }.padding(.bottom)
+                
+                Spacer()
+                
+            }
+            
+            HStack {
+                Spacer()
+                
+                Button(action: {
+                    selectedTab = 0
+                }) {
+                    Text("Activity")
+                        .foregroundColor(selectedTab == 0 ? .black : .gray)
+                }
                 
                 Spacer()
                 
                 Button(action: {
-                    
+                    selectedTab = 1
                 }) {
-                    Text("Remove Friend")
-                        .font(.subheadline)
-                        .foregroundColor(.red)
-                        .padding(6)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color.red, lineWidth: 1)
-                        )
+                    Text("Stats")
+                        .foregroundColor(selectedTab == 1 ? .black : .gray)
                 }
-            }
-
-            .padding(.horizontal)
-            .padding(.top, 8)
-
-            HStack {
-                VStack(alignment: .leading) {
-                    Image(systemName: "person.circle.fill")
-                        .resizable()
-                        .frame(width: 80, height: 80)
-                        .foregroundColor(.gray)
-
-                    Text(username)
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
-                }
-                .padding(.leading)
-
+                
                 Spacer()
-
-
-                HStack(spacing: 30) {
-                    VStack {
-                        Text(String(friendCount))
-                            .font(.headline)
-                        Text("Friends")
-                            .font(.caption)
-                    }
-
-                    VStack {
-                        Text(String(winCount))
-                            .font(.headline)
-                        Text("Wins")
-                            .font(.caption)
-                    }
-
-                    VStack {
-                        Text(String(challengesCount))
-                            .font(.headline)
-                        Text("Challenges")
-                            .font(.caption)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.5)
-                    }
+                
+                Button(action: {
+                    selectedTab = 2
+                }) {
+                    Text("Trophies")
+                        .foregroundColor(selectedTab == 2 ? .black : .gray)
                 }
+                
+                Spacer()
+                
             }
-            .padding(.trailing)
-        }
-        .padding(.horizontal)
-        .padding(.vertical)
-
-            Divider()
-                .padding(.vertical)
-
-            Text( name + "'s" + " Recent Activity")
-                .font(.headline)
-                .padding(.bottom, 8)
-
-
-            ScrollView(.vertical) {
-                VStack(spacing: 10) {
-                    ActivityCardView(name: name)
-                    ActivityCardView(name: name)
-                    ActivityCardView(name: name)
-                    ActivityCardView(name: name)
-                    ActivityCardView(name: name)
+            .font(.headline)
+            VStack(spacing: 0) {
+                Divider()
+                
+                ScrollView {
+                    if selectedTab == 0 {
+                        SelfProfileActivityView()
+                    } else if selectedTab == 1 {
+                        SelfProfileStatsView()
+                    } else {
+                        TrophyView()
+                    }
                 }
-                .padding(.horizontal)
+                .padding(.trailing)
+            }
+            
+            Spacer()
+            
         }
-        .frame(maxHeight: .infinity)
-        
-        Spacer()
     }
 }
 
@@ -170,7 +208,7 @@ struct ActivityCardView: View {
 
 struct FriendProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        FriendProfileView()
+        FriendProfileView(name: "name")
             .previewLayout(.fixed(width: 375, height: 800))
     }
 }

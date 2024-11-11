@@ -9,104 +9,169 @@ import Foundation
 import FirebaseCore
 import FirebaseFirestore
 
+// TODO: 1) Change host type to User.
+// TODO: 2) Change attendees type to [User].
 struct Challenge: Identifiable {  // Previously DailyScrum
     var id: String = ""
     var title: String
+    var host: String
     var attendees: [String]
-    var lengthInMinutes: Int
-    var theme: Theme
     var challengeType: String
+    var lengthInMinutes: Int
     var dataMeasured: String
     var dateCreated: Date = .now
     var endDate: Date
-    var host: String
+    var theme: Theme
     
-    init(id: String = UUID().uuidString, title: String, attendees: [String], lengthInMinutes: Int, theme: Theme, endDate: Date, challengeType: String, dataMeasured: String, dateCreated: Date, host: String) {
-        self.id = id
+    /// Designated challenge initializer.
+    ///
+    /// - Parameter title: The title of the challenge.
+    /// - Parameter host: The user uid of the host of the challenge.
+    /// - Parameter attendees: The user id(s) of the participants of the challenge.
+    /// - Parameter challengeType: The type of the challenge.
+    /// - Parameter lengthInMinutes: How long the challenge will last for. (?)
+    /// - Parameter dataMeasured: The data measured in the challenge. (?)
+    /// - Parameter endDate: The date when the challenge will end.
+    /// - Parameter theme: The theme of the challenge. (?)
+    init(title: String, host: String, attendees: [String], challengeType: String, lengthInMinutes: Int, dataMeasured: String, endDate: Date, theme: Theme) {
+        id = UUID().uuidString
         self.title = title
-        self.attendees = attendees
-        self.lengthInMinutes = lengthInMinutes
-        self.theme = theme
-        self.endDate = endDate
         self.host = host
-        self.dateCreated = dateCreated
-        self.challengeType = challengeType
-        self.dataMeasured = dataMeasured
-        
+        self.attendees = attendees
         self.attendees.append(host)
+        self.challengeType = challengeType
+        self.lengthInMinutes = lengthInMinutes
+        self.dataMeasured = dataMeasured
+        self.endDate = endDate
+        self.theme = theme
     }
     
-    // Adds a challenge to the firestore database.
-    //
-    // TODO: 1) add challenge id to the host challenges array.
-    mutating func addChallenge() async  {
-        // Create document's data
+    /// Convenience challenge initializer.
+    ///
+    /// - Parameter title: The title of the challenge.
+    /// - Parameter host: The user uid of the host of the challenge.
+    /// - Parameter challengeType: The type of the challenge.
+    /// - Parameter lengthInMinutes: How long the challenge will last for. (?)
+    /// - Parameter dateMeasured: The data measured in the challenge. (?)
+    /// - Parameter endDate: The date when the challenge will end.
+    init(title: String, host: String, challengeType: String, lengthInMinutes: Int, dataMeasured: String, endDate: Date) {
+        self.init(title: title, host: host, attendees: [], challengeType: challengeType, lengthInMinutes: lengthInMinutes, dataMeasured: dataMeasured, endDate: endDate, theme: Theme.bubblegum)
+    }
+    
+    /// Adds a challenge to the Firestore Database.
+    ///
+    /// - Returns: The challenge id of the challenge in the Firestore Database, otherwise nil.
+    // TODO: 1) Add challenge id to the host's challengeIds.
+    // TODO:    Solution: Have to change host to User type so that
+    // TODO:              we can access the host's challengeIds and append it.
+    mutating func addChallenge() async -> String? {
         let docData: [String: Any] = [
             "name" : title,
             "type" : challengeType,
             "start" : Timestamp(date: dateCreated),
             "end" : Timestamp(date: endDate),
-            "participants" : attendees,
+            "attendees" : attendees,
             "host" : host,
             "lengthInMinutes": lengthInMinutes,
             "dataMeasured": dataMeasured,
             "theme": theme.rawValue
         ]
-        
-        // Initialize Cloud Firestore
         let db = Firestore.firestore();
-
-        // Set a document
         do {
             let doc = db.collection("challenges").document();
             id = doc.documentID;
             try await doc.setData(docData);
-            print("Document succesfully written.");
+            print("Added challenge to the Firestore Database.");
+            
+            let docChallengeRef = db.collection("challenges").document()
+            id = docChallengeRef.documentID
+            try await docChallengeRef.setData(docData)
+            print("Added challenge to the Firestore Database.")
+            do {
+                let docUserRef = db.collection("users").document(host)
+                let documentUser = try await docUserRef.getDocument()
+                if documentUser.exists {
+                    if let dataDescription = documentUser.data() {
+                        if let challengeIds = dataDescription["challengeIds"] {
+                            var challengeIdsArray = challengeIds as! [String]
+                            challengeIdsArray.append(id)
+                            print("Added challenge id to user's challenge ids array.")
+                            let docUserData: [String: Any] = [
+                                "challengeIds": challengeIdsArray
+                            ]
+                            do {
+                                try await docUserRef.setData(docUserData, merge: true)
+                                print("Updated the user's challengeIds in the Firestore Database.")
+                            } catch {
+                                print ("Cannot update the user's data in the Firestore Database.")
+                            }
+                        }
+                    }
+                } else {
+                    print("The user's uid does not exist in the Firestore Database.")
+                }
+            } catch {
+                print("Cannot access the user's document in the Firestore Database.")
+            }
+            
+            return id;
         } catch {
-            print("Error writing document: \(error).");
+            print("Error adding challenge to the Firestore Database: \(error).");
         }
+        return nil;
     }
     
-    // Retrieve the challenge details from the firestore database.
-    func getChallenge(_ challengeId: String) async -> String {
-        // Initialize Cloud Firestore
-        let db = Firestore.firestore();
-        
-        // Get a document
-        let docRef = db.collection("challenges").document(challengeId);
+    /// Get the challenge data from the Firestore Database.
+    ///
+    /// - Parameter challengeId: The challenge id of the challenge data you want to get.
+    /// - Returns: The challenge data from the Firestore Database, otherwise nil.
+    func getChallenge(challengeId: String) async -> String? {
+        let db = Firestore.firestore()
+        let docRef = db.collection("challenges").document(challengeId)
         do {
-            let document = try await docRef.getDocument();
+            let document = try await docRef.getDocument()
             if document.exists {
-                let dataDescription = document.data().map(String.init(describing:)) ?? "nil";
-                print ("Document data: \(dataDescription).");
-                return dataDescription;
+                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                print("Successfully retrieved the challenge data from the Firestore Database.")
+                return dataDescription
             } else {
-                return "Document does not exist.";
+                print("The challenge data with the given challenge id does not exist.")
             }
         } catch {
-            return "Error getting document: \(error)";
+            print("Error retrieving the challenge data from the Firestore Database: \(error).")
         }
+        return nil;
     }
     
-    // Remove a challenge from the firestore database.
-    func removeChallenge(_ challengeId: String) async -> String {
-        let db = Firestore.firestore();
-        let docRef = db.collection("challenges").document(challengeId);
+    /// Remove a challenge from the Firestore Database.
+    ///
+    /// - Parameter challengeId: The challenge id of the challenge you want to remove.
+    /// - Returns: The challenge id removed from the Firestore Database, otherwise nil.
+    func removeChallenge(challengeId: String) async -> String? {
+        let db = Firestore.firestore()
+        let docRef = db.collection("challenges").document(challengeId)
         do {
-            try await docRef.delete();
-            return "\(challengeId) removed.";
+            try await docRef.delete()
+            print("Successfully removed the challenge data from the Firestore Database.")
+            return challengeId;
         } catch {
-            return "Error getting document: \(error).";
+            
+            print("Error removing the challenge data from the Firestore Database: \(error).")
         }
+        return nil;
     }
+    
+    
+    
+    
 }
 
 extension Challenge {
     static var sampleData: [Challenge] {
         [
-            Challenge(title: "iOS Run Club", attendees: ["Cathy", "Daisy", "Simon", "Jonathan"], lengthInMinutes: 10, theme: .yellow, endDate: .distantFuture, challengeType: "Accumulation", dataMeasured: "Miles", dateCreated: .now, host: "Danny"),
-            Challenge(title: "CoC Challenges", attendees: ["Katie", "Gray", "Euna", "Luis", "Darla"], lengthInMinutes: 5, theme: .orange, endDate: .distantFuture, challengeType: "Best rep", dataMeasured: "1 Mile", dateCreated: .now, host: "Gray"),
-            Challenge(title: "Joey vs Jason vs John", attendees: ["Joey", "John", "Jason"], lengthInMinutes: 5, theme: .purple, endDate: .distantFuture, challengeType: "Accumulation", dataMeasured: "Calories Burned", dateCreated: .now, host: "Joey")
+            Challenge(title: "iOS Run Club", host: "Danny", attendees: ["Cathy", "Daisy", "Simon", "Jonathan"], challengeType: "Accumulation", lengthInMinutes: 10, dataMeasured: "Miles", endDate: .distantFuture, theme: .yellow),
+            Challenge(title: "CoC Challenges", host: "Gray", attendees: ["Katie", "Gray", "Euna", "Luis", "Darla"], challengeType: "Best rep", lengthInMinutes: 5, dataMeasured: "1 Mile", endDate: .distantFuture, theme: .orange),
+            Challenge(title: "Joey vs Jason vs John", host: "Joey", attendees: ["Joey", "John", "Jason"], challengeType: "Accumulation", lengthInMinutes: 5, dataMeasured: "Calories Burned", endDate: .distantFuture, theme: .purple)
         ]
     }
 }
