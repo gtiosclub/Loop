@@ -126,7 +126,9 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
                 }
 
                 for routeSample in routeSamples {
+                    dispatchGroup.enter()
                     let routeQuery = HKWorkoutRouteQuery(route: routeSample) { (query, locations, done, error) in
+                        defer { dispatchGroup.leave() }
                         guard let locations = locations else {
                             print("No locations data found or error: \(String(describing: error?.localizedDescription))")
                             return
