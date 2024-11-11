@@ -73,7 +73,11 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
             var heartRatePoints: [(Date, Double)] = []
             var routeLocations: [(latitude: Double, longitude: Double)] = []
 
+            let dispatchGroup = DispatchGroup()
+
+            dispatchGroup.enter()
             let heartRateQuery = HKSampleQuery(sampleType: heartRateType, predicate: HKQuery.predicateForObjects(from: workout), limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (query, samples, error) in
+                defer { dispatchGroup.leave() }
                 var heartRateSamples: [HKQuantitySample] = []
                 if let samples = samples as? [HKQuantitySample], !samples.isEmpty {
                     heartRateSamples = samples
@@ -93,7 +97,9 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
                 heartRatePoints = heartRateSamples.map { ($0.startDate, $0.quantity.doubleValue(for: HKUnit(from: "count/min"))) }
             }
 
+            dispatchGroup.enter()
             let caloriesQuery = HKSampleQuery(sampleType: caloriesType, predicate: HKQuery.predicateForObjects(from: workout), limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (query, samples, error) in
+                defer { dispatchGroup.leave() }
                 guard let caloriesSamples = samples as? [HKQuantitySample] else {
                     print("No calories data found or error: \(String(describing: error?.localizedDescription))")
                     return
@@ -101,7 +107,9 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
                 let totalCalories = caloriesSamples.map { $0.quantity.doubleValue(for: .kilocalorie()) }.reduce(0, +)
             }
 
+            dispatchGroup.enter()
             let distanceQuery = HKSampleQuery(sampleType: distanceType, predicate: HKQuery.predicateForObjects(from: workout), limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (query, samples, error) in
+                defer { dispatchGroup.leave() }
                 guard let distanceSamples = samples as? [HKQuantitySample] else {
                     print("No distance data found or error: \(String(describing: error?.localizedDescription))")
                     return
@@ -109,7 +117,9 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
                 let totalDistance = distanceSamples.map { $0.quantity.doubleValue(for: .mile()) }.reduce(0, +)
             }
 
+            dispatchGroup.enter()
             let routeQuery = HKAnchoredObjectQuery(type: routeType, predicate: HKQuery.predicateForObjects(from: workout), anchor: nil, limit: HKObjectQueryNoLimit) { (query, samples, deletedObjects, newAnchor, error) in
+                defer { dispatchGroup.leave() }
                 guard let routeSamples = samples as? [HKWorkoutRoute] else {
                     print("No route data found or error: \(String(describing: error?.localizedDescription))")
                     return
@@ -136,22 +146,25 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
             self.healthStore.execute(distanceQuery)
             self.healthStore.execute(routeQuery)
 
-            let workoutData: [String: Any] = [
-                "uid": self.uid ?? "",
-                "startDate": workout.startDate,
-                "endDate": workout.endDate,
-                "totalEnergyBurned": workout.totalEnergyBurned?.doubleValue(for: .kilocalorie()) ?? 0,
-                "totalDistance": workout.totalDistance?.doubleValue(for: .mile()) ?? 0,
-                "averageHeartRate": averageHeartRate,
-                "heartRatePoints": heartRatePoints.map { ["date": $0.0, "value": $0.1] },
-                "routeLocations": routeLocations.map { ["latitude": $0.latitude, "longitude": $0.longitude] }
-            ]
+            dispatchGroup.notify(queue: .main) {
+                // Upload data to Firestore
+                let workoutData: [String: Any] = [
+                    "uid": self.uid ?? "",
+                    "startDate": workout.startDate,
+                    "endDate": workout.endDate,
+                    "totalEnergyBurned": workout.totalEnergyBurned?.doubleValue(for: .kilocalorie()) ?? 0,
+                    "totalDistance": workout.totalDistance?.doubleValue(for: .mile()) ?? 0,
+                    "averageHeartRate": averageHeartRate,
+                    "heartRatePoints": heartRatePoints.map { ["date": $0.0, "value": $0.1] },
+                    "routeLocations": routeLocations.map { ["latitude": $0.latitude, "longitude": $0.longitude] }
+                ]
 
-            self.db.collection("activity").addDocument(data: workoutData) { error in
-                if let error = error {
-                    print("Error adding document: \(error.localizedDescription)")
-                } else {
-                    print("Document added successfully")
+                self.db.collection("activity").addDocument(data: workoutData) { error in
+                    if let error = error {
+                        print("Error adding document: \(error.localizedDescription)")
+                    } else {
+                        print("Document added successfully")
+                    }
                 }
             }
         }
