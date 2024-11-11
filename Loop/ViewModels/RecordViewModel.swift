@@ -54,7 +54,6 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
             DispatchQueue.main.async {
                 print("Recieved Firestore message from watch: \(updateFirestore)")
                 if updateFirestore {
-                    print("Uploading workout data to Firestore")
                     self.uploadWorkoutData()
                 }
             }
@@ -62,7 +61,6 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
     }
 
     func uploadWorkoutData() {
-        //pull workout data from HealthKit
         let workoutType = HKObjectType.workoutType()
         let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
         let query = HKSampleQuery(sampleType: workoutType, predicate: nil, limit: 1, sortDescriptors: [sortDescriptor]) { _, samples, error in 
@@ -71,12 +69,10 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
                 return
             }
 
-            //set up the hk variables
             let heartRateType = HKObjectType.quantityType(forIdentifier: .heartRate)!
             let caloriesType = HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
             let distanceType = HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!
             let routeType = HKSeriesType.workoutRoute()
-            print ("Fetched Data")
 
             let heartRateQuery = HKSampleQuery(sampleType: heartRateType, predicate: HKQuery.predicateForObjects(from: workout), limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (query, samples, error) in
                 var heartRateSamples: [HKQuantitySample] = []
@@ -84,12 +80,10 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
                     heartRateSamples = samples
                 } else {
                     #if targetEnvironment(simulator)
-                    // Use dummy data for simulator
                     let dummyHeartRate = HKQuantitySample(type: heartRateType, quantity: HKQuantity(unit: HKUnit(from: "count/min"), doubleValue: 75), start: Date(), end: Date())
                     heartRateSamples = [dummyHeartRate]
                     print("Using dummy heart rate data: \(heartRateSamples)")
                     #else
-                    //TODO: Still needed?
                     print("No heart rate data found or error: \(String(describing: error?.localizedDescription))")
                     return
                     #endif
@@ -97,11 +91,7 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
 
                 let heartRates = heartRateSamples.map { $0.quantity.doubleValue(for: HKUnit(from: "count/min")) }
                 let averageHeartRate = heartRates.reduce(0, +) / Double(heartRates.count)
-
-                print("Average heart rate: \(averageHeartRate)")
-
                 let heartRatePoints = heartRateSamples.map { ($0.startDate, $0.quantity.doubleValue(for: HKUnit(from: "count/min"))) }
-                print("Heart rate points: \(heartRatePoints)")
             }
 
             let caloriesQuery = HKSampleQuery(sampleType: caloriesType, predicate: HKQuery.predicateForObjects(from: workout), limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (query, samples, error) in
@@ -109,10 +99,7 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
                     print("No calories data found or error: \(String(describing: error?.localizedDescription))")
                     return
                 }
-                
                 let totalCalories = caloriesSamples.map { $0.quantity.doubleValue(for: .kilocalorie()) }.reduce(0, +)
-
-                print("Total calories: \(totalCalories)")
             }
 
             let distanceQuery = HKSampleQuery(sampleType: distanceType, predicate: HKQuery.predicateForObjects(from: workout), limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (query, samples, error) in
@@ -120,9 +107,7 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
                     print("No distance data found or error: \(String(describing: error?.localizedDescription))")
                     return
                 }
-                
                 let totalDistance = distanceSamples.map { $0.quantity.doubleValue(for: .mile()) }.reduce(0, +)
-                print("Total distance: \(totalDistance)")
             }
 
             let routeQuery = HKAnchoredObjectQuery(type: routeType, predicate: HKQuery.predicateForObjects(from: workout), anchor: nil, limit: HKObjectQueryNoLimit) { (query, samples, deletedObjects, newAnchor, error) in
@@ -131,6 +116,8 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
                     return
                 }
 
+                var routeLocations: [(latitude: Double, longitude: Double)] = []
+                
                 for routeSample in routeSamples {
                     let routeQuery = HKWorkoutRouteQuery(route: routeSample) { (query, locations, done, error) in
                         guard let locations = locations else {
@@ -139,20 +126,19 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
                         }
 
                         for location in locations {
-                            print("Location: \(location.coordinate.latitude), \(location.coordinate.longitude)")
+                            let coordinate = (latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+                            routeLocations.append(coordinate)
                         }
                     }
                     self.healthStore.execute(routeQuery)
                     
                 }
             }
-
             self.healthStore.execute(heartRateQuery)
             self.healthStore.execute(caloriesQuery)
             self.healthStore.execute(distanceQuery)
             self.healthStore.execute(routeQuery)
         }
         healthStore.execute(query)
-        print("All queries executed")
     }
 }
