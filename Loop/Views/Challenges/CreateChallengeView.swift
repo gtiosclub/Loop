@@ -12,13 +12,10 @@ struct CreateChallengeView: View {
     @State private var challengeName: String = ""
     @State private var challengeActivity: ChallengeActivity = .Running
     @State private var challengeMetric: ChallengeMetric = .Distance
-//    @State private var attendees: [String] = []
     @State private var endDate: Date = Date()
     @State private var isDatePickerVisible = false
     @State private var searchText: String = ""
     @State private var joinCode: String = ""
-    
-//    @State private var popUpOpen = false
     
     
     var body: some View {

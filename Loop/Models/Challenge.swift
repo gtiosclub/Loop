@@ -176,6 +176,18 @@ struct Challenge: Identifiable {  // Previously DailyScrum
             }
     }
     
+    //Get date range formatted in form MMM d, e.g. Oct 10 - Nov 11
+    static func dateRange(start: Date, end: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMM d"
+        
+        let startDateString = dateFormatter.string(from: start)
+        let endDateString = dateFormatter.string(from: end)
+            
+        return "\(startDateString) - \(endDateString)"
+    }
+    
+    
     
     
     
@@ -190,9 +202,9 @@ extension Challenge {
         let date3 = calendar.date(from: DateComponents(year: 2024, month: 12, day:25))
         
         return [
-            Challenge(title: "iOS Run Club", host: "Danny", attendees: ["Cathy", "Daisy", "Simon", "Jonathan"], challengeType: "Accumulation", lengthInMinutes: 10, dataMeasured: "Miles", endDate: date1 ?? Date(), theme: .yellow),
-            Challenge(title: "CoC Challenges", host: "Gray", attendees: ["Katie", "Gray", "Euna", "Luis", "Darla"], challengeType: "Best rep", lengthInMinutes: 5, dataMeasured: "1 Mile", endDate: date2 ?? Date(), theme: .orange),
-            Challenge(title: "Joey vs Jason vs John", host: "Joey", attendees: ["Joey", "John", "Jason"], challengeType: "Accumulation", lengthInMinutes: 5, dataMeasured: "Calories Burned", endDate: date3 ?? Date(), theme: .purple)
+            Challenge(title: "iOS Run Club", host: "Danny", attendees: ["Cathy", "Daisy", "Simon", "Jonathan"], challengeType: "Running", lengthInMinutes: 10, dataMeasured: "Miles", endDate: date1 ?? Date(), theme: .yellow),
+            Challenge(title: "CoC Challenges", host: "Gray", attendees: ["Katie", "Gray", "Euna", "Luis", "Darla"], challengeType: "Hiking", lengthInMinutes: 5, dataMeasured: "Calories", endDate: date2 ?? Date(), theme: .orange),
+            Challenge(title: "Joey vs Jason vs John", host: "Joey", attendees: ["Joey", "John", "Jason"], challengeType: "Biking", lengthInMinutes: 5, dataMeasured: "Time", endDate: date3 ?? Date(), theme: .purple)
         ]
     }
 }

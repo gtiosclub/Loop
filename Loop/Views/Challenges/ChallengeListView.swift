@@ -62,6 +62,7 @@ struct ChallengeListView: View {
                         .padding(.bottom, 5)
                 }
             }
+            .scrollIndicators(.hidden)
             .padding(.top, 10).padding(.horizontal, 10)
         }
         .foregroundColor(.black)
