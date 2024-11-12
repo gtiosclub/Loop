@@ -6,33 +6,26 @@
 //
 
 import SwiftUI
-import WatchConnectivity
+import FirebaseFirestore
 
 struct FeedView: View {
-
     @StateObject private var viewModel = FeedViewModel()
     let userId: String
 
-
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
-
                 VStack(spacing: 16) {
                     ForEach(viewModel.friendPosts, id: \.id) { post in
-                        TextCardView(
-                            name: post.name,
-                            avatar: post.avatar,
-                            post: post.content,
-                            date: post.date
+                        WorkoutCardView(
+                            post: post
                         )
                         .padding(.horizontal)
                     }
                     .padding(.top)
-                }   
-                .navigationTitle("Home Feed")                     
+                }
             }
-            .navigationTitle("Home Feed")
+            .navigationTitle("Activity Feed")
             .onAppear {
                 viewModel.fetchFriendPosts(for: userId)
             }
@@ -40,83 +33,72 @@ struct FeedView: View {
     }
 }
 
-struct TextCardView: View {
-    var name: String
-    var avatar: String
-    var post: String
-    var date: String
-
-    @State private var isLiked = false
+struct WorkoutCardView: View {
+    var post: WorkoutPost
 
     var body: some View {
-        NavigationLink(destination: DetailedStatsView(name: name)) {
-            VStack(alignment: .leading, spacing: 12) {
-                HStack {
-                    Image(systemName: avatar)
+        NavigationLink(destination: DetailedStatsView(workoutPost: post)) {
+            VStack(spacing: 0) {
+                ZStack(alignment: .bottomLeading) {
+                    Image("runner_stock")
                         .resizable()
-                        .clipShape(Circle())
-                        .frame(width: 25, height: 25)
-                        .shadow(radius: 5)
-                    VStack(alignment: .leading) {
-                        Text(name)
-                            .font(.headline)
-                        Text("Shared a post")
-                            .font(.subheadline)
-                            .foregroundColor(.gray)
-                    }
-                    Spacer()
-                }
-                
-                Text(post)
-                    .font(.body)
-                    .foregroundColor(.primary)
-
-                HStack {
-                    Button(action: {
-                        withAnimation {
-                            isLiked.toggle()
-                        }
-                    }) {
-                        HStack {
-                            Image(systemName: isLiked ? "heart.fill" : "heart")
-                                .foregroundColor(isLiked ? .red : .gray)
-                            Text("Like")
-                                .foregroundColor(.primary)
-                        }
-                    }
-                    Spacer()
-                    Button(action: {
-                    }) {
-                        HStack {
-                            Image(systemName: "message")
-                            Text("Comment")
-                        }
-                        .foregroundColor(.primary)
-                    }
-                }
-                .padding(.top, 8)
-
-                Text(date)
-                    .font(.footnote)
-                    .foregroundColor(.gray)
-            }
-            .padding()
-            .background(
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(LinearGradient(
-                        gradient: Gradient(colors: [.white, Color(.systemGray6)]),
+                        .aspectRatio(contentMode: .fill)
+                        .frame(height: 160)
+                        .clipped()
+                    LinearGradient(
+                        gradient: Gradient(colors: [.clear, .black.opacity(0.3)]),
                         startPoint: .top,
                         endPoint: .bottom
-                    ))
-                    .shadow(radius: 5)
-            )
+                    )
+                    Text(post.workoutType)
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 8)
+                        .background(Color.white.opacity(0.2))
+                        .cornerRadius(20)
+                        .padding(16)
+                }
+
+                VStack(alignment: .leading, spacing: 16) {
+                    Text("\(post.name)'s \(post.workoutType) Session")
+                        .font(.title3)
+                        .fontWeight(.bold)
+
+                    HStack(spacing: 24) {
+                        StatItem(title: "Distance", value: "\(post.distance) mi")
+                        StatItem(title: "Avg HR", value: post.averageHeartRate)
+                        StatItem(title: "Time", value: post.duration)
+                        StatItem(title: "Calories", value: "\(post.calories) kcal")
+                    }
+
+                    Text(post.date)
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                }
+                .padding(16)
+                .background(Color(.systemBackground))
+            }
+            .background(Color(.systemBackground))
+            .cornerRadius(12)
+            .shadow(radius: 5)
         }
         .buttonStyle(PlainButtonStyle())
     }
 }
 
-struct FeedView_Previews: PreviewProvider {
-    static var previews: some View {
-        FeedView(userId: "currentLoggedInUserId")
+struct StatItem: View {
+    var title: String
+    var value: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(title)
+                .font(.caption)
+                .foregroundColor(.gray)
+            Text(value)
+                .font(.system(size: 16, weight: .semibold))
+        }
     }
 }
+
