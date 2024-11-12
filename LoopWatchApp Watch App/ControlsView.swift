@@ -9,11 +9,14 @@ import SwiftUI
 
 struct ControlsView: View {
     @EnvironmentObject var workoutManager: WorkoutManager
+    @Environment(\.dismiss)
+    private var dismiss
     @State var type: String
 
     var body: some View {
         HStack {
             Button {
+                dismiss()
                 print("Ending workout...")
                 workoutManager.endWorkout(type)
             } label: {

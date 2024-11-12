@@ -6,8 +6,6 @@ struct StatsView: View {
     
     @State var timeCount: TimeInterval
     @State var isTimerRunning = false
-    @State var timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
-    @State private var navigateToStatsView = false
     @EnvironmentObject var workoutManager: WorkoutManager
     
     var body: some View {
@@ -59,7 +57,11 @@ struct StatsView: View {
                 .scenePadding()
             }
         }
+        .onAppear {
+            print(workoutManager.builder)
+        }
     }
+        
 }
 
 private struct MetricsTimelineSchedule: TimelineSchedule {

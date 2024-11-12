@@ -66,7 +66,7 @@ struct LoopWatchApp_Watch_AppApp: App {
     var body: some Scene {
         WindowGroup {
             
-            NavigationView {
+            NavigationStack {
                 WatchTypesOfExerciseView()
             }
                 .environmentObject(workoutManager)
@@ -75,6 +75,7 @@ struct LoopWatchApp_Watch_AppApp: App {
                     SummaryView()
                         .environmentObject(workoutManager)
                 }
+                
         }
     }
 }
