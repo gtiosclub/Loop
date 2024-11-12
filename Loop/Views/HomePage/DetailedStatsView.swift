@@ -60,7 +60,6 @@ struct DetailedStatsView: View {
                         .padding()
                 }
 
-                // Add more charts or data as needed, such as route map, elevation, etc.
 
             }
             .padding(.vertical)
@@ -137,7 +136,6 @@ struct SummaryStatItem: View {
 
 struct DetailedStatsView_Previews: PreviewProvider {
     static var previews: some View {
-        // Sample data for preview
         let samplePost = WorkoutPost(
             id: "sample",
             name: "Sample Name",

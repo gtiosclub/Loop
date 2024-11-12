@@ -21,7 +21,6 @@ class FeedViewModel: ObservableObject {
     private let db = Firestore.firestore()
 
     func fetchFriendPosts(for userId: String) {
-        // Fetch the current user's document to get the list of friends
         db.collection("users").document(userId).getDocument { [weak self] (document, error) in
             if let document = document, document.exists {
                 if let friends = document.data()?["friends"] as? [String], !friends.isEmpty {
@@ -38,7 +37,6 @@ class FeedViewModel: ObservableObject {
     private func fetchActivitiesForFriends(_ friendUids: [String]) {
         let chunks = friendUids.chunked(into: 10)
         for chunk in chunks {
-            // Query user documents where 'uid' is in the chunk
             db.collection("users")
                 .whereField("uid", in: chunk)
                 .getDocuments { [weak self] (snapshot, error) in
@@ -51,7 +49,7 @@ class FeedViewModel: ObservableObject {
 
                     for userDoc in userDocs {
                         let userData = userDoc.data()
-                        let friendId = userDoc.documentID // Document ID
+                        let friendId = userDoc.documentID
                         let uid = userData["uid"] as? String ?? ""
                         let name = userData["name"] as? String ?? "Unknown"
                         let avatar = userData["profilePictureId"] as? String ?? "person.crop.circle"
@@ -81,13 +79,13 @@ class FeedViewModel: ObservableObject {
     private func createWorkoutPost(from document: QueryDocumentSnapshot, friendName: String, friendAvatar: String) {
         let data = document.data()
 
-        // Extract activity details
+        
         let workoutType = data["workoutType"] as? String ?? "Workout"
         let totalDistance = data["totalDistance"] as? Double ?? 0.0
         let totalEnergyBurned = data["totalEnergyBurned"] as? Double ?? 0.0
         let averageHeartRate = data["averageHeartRate"] as? Double ?? 0.0
 
-        // Extract heartRatePoints
+
         var heartRatePoints: [HeartRateEntry] = []
         if let hrPoints = data["heartRatePoints"] as? [[String: Any]] {
             for hrPoint in hrPoints {
@@ -100,7 +98,7 @@ class FeedViewModel: ObservableObject {
             }
         }
 
-        // Extract routeLocations
+       
         var routeLocations: [RouteLocation] = []
         if let locations = data["routeLocations"] as? [[String: Any]] {
             for location in locations {
@@ -112,7 +110,7 @@ class FeedViewModel: ObservableObject {
             }
         }
 
-        // Calculate duration
+     
         if let startDate = (data["startDate"] as? Timestamp)?.dateValue(),
            let endDate = (data["endDate"] as? Timestamp)?.dateValue() {
             let durationInSeconds = endDate.timeIntervalSince(startDate)
@@ -125,7 +123,7 @@ class FeedViewModel: ObservableObject {
                 avatar: friendAvatar,
                 workoutType: workoutType,
                 distance: String(format: "%.2f", totalDistance),
-                pace: "-", // Calculate if you have the data
+                pace: "-", 
                 duration: duration,
                 calories: String(format: "%.0f", totalEnergyBurned),
                 date: date,
