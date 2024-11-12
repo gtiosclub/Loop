@@ -8,44 +8,65 @@
 import SwiftUI
 
 struct ChallengeListView: View {
-
-    let challenges: [Challenge] 
+    let challenges: [Challenge]
+    @State private var selectedTab: String = "Active Challenges"
+    var tabs = ["Active Challenges", "Past Challenges"]
+    
     var body: some View {
-
         NavigationStack {
             HStack {
+                Text("Challenges")
+                    .font(.system(size: 26, weight: .medium))
+                    .padding(.leading, 15)
+                
                 Spacer()
+                
                 NavigationLink {
                     CreateChallengeView()
                 } label: {
                     Image(systemName: "plus")
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width:20, height: 20)
-                        .bold()
-                        .foregroundStyle(.black)
+                        .font(.system(size: 21))
                 }
-                .padding(.trailing, 30)
+                .padding(.trailing, 16)
             }
-            Text("Challenges")
-                .font(.title)
-                .bold()
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.leading, 20)
-            List {
-                ForEach(challenges, id: \.id) { challenge in
-                    NavigationLink {
-                        ChallengeView(challenge: challenge)
-                    } label: {
-                        CardView(challenge: challenge)
-                    }
-                    .listRowBackground(challenge.theme.mainColor)
-                    }
-                }
             
+            HStack {
+                ForEach(tabs, id: \.self) { tab in
+                    if (tab == selectedTab) {
+                        Text(tab)
+                            .font(.system(size: 17, weight: .medium))
+                            .frame(width: UIScreen.main.bounds.size.width / 2, alignment: .center)
+                            .overlay(VStack {
+                                Divider().frame(height: 2).background(Color.black).offset(x: 0, y: 20)
+                            })
+                    } else {
+                        Button {
+                            selectedTab = tab
+                        } label: {
+                            Text(tab)
+                                .foregroundStyle(.gray)
+                                .frame(width: UIScreen.main.bounds.size.width / 2, alignment: .center)
+                                .overlay(VStack {
+                                    Divider().frame(height: 2).background(Color.gray).opacity(0.5).offset(x: 0, y: 20)
+                                })
+                        }
+                    }
+                }
+                .padding(.horizontal, -4)
             }
+            .padding(.top, 1).padding(.bottom, 10)
+            
+            ScrollView {
+                ForEach(challenges, id: \.id) { challenge in
+                    CardView(challenge: challenge)
+                        .padding(.bottom, 5)
+                }
+            }
+            .padding(.top, 10).padding(.horizontal, 10)
         }
+        .foregroundColor(.black)
     }
+}
 
 #Preview {
     ChallengeListView(challenges: Challenge.sampleData)

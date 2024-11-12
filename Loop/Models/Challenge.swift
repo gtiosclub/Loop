@@ -161,17 +161,38 @@ struct Challenge: Identifiable {  // Previously DailyScrum
         return nil;
     }
     
+    /// Get time left before a challenge ends in a string
+    static func timeRemaining(endDate: Date) -> String {
+        
+        let formatter = DateComponentsFormatter()
+            formatter.allowedUnits = [.day, .hour, .minute]
+            formatter.unitsStyle = .abbreviated
+            formatter.zeroFormattingBehavior = .pad
+
+            if let timeDifference = formatter.string(from: Date(), to: endDate) {
+                return timeDifference
+            } else {
+                return "N/A"
+            }
+    }
+    
     
     
     
 }
 
 extension Challenge {
+
     static var sampleData: [Challenge] {
-        [
-            Challenge(title: "iOS Run Club", host: "Danny", attendees: ["Cathy", "Daisy", "Simon", "Jonathan"], challengeType: "Accumulation", lengthInMinutes: 10, dataMeasured: "Miles", endDate: .distantFuture, theme: .yellow),
-            Challenge(title: "CoC Challenges", host: "Gray", attendees: ["Katie", "Gray", "Euna", "Luis", "Darla"], challengeType: "Best rep", lengthInMinutes: 5, dataMeasured: "1 Mile", endDate: .distantFuture, theme: .orange),
-            Challenge(title: "Joey vs Jason vs John", host: "Joey", attendees: ["Joey", "John", "Jason"], challengeType: "Accumulation", lengthInMinutes: 5, dataMeasured: "Calories Burned", endDate: .distantFuture, theme: .purple)
+        let calendar = Calendar.current
+        let date1 = calendar.date(from: DateComponents(year: 2024, month: 12, day:16))
+        let date2 = calendar.date(from: DateComponents(year: 2024, month: 11, day:29))
+        let date3 = calendar.date(from: DateComponents(year: 2024, month: 12, day:25))
+        
+        return [
+            Challenge(title: "iOS Run Club", host: "Danny", attendees: ["Cathy", "Daisy", "Simon", "Jonathan"], challengeType: "Accumulation", lengthInMinutes: 10, dataMeasured: "Miles", endDate: date1 ?? Date(), theme: .yellow),
+            Challenge(title: "CoC Challenges", host: "Gray", attendees: ["Katie", "Gray", "Euna", "Luis", "Darla"], challengeType: "Best rep", lengthInMinutes: 5, dataMeasured: "1 Mile", endDate: date2 ?? Date(), theme: .orange),
+            Challenge(title: "Joey vs Jason vs John", host: "Joey", attendees: ["Joey", "John", "Jason"], challengeType: "Accumulation", lengthInMinutes: 5, dataMeasured: "Calories Burned", endDate: date3 ?? Date(), theme: .purple)
         ]
     }
 }
