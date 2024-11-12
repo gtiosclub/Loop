@@ -32,67 +32,55 @@ struct ManageFriendsView: View {
     @State private var allFriends: [String] = ["Kevin", "Ethan", "Jason", "Seohyun", "Dennis", "Aryun", "Dennis", "Dennis", "Dennis"]
     @State private var filteredFriends: [String] = []
     @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) private var dismiss
     
     
     private func filterFriends() {
-        if searchText.isEmpty {
-            // When search is empty, reset to the original friends list
-            onlineFriends = allFriends.filter { $0.contains("1") }  // Example to filter for "Online" friends
-            offlineFriends = allFriends.filter { !$0.contains("1") }  // Example to filter for "Offline" friends
-        } else {
-            // Filter friends by search text
-            onlineFriends = allFriends.filter { $0.lowercased().contains(searchText.lowercased()) && $0.contains("1") }
-            offlineFriends = allFriends.filter { $0.lowercased().contains(searchText.lowercased()) && !$0.contains("1") }
-        }
-    }
-    
-    var body: some View {
-        VStack {
-            HStack {
-                Button(action: {
-                    self.presentationMode.wrappedValue.dismiss()
-                }) {
-                    Image(systemName: "arrow.left.circle.fill").font(.system(size: 30)).foregroundColor(.orange)
-                }
-                
-                Spacer()
-                
-                Text("Manage Friends").font(.headline)
-                
-                Spacer()
-            }.padding()
-            
-            
-            HStack {
-                Image(systemName: "magnifyingglass").foregroundColor(.gray)
-                TextField("Search Friends", text: $searchText).padding(8).background(Color.orange.opacity(0.3)).cornerRadius(8).onChange(of: searchText) { filterFriends() }
-            }.padding(.horizontal)
-            
-
-                VStack(alignment: .leading) {
-                    Text("Online: ").font(.subheadline).padding(.leading)
-                    ScrollView {
-                        ForEach(onlineFriends, id: \.self) {friend in
-                            FriendRow(friendName: friend, status: "Now Active")
-                        }
-                    }
-                }.padding(.top)
-                
-            VStack(alignment: .leading) {
-                Text("Offline: ").font(.subheadline).padding(.leading)
-                ScrollView {
-                    ForEach(offlineFriends, id: \.self) {friend in
-                        FriendRow(friendName: friend, status: "Last Seen: 7 days")
-                    }
+            if searchText.isEmpty {
+                filteredFriends = allFriends
+            } else {
+                filteredFriends = allFriends.filter {
+                    $0.lowercased().contains(searchText.lowercased())
                 }
             }
-            
-            
+        }
+
+        var body: some View {
+        VStack {
+            // Back Button + Header
+            HStack {
+                Button(action: { dismiss() }) {
+                    Image(systemName: "arrow.left.circle.fill")
+                        .font(.system(size: 30))
+                        .foregroundColor(.red)
+                }
+                Spacer()
+                Text("Manage Friends").font(.headline)
+                Spacer()
+            }
+            .padding()
+
+            // Search Bar
+            TextField("Search Friends", text: $searchText)
+                .padding(8)
+                .background(Color.red.opacity(0.3))
+                .cornerRadius(8)
+                .padding(.horizontal)
+                .onChange(of: searchText) { _ in filterFriends() }
+
+            // Friends List
+            ScrollView {
+                ForEach(filteredFriends, id: \.self) { friend in
+                    FriendRow(friendName: friend, status: "")
+                }
+            }
+            .padding(.top)
+
             Spacer()
-            
-            
-        }.background(Color.gray.opacity(0.1).edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/))
-            .navigationBarBackButtonHidden(true)
+        }
+        .background(Color.gray.opacity(0.1).edgesIgnoringSafeArea(.all))
+        .navigationBarBackButtonHidden(true)
+        .onAppear { filterFriends() }
     }
 }
 

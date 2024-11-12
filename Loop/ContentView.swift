@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct ContentView: View {
     init() {
@@ -14,30 +15,39 @@ struct ContentView: View {
     }
     
     @State var selectedView: TabSelection = .home
+    @State private var userId: String? = nil
     var body: some View {
-        TabView(selection: $selectedView,
-            content: {
-            
-            FeedView().tabItem {
-                Label("Home", systemImage: "house.fill")
-            }.tag(TabSelection.home)
-            
-            ChallengeListView(challenges: Challenge.sampleData).tabItem {
-                Label("Challenges", systemImage: "figure.run")
-            }.tag(TabSelection.challenges)
-            
-            RecordView().tabItem {
-                Label("Record", systemImage: "clock.fill")
-            }.tag(TabSelection.record)
-            
-            SelfProfileView().tabItem {
-                Label("Profile", systemImage: "person.crop.circle.fill")
-            }.tag(TabSelection.profile)
-            
-            
+            TabView(selection: $selectedView) {
+                if let userId = userId {
+                    FeedView(userId: userId).tabItem {
+                        Label("Home", systemImage: "house.fill")
+                    }.tag(TabSelection.home)
+                } else {
+                    Text("Loading...").tabItem {
+                        Label("Home", systemImage: "house.fill")
+                    }.tag(TabSelection.home)
+                }
+
+                ChallengeListView(challenges: Challenge.sampleData).tabItem {
+                    Label("Challenges", systemImage: "figure.run")
+                }.tag(TabSelection.challenges)
+
+                RecordView().tabItem {
+                    Label("Record", systemImage: "clock.fill")
+                }.tag(TabSelection.record)
+
+                SelfProfileView().tabItem {
+                    Label("Profile", systemImage: "person.crop.circle.fill")
+                }.tag(TabSelection.profile)
             }
-        )
-    }
+            .onAppear {
+                if let currentUser = Auth.auth().currentUser {
+                    self.userId = currentUser.uid
+                } else {
+                    print("User not logged in")
+                }
+            }
+        }
 }
 
 enum TabSelection {
