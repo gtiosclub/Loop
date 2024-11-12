@@ -40,7 +40,7 @@ struct WorkoutCardView: View {
         NavigationLink(destination: DetailedStatsView(workoutPost: post)) {
             VStack(spacing: 0) {
                 ZStack(alignment: .bottomLeading) {
-                    Image("ChallengeDefault")
+                    Image("runner_stock")
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(height: 160)

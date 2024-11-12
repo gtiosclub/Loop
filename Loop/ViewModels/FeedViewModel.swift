@@ -21,6 +21,7 @@ class FeedViewModel: ObservableObject {
     private let db = Firestore.firestore()
 
     func fetchFriendPosts(for userId: String) {
+        self.friendPosts = []
         db.collection("users").document(userId).getDocument { [weak self] (document, error) in
             if let document = document, document.exists {
                 if let friends = document.data()?["friends"] as? [String], !friends.isEmpty {
