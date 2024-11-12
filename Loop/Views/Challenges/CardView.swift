@@ -28,7 +28,7 @@ struct CardView: View {
                         }
                         
                         HStack {
-                            Label("04d 02h 44m", systemImage: "clock")
+                            Label(Challenge.timeRemaining(endDate: challenge.endDate), systemImage: "clock")
                                 .padding(.leading, 15)
                             Spacer()
                         }
@@ -46,28 +46,14 @@ struct CardView: View {
                     
                     VStack {
                         HStack {
-                            ZStack {
-                                Circle()
-                                    .fill(Color(.lightGray))
-                                    .frame(width: 30, height: 30)
-                                Circle()
-                                    .stroke(Color(.lightGray), lineWidth: 0)
-                                    .fill(Color(.lightGray))
-                                    .frame(width: 30, height: 30)
-                                    .padding(.leading, 45)
-                                Circle()
-                                    .stroke(Color(.lightGray), lineWidth: 0)
-                                    .fill(Color(.lightGray))
-                                    .frame(width: 30, height: 30)
-                                    .padding(.leading, 90)
-                            }
-                            .padding(.leading, -30)
+                            Image(systemName: "person.fill")
+                            .padding(.leading, 20)
                             
                             Text(String(challenge.attendees.count) + " Participants")
                             
                             Spacer()
                             
-                            Label("Oct 10 - Nov 1", systemImage: "calendar")
+                            Label(dateRange(start:challenge.dateCreated, end: challenge.endDate), systemImage: "calendar")
                                 .padding(.trailing, 20)
                         }
                         
@@ -91,6 +77,15 @@ struct CardView: View {
             }
         }
     }
+}
+func dateRange(start: Date, end: Date) -> String {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "MMM d"
+    
+    let startDateString = dateFormatter.string(from: start)
+    let endDateString = dateFormatter.string(from: end)
+        
+    return "\(startDateString) - \(endDateString)"
 }
 
 struct CardView_Previews: PreviewProvider {
