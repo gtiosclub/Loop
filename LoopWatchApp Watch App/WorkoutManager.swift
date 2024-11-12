@@ -144,8 +144,16 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
     static let shared = WorkoutManager()
     private let healthStore = HKHealthStore()
     private var session: HKWorkoutSession?
-    var builder: HKLiveWorkoutBuilder?
-    @Published var backToHome: Bool = false
+    @Published var backToHome: Bool = false {
+            didSet {
+                if backToHome {
+                    
+                    DispatchQueue.main.async {
+                        self.resetWorkout()  
+                    }
+                }
+            }
+        }
     @Published var showingSummaryView: Bool = false {
         didSet {
             if showingSummaryView == false {

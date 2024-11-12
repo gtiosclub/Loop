@@ -16,6 +16,7 @@ struct WatchTypesOfExerciseView: View {
                 NavigationLink(destination:SessionPagingView(item: item)
                             .environmentObject(workoutManager)
                             .onAppear {
+                                
                                 workoutManager.startWorkout(item.type)
                             }) {
                     VStack {
