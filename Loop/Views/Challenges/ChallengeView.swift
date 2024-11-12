@@ -115,7 +115,9 @@ struct ChallengeView: View {
                             Spacer()
                         }
                         
-                        Button(action: {}){
+                        Button(action: {
+                            
+                        }){
                             HStack {
                                 Image(systemName: "arrowshape.backward.circle")
                                     .resizable()

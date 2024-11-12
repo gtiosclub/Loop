@@ -34,6 +34,10 @@ struct CardView: View {
                         }
                         
                         Spacer()
+                        
+                        HStack {
+                            
+                        }
                     }
                 }
                 .foregroundStyle(.white)
@@ -62,11 +66,12 @@ struct CardView: View {
                         } label: {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 15)
-                                    .fill(Color(.lightGray))
+                                    .fill(Color(red: 232/255,green: 78/255, blue: 78/255))
                                     .frame(width: 350, height: 40)
                                 
                                 Text("View Challenge")
-                                    .font(.system(size: 16, weight: .medium))
+                                    .font(.system(size: 20, weight: .medium))
+                                    .foregroundColor(.white)
                             }
                         }
                         .foregroundStyle(.black)
