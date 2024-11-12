@@ -53,7 +53,7 @@ struct CardView: View {
                             
                             Spacer()
                             
-                            Label(dateRange(start:challenge.dateCreated, end: challenge.endDate), systemImage: "calendar")
+                            Label(Challenge.dateRange(start:challenge.dateCreated, end: challenge.endDate), systemImage: "calendar")
                                 .padding(.trailing, 20)
                         }
                         
@@ -77,15 +77,6 @@ struct CardView: View {
             }
         }
     }
-}
-func dateRange(start: Date, end: Date) -> String {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "MMM d"
-    
-    let startDateString = dateFormatter.string(from: start)
-    let endDateString = dateFormatter.string(from: end)
-        
-    return "\(startDateString) - \(endDateString)"
 }
 
 struct CardView_Previews: PreviewProvider {

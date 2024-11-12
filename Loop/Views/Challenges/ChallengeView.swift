@@ -22,7 +22,7 @@ struct ChallengeView: View {
     
     @Environment(\.dismiss) private var dismiss
     @State private var selectedTab: String = "Leaderboard"
-    var tabs = ["Leaderboard", "Statistics", "Description"]
+    var tabs = ["Leaderboard", "Description"]
     
     var body: some View {
         ZStack {
@@ -32,7 +32,7 @@ struct ChallengeView: View {
                         if (tab == selectedTab) {
                             Text(tab)
                                 .font(.system(size: 17, weight: .medium))
-                                .frame(width: UIScreen.main.bounds.size.width / 3, alignment: .center)
+                                .frame(width: UIScreen.main.bounds.size.width / 2, alignment: .center)
                                 .overlay(VStack {
                                     Divider().frame(height: 2).background(Color.black).offset(x: 0, y: 20)
                                 })
@@ -42,7 +42,7 @@ struct ChallengeView: View {
                             } label: {
                                 Text(tab)
                                     .foregroundStyle(.gray)
-                                    .frame(width: UIScreen.main.bounds.size.width / 3, alignment: .center)
+                                    .frame(width: UIScreen.main.bounds.size.width / 2, alignment: .center)
                                     .overlay(VStack {
                                         Divider().frame(height: 2).background(Color.gray).opacity(0.5).offset(x: 0, y: 20)
                                     })
@@ -57,12 +57,84 @@ struct ChallengeView: View {
                     ChalLeaderboardView(personList: [Person(name:"Ryan", distance: 4.2), Person(name:"Max", distance: 14.8), Person(name:"Jason", distance: 7.1), Person(name:"Sam", distance: 11.4), Person(name: "Joe", distance: 5.5)])
                 }
                 
-                if (selectedTab == "Statistics") {
-                    //stats view
-                }
-                
                 if (selectedTab == "Description") {
-                    //description view
+                    VStack(alignment:.leading) {
+                        Image("ChallengeDefault")
+                            .resizable()
+                            .frame(maxWidth: .infinity)
+                            .scaledToFit()
+                            .colorMultiply(.gray)
+                            .cornerRadius(15)
+                            .padding(.bottom, 20)
+
+                        
+                        HStack {                            
+                            Text("Time Period: ")
+                                .font(.system(size:20))
+                                .bold()
+                            
+                            Text(Challenge.dateRange(start: challenge.dateCreated, end: challenge.endDate))
+                                .font(.system(size:20))
+                            
+                        }
+                        .padding(.bottom, 15)
+                        
+                        HStack {
+                            Text("Activity: ")
+                                .font(.system(size:20))
+                                .bold()
+                            Text(challenge.challengeType)
+                                .font(.system(size:20))
+                        }
+                        .padding(.bottom, 15)
+                        
+                        HStack {
+                            Text("Metric: ")
+                                .font(.system(size:20))
+                                .bold()
+                            Text(challenge.dataMeasured)
+                                .font(.system(size:20))
+                        }
+                            .padding(.bottom, 15)
+                        
+                        Divider()
+                        
+                        Text("Join Code")
+                            .font(.system(size:20))
+                            .bold()
+                            .padding(.bottom, 10)
+                        
+                        HStack {
+                            Spacer()
+                                Text("ABCDE")
+                                    .font(.system(size:40))
+                                    .bold()
+                                    .padding(8)
+                                    .overlay(RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.gray, lineWidth: 2))
+                            Spacer()
+                        }
+                        
+                        Button(action: {}){
+                            HStack {
+                                Image(systemName: "arrowshape.backward.circle")
+                                    .resizable()
+                                    .frame(width:30, height: 30)
+                                    .scaledToFit()
+                                    .padding(.trailing, 10)
+                                Text("Leave Challenge")
+                                    .font(.system(size:30))
+                            }
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 60)
+                            .background(.gray)
+                            .cornerRadius(15)
+                            .padding(.vertical, 20)
+                        }
+
+                        
+                    }
+                    .padding(.horizontal, 15)
                 }
                 
                 Spacer()
@@ -85,7 +157,7 @@ struct ChallengeView: View {
                     HStack {
                         Image(systemName: "clock")
                             .font(.system(size: 12))
-                        Text("04d 02h 44m")
+                        Text(Challenge.timeRemaining(endDate: challenge.endDate))
                             .font(.system(size: 15))
                             .padding(.leading, -5)
                     }
