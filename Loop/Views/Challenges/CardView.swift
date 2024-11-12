@@ -14,13 +14,16 @@ struct CardView: View {
         NavigationStack {
             VStack(spacing: 0) {
                 ZStack {
-                    Color(.lightGray)
-                    
+                    Image("ChallengeDefault")
+                        .resizable()
+                        .scaledToFill()
+                        .colorMultiply(.gray)
                     VStack {
                         HStack {
                             Text(challenge.title)
                                 .font(.system(size: 26))
                                 .padding([.leading, .top], 15).padding(.bottom, 0.5)
+                                .bold()
                             Spacer()
                         }
                         
