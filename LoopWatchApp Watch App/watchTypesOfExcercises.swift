@@ -10,15 +10,21 @@ struct WatchTypesOfExerciseView: View {
     @StateObject var exercisesList = ExercisesList()
     @EnvironmentObject var workoutManager: WorkoutManager
     
+    @State private var presentedExercise: excercise?
+    
     var body: some View {
-        NavigationStack {
+        
             List(exercisesList.lists) { item in
-                NavigationLink(destination:SessionPagingView(item: item)
-                            .environmentObject(workoutManager)
-                            .onAppear {
-                                
-                                workoutManager.startWorkout(item.type)
-                            }) {
+//                NavigationLink(destination:SessionPagingView(item: item)
+//                            .environmentObject(workoutManager)
+//                            .onAppear {
+//                                
+//                                workoutManager.startWorkout(item.type)
+//                            }) {
+                Button {
+                    presentedExercise = item
+                    workoutManager.startWorkout(item.type)
+                } label: {
                     VStack {
                         Image(systemName: item.image)
                             .resizable()
@@ -27,13 +33,21 @@ struct WatchTypesOfExerciseView: View {
                         Text(item.type)
                             .font(.headline)
                     }
+                }
                     .frame(maxWidth: .infinity)
                     .padding()
                     .cornerRadius(10)
+                    
                 }
                 .buttonStyle(PlainButtonStyle())
+                .listStyle(CarouselListStyle())
+                .sheet(item: $presentedExercise) { exercise in
+                    SessionPagingView(item: exercise)
+                        .environmentObject(workoutManager)
+                        
+                    
             }
-            .listStyle(CarouselListStyle())
+    
+        
         }
-    }
 }

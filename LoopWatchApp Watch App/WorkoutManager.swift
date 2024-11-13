@@ -124,9 +124,8 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
     
     @Published var isRunning = false
     @Published var isPaused = false
-    @Published var distance = 0.0  // Distance in miles
-    @Published var calories = 0.0  // Calories in kcal
-    @Published var heartRate = 0.0 // Heart Rate
+    @Published var distance = 0.0
+    @Published var calories = 0.0
     @Published var isWorkoutInProgress = false
     
     @Published var heartRatePoints: [(Date, Double)] = []
@@ -144,16 +143,16 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
     static let shared = WorkoutManager()
     private let healthStore = HKHealthStore()
     private var session: HKWorkoutSession?
-    @Published var backToHome: Bool = false {
-            didSet {
-                if backToHome {
-                    
-                    DispatchQueue.main.async {
-                        self.resetWorkout()  
-                    }
-                }
-            }
-        }
+//    @Published var backToHome: Bool = false {
+//            didSet {
+//                if backToHome {
+//                    
+//                    DispatchQueue.main.async {
+//                        self.resetWorkout()  
+//                    }
+//                }
+//            }
+//        }
     @Published var showingSummaryView: Bool = false {
         didSet {
             if showingSummaryView == false {
@@ -321,7 +320,7 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
         averageHeartRate = 0
         heartRate = 0
         distance = 0
-        backToHome = true
+        //backToHome = true
         #endif
     }
 
