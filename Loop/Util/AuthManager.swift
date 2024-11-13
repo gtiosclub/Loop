@@ -51,6 +51,12 @@ class AuthManager: ObservableObject {
                 } else {
                     self?.isAuthenticated = true
                     self?.errorMessage = nil
+                    
+                    if let uid = result?.user.uid {
+                        Task {
+                            User.updateShared(user: try await FirebaseManager.fetchUserFromFirestore(uid: uid))
+                        }
+                    }
                     completion(true)
                 }
             }

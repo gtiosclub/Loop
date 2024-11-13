@@ -27,7 +27,7 @@ struct ContentView: View {
                     }.tag(TabSelection.home)
                 }
 
-                ChallengeListView(challenges: Challenge.sampleData).tabItem {
+                ChallengeListView().tabItem {
                     Label("Challenges", systemImage: "medal.fill")
                 }.tag(TabSelection.challenges)
 
