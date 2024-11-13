@@ -16,11 +16,19 @@ struct AddFriendRow: View {
 
     var body: some View {
         HStack {
-            Image(systemName: "person.circle.fill").font(.system(size: 40)).foregroundColor(.gray)
+            // User Avatar
+            Image(systemName: "person.circle.fill")
+                .font(.system(size: 40))
+                .foregroundColor(.gray)
+            
+            // User Information
             VStack(alignment: .leading) {
                 Text(friendName).font(.headline)
             }
+            
             Spacer()
+            
+            // Add Button or Pending Indicator
             VStack {
                 Button(action: {
 
@@ -33,7 +41,9 @@ struct AddFriendRow: View {
                         .background(Color.blue)
                         .foregroundColor(.white)
                         .clipShape(Circle())
+
                 }
+                .disabled(isRequestSent)  // Disable button if request sent
             }
         }
         .padding()
@@ -49,14 +59,21 @@ struct AcceptFriendRow: View {
     var friendId: String
     @ObservedObject var profileViewModel: ProfileViewModel
 
-    
     var body: some View {
         HStack {
-            Image(systemName: "person.circle.fill").font(.system(size: 40)).foregroundColor(.gray)
+            // User Avatar
+            Image(systemName: "person.circle.fill")
+                .font(.system(size: 40))
+                .foregroundColor(.gray)
+            
+            // User Information
             VStack(alignment: .leading) {
                 Text(friendName).font(.headline)
             }
+            
             Spacer()
+            
+            // Accept Button
             VStack {
                 Button(action: {
                     Task {
@@ -65,11 +82,13 @@ struct AcceptFriendRow: View {
                 }) {Image(systemName: "plus")
                         .font(.system(size: 24))
                         .padding()
-                        .background(Color.blue)
+                        .background(Color.green)
                         .foregroundColor(.white)
                         .clipShape(Circle())
                 }
             }
+            
+            // Decline Button
             VStack {
                 Button(action: {
                     Task {
@@ -111,6 +130,60 @@ struct AddFriendsView: View {
         self._allUsers = State(initialValue: profileViewModel.users)  // Ensure users are passed and available
     }
     
+    // Sent Friend Requests Tracking
+    @State private var sentRequests: Set<String> = []
+
+    // Firestore Reference
+    private let db = Firestore.firestore()
+
+    // Error Handling States
+    @State private var showingErrorAlert: Bool = false
+    @State private var errorMessage: String = ""
+
+    // MARK: - Unique User ID Generation
+    private func getCurrentUserUID() -> String {
+        if let uid = UserDefaults.standard.string(forKey: "currentUserUID") {
+            return uid
+        } else {
+            let uid = UUID().uuidString
+            UserDefaults.standard.set(uid, forKey: "currentUserUID")
+            return uid
+        }
+    }
+
+    // MARK: - Ensure "Me" Document Exists in Firestore
+    private func ensureUserDocumentExists() {
+        let userRef = db.collection("users").document(currentUserUID)
+        userRef.getDocument { snapshot, error in
+            if let error = error {
+                print("Error checking user document: \(error.localizedDescription)")
+                self.errorMessage = "Failed to verify user data."
+                self.showingErrorAlert = true
+                return
+            }
+
+            if snapshot?.exists == false {
+                // Create a new user document with default fields
+                userRef.setData([
+                    "name": "Me",
+                    "incomingRequests": [],
+                    "friends": []
+                ]) { error in
+                    if let error = error {
+                        print("Error creating user document: \(error.localizedDescription)")
+                        self.errorMessage = "Failed to initialize your user data."
+                        self.showingErrorAlert = true
+                    } else {
+                        print("User document created successfully.")
+                    }
+                }
+            } else {
+                print("User document already exists.")
+            }
+        }
+    }
+
+    // MARK: - Filter Friends Based on Search Text
     private func filterFriends() {
         if searchText.isEmpty {
             matchedFriends = allUsers
@@ -122,17 +195,21 @@ struct AddFriendsView: View {
     }
     var body: some View {
         VStack {
+            // Header with Back Button and Title
             HStack {
                 Button(action: {
                     self.presentationMode.wrappedValue.dismiss()
                 }) {
-                    Image(systemName: "arrow.left.circle.fill").font(.system(size: 30)).foregroundColor(.orange)
+                    Image(systemName: "arrow.left.circle.fill")
+                        .font(.system(size: 30))
+                        .foregroundColor(.orange)
                 }
-                
+
                 Spacer()
-                
-                Text("Add Friends").font(.headline)
-                
+
+                Text("Add Friends")
+                    .font(.headline)
+
                 Spacer()
             }
             .padding()
@@ -178,4 +255,4 @@ struct AddFriendsView: View {
         }
     }
 }
-    
+
