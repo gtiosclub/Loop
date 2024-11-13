@@ -29,17 +29,19 @@ struct ContentView: View {
                 }
 
                 ChallengeListView(challenges: Challenge.sampleData).tabItem {
-                    Label("Challenges", systemImage: "figure.run")
+                    Label("Challenges", systemImage: "medal.fill")
                 }.tag(TabSelection.challenges)
 
                 RecordView().tabItem {
-                    Label("Record", systemImage: "clock.fill")
+                    Label("Record", systemImage: "record.circle")
+                        .foregroundColor(.red)
                 }.tag(TabSelection.record)
 
                 SelfProfileView().tabItem {
-                    Label("Profile", systemImage: "person.crop.circle.fill")
+                    Label("Profile", systemImage: "person.fill")
                 }.tag(TabSelection.profile)
             }
+            .tint(.red)
             .onAppear {
                 if let currentUser = Auth.auth().currentUser {
                     self.userId = currentUser.uid
