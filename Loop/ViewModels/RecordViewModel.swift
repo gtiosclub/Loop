@@ -62,6 +62,21 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
         }
     }
 
+    func workoutActivityTypeToString(_ type: HKWorkoutActivityType) -> String {
+        switch type {
+        case .running:
+            return "running"
+        case .cycling:
+            return "biking"
+        case .swimming:
+            return "swimming"
+        case .hiking:
+            return "hiking"
+        default:
+            return "unknown"
+        }
+    }
+
     func uploadWorkoutData() {
         let workoutType = HKObjectType.workoutType()
         let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
@@ -71,6 +86,9 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
                 return
             }
 
+            let workoutTypeString = WorkoutType(self.workoutActivityTypeToString(workout.workoutActivityType)).description()
+            print("Workout type: \(workoutTypeString)")
+            
             let heartRateType = HKObjectType.quantityType(forIdentifier: .heartRate)!
             let caloriesType = HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
             let distanceType = HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!
@@ -159,6 +177,7 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
                 // Upload data to Firestore
                 let workoutData: [String: Any] = [
                     "uid": self.uid ?? "",
+                    "workoutType": workoutTypeString,
                     "startDate": workout.startDate,
                     "endDate": workout.endDate,
                     "totalEnergyBurned": workout.totalEnergyBurned?.doubleValue(for: .kilocalorie()) ?? 0,
