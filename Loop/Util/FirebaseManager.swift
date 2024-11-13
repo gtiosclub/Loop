@@ -36,6 +36,7 @@ class FirebaseManager {
     enum FirestoreFetchError: Error {
         case InvalidDataError(message: String)
         case InvalidDocumentError(message: String)
+        case NoDocumentFoundError(message: String)
     }
     
     static func fetchUserFromFirestore(uid: String) async throws -> User {
@@ -70,6 +71,44 @@ class FirebaseManager {
         } catch {
             print("Error getting document: \(error)")
             throw error
+        }
+    }
+    
+    
+    // TODO: CANNOT JOIN SAME CHALLENGE MULTIPLE TIMES
+    static func joinChallengeWithCode(_ code: String) async throws {
+        let query = db.collection("challenges").whereField("accessCode", isEqualTo: code)
+        let result = try await query.getDocuments()
+        
+        if result.isEmpty {
+            throw FirestoreFetchError.NoDocumentFoundError(message: "No challenge has that access code")
+        } else {
+            guard let document = result.documents.first else {
+                throw FirestoreFetchError.NoDocumentFoundError(message: "Failed to retrieve challenge document")
+            }
+            
+            let data = document.data()
+            
+            var challenge = Challenge(
+                id: document.documentID,
+                title: data["title"] as? String ?? "",
+                host: data["host"] as? String ?? "",
+                attendees: data["attendees"] as? [String] ?? [],
+                challengeType: data["challengeType"] as? String ?? "",
+                lengthInMinutes: data["lengthInMinutes"] as? Int ?? 0,
+                dataMeasured: data["dataMeasured"] as? String ?? "",
+                dateCreated: (data["dateCreated"] as? Timestamp)?.dateValue() ?? Date(),
+                endDate: (data["endDate"] as? Timestamp)?.dateValue() ?? Date(),
+                theme: Theme(rawValue: data["theme"] as? String ?? "") ?? .bubblegum,
+                accessCode: data["accessCode"] as? String ?? "",
+                scores: data["scores"] as? [String: Double] ?? [:]
+            )
+            if !challenge.attendees.contains(User.shared.uid) {
+                challenge.attendees.append(User.shared.uid)
+                challenge.attendeesFull.append(Person(id: User.shared.uid, name: User.shared.username, score: 0))
+            }
+            
+            _ = await User.shared.addChallenge(challenge: challenge)
         }
     }
 }

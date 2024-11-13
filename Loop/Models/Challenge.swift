@@ -22,6 +22,36 @@ struct Challenge: Identifiable {  // Previously DailyScrum
     var dateCreated: Date = .now
     var endDate: Date
     var theme: Theme
+    var accessCode: String
+    var scores: [String: Double]
+    var attendeesFull = [Person]()
+    
+    ///full initializer
+    init(id: String = "",
+         title: String,
+         host: String,
+         attendees: [String],
+         challengeType: String,
+         lengthInMinutes: Int,
+         dataMeasured: String,
+         dateCreated: Date = .now,
+         endDate: Date,
+         theme: Theme,
+         accessCode: String,
+         scores: [String: Double]) {
+            self.id = id
+            self.title = title
+            self.host = host
+            self.attendees = attendees
+            self.challengeType = challengeType
+            self.lengthInMinutes = lengthInMinutes
+            self.dataMeasured = dataMeasured
+            self.dateCreated = dateCreated
+            self.endDate = endDate
+            self.theme = theme
+            self.accessCode = accessCode
+            self.scores = scores
+        }
     
     /// Designated challenge initializer.
     ///
@@ -44,6 +74,8 @@ struct Challenge: Identifiable {  // Previously DailyScrum
         self.dataMeasured = dataMeasured
         self.endDate = endDate
         self.theme = theme
+        self.accessCode = ""
+        self.scores = [:]
     }
     
     /// Convenience challenge initializer.
@@ -74,7 +106,9 @@ struct Challenge: Identifiable {  // Previously DailyScrum
             "host" : host,
             "lengthInMinutes": lengthInMinutes,
             "dataMeasured": dataMeasured,
-            "theme": theme.rawValue
+            "theme": theme.rawValue,
+            "accessCode": accessCode,
+            "scores" : [host: 0]
         ]
         let db = Firestore.firestore();
         do {
@@ -82,11 +116,7 @@ struct Challenge: Identifiable {  // Previously DailyScrum
             id = doc.documentID;
             try await doc.setData(docData);
             print("Added challenge to the Firestore Database.");
-            
-            let docChallengeRef = db.collection("challenges").document()
-            id = docChallengeRef.documentID
-            try await docChallengeRef.setData(docData)
-            print("Added challenge to the Firestore Database.")
+
             do {
                 let docUserRef = db.collection("users").document(host)
                 let documentUser = try await docUserRef.getDocument()
@@ -186,11 +216,6 @@ struct Challenge: Identifiable {  // Previously DailyScrum
             
         return "\(startDateString) - \(endDateString)"
     }
-    
-    
-    
-    
-    
 }
 
 extension Challenge {

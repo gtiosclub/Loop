@@ -62,7 +62,7 @@ struct CardView: View {
                         }
                         
                         NavigationLink {
-                            ChallengeView(challenge: challenge)
+                            ChallengeView(participants: challenge.attendeesFull, challenge: challenge)
                         } label: {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 15)
