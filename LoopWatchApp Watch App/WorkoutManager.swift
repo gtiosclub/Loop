@@ -85,6 +85,19 @@ enum WorkoutType {
         }
         return configuration
     }
+
+    func description() -> String {
+        switch self {
+        case .running(_, _, let location):
+            return "Running"
+        case .biking(_, _, let location):
+            return "Biking"
+        case .swimming(_, _, let location):
+            return "Swimming"
+        case .hiking(_, _, let location):
+            return "Hiking"
+        }
+    }
     
 }
 
