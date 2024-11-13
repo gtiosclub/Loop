@@ -46,10 +46,6 @@ struct SummaryView: View {
                 ).accentColor(Color.red)
             }
         }
-//        .onDisappear {
-//            // When the SummaryView disappears, navigate back to the WatchTypesOfExerciseView
-//            //workoutManager.backToHome = true
-//        }
     }
 }
 

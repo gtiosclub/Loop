@@ -31,29 +31,13 @@ struct SessionPagingView: View {
                 .navigationBarHidden(selection == .nowPlaying)
                 
                 
-//                NavigationLink("", destination: WatchTypesOfExerciseView()
-//                                   .environmentObject(workoutManager))
-//                                   .opacity(0)
-//                                   
-//                                   .navigationDestination(isPresented: $shouldNavigateBack) {
-//                                       WatchTypesOfExerciseView()
-//                                           .environmentObject(workoutManager)
-//                                   }
+
             }
             .onChange(of: workoutManager.isRunning) { _ in
                 withAnimation(.easeInOut(duration: 0.3)) {
                     selection = .metrics
                 }
             }
-//            .onChange(of: workoutManager.backToHome) { newValue in
-//                if newValue {
-//                    
-//                    DispatchQueue.main.async {
-//                        workoutManager.backToHome = false
-//                        shouldNavigateBack = true
-//                    }
-//                }
-//            }
             .toolbar(content: {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("", action: {}).opacity(0.0).disabled(true)
@@ -61,8 +45,6 @@ struct SessionPagingView: View {
             })
         }
     }
-
-
 
     private func displayMetricsView() {
         

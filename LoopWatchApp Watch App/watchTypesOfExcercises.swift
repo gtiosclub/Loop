@@ -15,12 +15,6 @@ struct WatchTypesOfExerciseView: View {
     var body: some View {
         
             List(exercisesList.lists) { item in
-//                NavigationLink(destination:SessionPagingView(item: item)
-//                            .environmentObject(workoutManager)
-//                            .onAppear {
-//                                
-//                                workoutManager.startWorkout(item.type)
-//                            }) {
                 Button {
                     presentedExercise = item
                     workoutManager.startWorkout(item.type)

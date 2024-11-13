@@ -143,16 +143,6 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
     static let shared = WorkoutManager()
     private let healthStore = HKHealthStore()
     private var session: HKWorkoutSession?
-//    @Published var backToHome: Bool = false {
-//            didSet {
-//                if backToHome {
-//                    
-//                    DispatchQueue.main.async {
-//                        self.resetWorkout()  
-//                    }
-//                }
-//            }
-//        }
     @Published var showingSummaryView: Bool = false {
         didSet {
             if showingSummaryView == false {
@@ -320,7 +310,7 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
         averageHeartRate = 0
         heartRate = 0
         distance = 0
-        //backToHome = true
+        
         #endif
     }
 
@@ -366,6 +356,7 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
         self.sendWorkoutEndedMessage()
         showingSummaryView = true
         print("showingSummaryView set to \(showingSummaryView)")
+        #endif
     }
     @Published var averageHeartRate: Double = 0
     @Published var heartRate: Double = 0
@@ -390,9 +381,6 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
                 return
             }
         }
-    }
-
-        #endif
     }
     
     func saveWorkoutToHealthStore(workout: HKWorkout, _ workoutType: String) {
