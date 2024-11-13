@@ -8,7 +8,7 @@ import SwiftUI
 import CoreLocation
 import MapKit
 
-struct MapView: UIViewRepresentable {
+struct MapViewUI: UIViewRepresentable {
     let routePoints: [CLLocation]
     
     func makeUIView(context: Context) -> MKMapView {
@@ -20,11 +20,30 @@ struct MapView: UIViewRepresentable {
             config.emphasisStyle = .muted
             return config
         }()
-        mapView.addOverlay(
-            MKPolyline(coordinates: routePoints.map { $0.coordinate },
-                       count: routePoints.count))
-        mapView.setRegion(regionForCoordinates(routePoints.map { $0.coordinate }),
-                          animated: false)
+        mapView.addOverlay(MKPolyline(
+            coordinates: routePoints.map {$0.coordinate},
+            count: routePoints.count))
+        
+        // Add start marker
+        if let startPoint = routePoints.first {
+            let startPin = MKPointAnnotation()
+            startPin.coordinate = startPoint.coordinate
+            startPin.title = "Start"
+            mapView.addAnnotation(startPin)
+        }
+        
+        // Add end marker
+        if let endPoint = routePoints.last {
+            let endPin = MKPointAnnotation()
+            endPin.coordinate = endPoint.coordinate
+            endPin.title = "End"
+            mapView.addAnnotation(endPin)
+        }
+        
+        
+        mapView.setRegion(
+            regionForCoordinates(routePoints.map { $0.coordinate }),
+            animated: false)
         return mapView
     }
     
@@ -54,10 +73,24 @@ struct MapView: UIViewRepresentable {
             renderer.lineWidth = 3
             return renderer
         }
+        
+        func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+                let identifier = "RoutePin"
+                
+                let pin = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+                
+                if annotation.title == "Start" {
+                    pin.markerTintColor = .green
+                } else if annotation.title == "End" {
+                    pin.markerTintColor = .red
+                }
+                
+                return pin
+            }
     }
 }
 
-struct TestingMapView: View {
+struct MapView: View {
     let routePoints: [CLLocation] = [
         CLLocation(latitude: 37.7749, longitude: -122.4194),
         CLLocation(latitude: 37.7847, longitude: -122.4141),
@@ -67,11 +100,11 @@ struct TestingMapView: View {
     ]
     
     var body: some View {
-        MapView(routePoints: routePoints)
+        MapViewUI(routePoints: routePoints)
             .preferredColorScheme(.dark)
     }
 }
 
 #Preview {
-    TestingMapView()
+    MapView()
 }
