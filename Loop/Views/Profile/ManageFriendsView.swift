@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct FriendRow: View {
-    @State var friendName: String
-    var friendID: String
-    var friendAvatar: String?
+    @State var friendName: String = "Name"
+    var friendID: String = "String"
+    var friendAvatar: String = "String"
     
     var body: some View {
         HStack {
@@ -30,8 +30,8 @@ struct ManageFriendsView: View {
     @State var userId: String
     @ObservedObject var profileViewModel: ProfileViewModel
     @State private var searchText: String = ""
-    @State private var allFriends: [String] = []
-    @State private var filteredFriends: [String] = []
+    @State private var allFriends: [ProfileViewModel.Friend] = []
+    @State private var filteredFriends: [ProfileViewModel.Friend] = []
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.dismiss) private var dismiss 
     
@@ -44,8 +44,8 @@ struct ManageFriendsView: View {
         if searchText.isEmpty {
             filteredFriends = allFriends
         } else {
-            filteredFriends = allFriends.filter { friend in
-                friend.lowercased().contains(searchText.lowercased())
+            filteredFriends = allFriends.filter { user in
+                user.name.lowercased().contains(searchText.lowercased()) && !user.name.contains("1")
             }
         }
     }
@@ -75,8 +75,8 @@ struct ManageFriendsView: View {
 
             // Friends List
             ScrollView {
-                ForEach(filteredFriends, id: \.self) { friend in
-                    FriendRow(friendName: friend, friendID: friend, friendAvatar: friend)
+                ForEach(filteredFriends, id: \.id) { friend in
+                    FriendRow(friendName: friend.name, friendID: friend.id, friendAvatar: friend.avatar)
                 }
             }
             .padding(.top)
@@ -88,8 +88,8 @@ struct ManageFriendsView: View {
         .onAppear {
             filterFriends()
             Task{
-                allFriends = await profileViewModel.fetchFriendInfo(userId: userId) ?? ["No Friends"]
-                filteredFriends = allFriends
+                profileViewModel.fetchFriends(userId: userId)
+                filteredFriends = profileViewModel.friends
             }
         }
     }

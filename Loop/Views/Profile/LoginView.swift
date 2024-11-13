@@ -63,10 +63,12 @@ struct LoginView: View {
                                SecureField("Password", text: $password)
                                    .padding(.trailing, 32) // Add padding to leave space for the button
                                    .autocapitalization(.none)
+                                   .textContentType(.none)
                            } else {
                                TextField("Password", text: $password)
                                    .padding(.trailing, 32)
                                    .autocapitalization(.none)
+                                   .textContentType(.none)
                            }
                            
                            Button(action: {

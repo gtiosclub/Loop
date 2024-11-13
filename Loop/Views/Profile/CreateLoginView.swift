@@ -146,7 +146,7 @@ struct CreateLoginView: View {
                                         }
                                         thirdRequirenment = (containsNoSpecialCharacters(in: Password)) && firstRequirenment
                                     }
-                                    .textContentType(.oneTimeCode)
+                                    .textContentType(.none)
                             } else {
                                 TextField("Password", text: $Password)
                                     .padding(.trailing, 32)
@@ -161,7 +161,7 @@ struct CreateLoginView: View {
                                         }
                                         thirdRequirenment = containsNoSpecialCharacters(in: Password) && firstRequirenment
                                     }
-                                    .textContentType(.oneTimeCode)
+                                    .textContentType(.none)
                             }
                             
                             Button(action: {
@@ -189,12 +189,12 @@ struct CreateLoginView: View {
                                 SecureField("Confirm Password", text: $ConfirmPassword)
                                     .autocapitalization(.none)
                                     .padding(.trailing, 32) // Add padding to leave space for the button
-                                    .textContentType(.oneTimeCode)
+                                    .textContentType(.none)
                             } else {
                                 TextField("Confirm Password", text: $ConfirmPassword)
                                     .autocapitalization(.none)
                                     .padding(.trailing, 32)
-                                    .textContentType(.oneTimeCode)
+                                    .textContentType(.none)
                             }
                             
                             Button(action: {

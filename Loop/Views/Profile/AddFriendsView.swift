@@ -23,7 +23,7 @@ struct AddFriendRow: View {
             Spacer()
             VStack {
                 Button(action: {
-                    print("friend added")
+
                     Task {
                         await profileViewModel.addFriend(userId: userId, friendId: friendId)
                     }
@@ -59,7 +59,6 @@ struct AcceptFriendRow: View {
             Spacer()
             VStack {
                 Button(action: {
-                    print("friend added")
                     Task {
                         await profileViewModel.acceptFriend(userId: userId, friendId: friendId)
                     }
@@ -73,7 +72,6 @@ struct AcceptFriendRow: View {
             }
             VStack {
                 Button(action: {
-                    print("friend removed")
                     Task {
                         await profileViewModel.declineFriend(userId: userId, friendId: friendId)
                     }
@@ -172,7 +170,10 @@ struct AddFriendsView: View {
         .onAppear {
             Task {
                 // Fetch all users asynchronously if not already fetched
+                //profileViewModel.fetchAllUsersExcludingFriends(for: userId)
+                //profileViewModel.fetchAllUsers()
                 allUsers = profileViewModel.users
+                print(allUsers)
             }
         }
     }

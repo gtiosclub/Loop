@@ -19,6 +19,7 @@ struct SelfProfileView: View {
     @State private var friend_count: Int = 0
     @State private var selectedTab = 0
     @State private var incomingRequests : [String] = []
+    @State private var hasAppeared = false
     
     init (userId: String) {
         self.userId = userId
@@ -102,30 +103,8 @@ struct SelfProfileView: View {
             HStack {
                 Spacer()
                 
-                Button(action: {
-                    selectedTab = 0
-                }) {
-                    Text("Activity")
-                        .foregroundColor(selectedTab == 0 ? .black : .gray)
-                }
-                
-                Spacer()
-                
-                Button(action: {
-                    selectedTab = 1
-                }) {
-                    Text("Stats")
-                        .foregroundColor(selectedTab == 1 ? .black : .gray)
-                }
-                
-                Spacer()
-                
-                Button(action: {
-                    selectedTab = 2
-                }) {
-                    Text("Trophies")
-                        .foregroundColor(selectedTab == 2 ? .black : .gray)
-                }
+                Text("Activity")
+                    .foregroundColor(selectedTab == 0 ? .black : .gray)
                 
                 Spacer()
                 
@@ -135,27 +114,27 @@ struct SelfProfileView: View {
                 Divider()
                 
                 ScrollView {
-                    if selectedTab == 0 {
-                        SelfProfileActivityView()
-                    } else if selectedTab == 1 {
-                        SelfProfileStatsView()
-                    } else {
-                        TrophyView()
-                    }
+                    SelfProfileActivityView()
                 }
             }
             
             Spacer()
             
         }.onAppear {
-            profileViewModel.fetchAllUsersExcludingFriends(for: userId)
-            Task {
-                friend_count = await profileViewModel.fetchFriendInfo(userId: userId)?.count ?? 0
-                var user = await profileViewModel.getUserInfo(userId: userId)
-                self.name = user?.name ?? "name"
-                self.incomingRequests = user?.incomingRequest.map(\.self) ?? []
-                self.user = user ?? User(uid: "String", name: "String", username: "String", challengeIds: ["String"], profilePictureId: "String", friends: ["String"], incomingRequest: ["String"])
-                self.profile_image = user?.profilePictureId ?? ""
+            if !hasAppeared {
+                hasAppeared = true
+                //profileViewModel.fetchAllUsersExcludingFriends(for: userId)
+                profileViewModel.fetchAllUsers()
+                print("HERE")
+                Task {
+                    profileViewModel.fetchFriends(userId: userId)
+                    friend_count = await profileViewModel.fetchFriendInfo(userId: userId)?.count ?? 0
+                    let user = await profileViewModel.getUserInfo(userId: userId)
+                    self.name = user?.name ?? "name"
+                    self.incomingRequests = user?.incomingRequest.map(\.self) ?? []
+                    self.user = user ?? User(uid: "String", name: "String", username: "String", challengeIds: ["String"], profilePictureId: "String", friends: ["String"], incomingRequest: ["String"])
+                    self.profile_image = user?.profilePictureId ?? ""
+                }
             }
         }
     }
