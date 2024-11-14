@@ -42,8 +42,7 @@ struct AddFriendRow: View {
                         .foregroundColor(.white)
                         .clipShape(Circle())
 
-                }
-                .disabled(isRequestSent)  // Disable button if request sent
+                } // Disable button if request sent
             }
         }
         .padding()
