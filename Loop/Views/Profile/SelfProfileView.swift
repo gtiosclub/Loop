@@ -10,6 +10,7 @@ import Firebase
 import FirebaseFirestore
 
 struct SelfProfileView: View {
+    @State private var viewModel = ProfileViewModel()
     @State private var name: String = "Jane Doe"
     @State private var location: String = "Atlanta, GA"
     @State private var createdDate: String = "Oct 2024"
@@ -156,6 +157,7 @@ struct SelfProfileView: View {
                         
                         Text("\(numFriends)")
                             .fontWeight(.bold)
+                            .frame(alignment: .center)
                     }
                 }.foregroundStyle(.black)
                 
@@ -175,13 +177,19 @@ struct SelfProfileView: View {
                 Spacer()
                 Text("Activity")
                     .foregroundColor(selectedTab == 0 ? .black : .gray)
-                
-                ScrollView {
-                    SelfProfileActivityView()
+                    .frame(alignment: .top)
+                VStack(spacing: 16) {
+                    ForEach(viewModel.selfPosts, id: \.id) { post in
+                        WorkoutCardView(
+                            post: post
+                        )
+                        .padding(.horizontal)
+                    }
+                    .padding(.top)
                 }
-                
                 Spacer()
             }
+            .frame(alignment:.top)
             
         }.onAppear() {
             self.currentUserUID = getCurrentUserUID()

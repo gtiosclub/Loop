@@ -71,6 +71,7 @@ struct ManageFriendsView: View {
                 guard let name = data["name"] as? String else { return nil }
                 let uid = doc.documentID
                 if uid == userId { return nil }  // Exclude current user
+                if !friends.contains(uid) {return nil}
                 return (uid: uid, name: name)
             }
 
