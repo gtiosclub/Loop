@@ -141,6 +141,7 @@ struct AddFriendsView: View {
     // Firestore User Data
     @State private var allUsers: [(uid: String, name: String)] = []
     @State private var currentUserUID: String = ""
+    @State var userId: String
     
     // Sent Friend Requests Tracking
     @State private var sentRequests: Set<String> = []
@@ -165,7 +166,7 @@ struct AddFriendsView: View {
 
     // MARK: - Ensure "Me" Document Exists in Firestore
     private func ensureUserDocumentExists() {
-        let userRef = db.collection("users").document(currentUserUID)
+        let userRef = db.collection("users").document(userId)
         userRef.getDocument { snapshot, error in
             if let error = error {
                 print("Error checking user document: \(error.localizedDescription)")
@@ -344,7 +345,7 @@ struct AddFriendsView: View {
 
     // MARK: - Fetch Incoming Friend Requests
     private func fetchIncomingRequests() {
-        let userRef = db.collection("users").document(currentUserUID)
+        let userRef = db.collection("users").document(userId)
         userRef.getDocument { snapshot, error in
             if let error = error {
                 print("Error fetching incoming requests: \(error.localizedDescription)")
@@ -412,7 +413,7 @@ struct AddFriendsView: View {
 
         let userRef = db.collection("users").document(friend.uid)
         userRef.updateData([
-            "incomingRequests": FieldValue.arrayUnion([currentUserUID])
+            "incomingRequests": FieldValue.arrayUnion([userId])
         ]) { error in
             if let error = error {
                 print("Error adding friend request: \(error.localizedDescription)")
@@ -440,7 +441,7 @@ struct AddFriendsView: View {
             return
         }
 
-        let currentUserRef = db.collection("users").document(currentUserUID)
+        let currentUserRef = db.collection("users").document(userId)
         let otherUserRef = db.collection("users").document(friend.uid)
 
         db.runTransaction({ (transaction, errorPointer) -> Any? in
@@ -458,7 +459,7 @@ struct AddFriendsView: View {
             ], forDocument: currentUserRef)
 
             transaction.updateData([
-                "friends": FieldValue.arrayUnion([currentUserUID])
+                "friends": FieldValue.arrayUnion([userId])
             ], forDocument: otherUserRef)
 
             // Remove from incomingRequests
@@ -496,7 +497,7 @@ struct AddFriendsView: View {
             return
         }
 
-        let userRef = db.collection("users").document(currentUserUID)
+        let userRef = db.collection("users").document(userId)
         userRef.updateData([
             "incomingRequests": FieldValue.arrayRemove([friend.uid])
         ]) { error in
@@ -523,6 +524,6 @@ struct AddFriendsView: View {
 // MARK: - Preview
 struct AddFriendsView_Previews: PreviewProvider {
     static var previews: some View {
-        AddFriendsView()
+        AddFriendsView(userId: "7HeVe5w1fMO20fM2wDBgX0JslhH3")
     }
 }

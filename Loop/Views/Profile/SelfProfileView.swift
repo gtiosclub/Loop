@@ -162,7 +162,7 @@ struct SelfProfileView: View {
                 }.foregroundStyle(.black)
                 
                 Spacer()
-                NavigationLink(destination: AddFriendsView()){
+                NavigationLink(destination: AddFriendsView(userId: userId)){
                     ZStack {
                         Rectangle()
                             .foregroundColor(Color(UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1)))
@@ -195,6 +195,7 @@ struct SelfProfileView: View {
             self.currentUserUID = getCurrentUserUID()
             // Ensure the current user's document exists in Firestore
             ensureUserDocumentExists()
+            viewModel.fetchFriendPosts(for: userId)
             Task {
                 let user = await getUser(uid: userId)
                 self.selfUser = user
