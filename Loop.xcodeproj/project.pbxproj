@@ -38,6 +38,7 @@
 		93C094612CD14C2E0078E349 /* SelfProfileActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C094602CD14C2E0078E349 /* SelfProfileActivityView.swift */; };
 		93C094632CD14DAA0078E349 /* TrophyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C094622CD14DAA0078E349 /* TrophyView.swift */; };
 		96354F592CA38686003DD6F8 /* ChalLeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96354F582CA3867E003DD6F8 /* ChalLeaderboardView.swift */; };
+		967D45CF2CE4289B00B2F9D6 /* ChallengeCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967D45CE2CE4288C00B2F9D6 /* ChallengeCode.swift */; };
 		96D331D72CD1A42700D4D6A7 /* PodiumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D331D62CD1A42100D4D6A7 /* PodiumView.swift */; };
 		9AB55D2A2CA5373B00C48C32 /* LoopWatchApp Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 9AB55D1D2CA5373A00C48C32 /* LoopWatchApp Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		9AB55D352CA5374F00C48C32 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB55D322CA5374F00C48C32 /* ContentView.swift */; };
@@ -128,6 +129,7 @@
 		93C094602CD14C2E0078E349 /* SelfProfileActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfProfileActivityView.swift; sourceTree = "<group>"; };
 		93C094622CD14DAA0078E349 /* TrophyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrophyView.swift; sourceTree = "<group>"; };
 		96354F582CA3867E003DD6F8 /* ChalLeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChalLeaderboardView.swift; sourceTree = "<group>"; };
+		967D45CE2CE4288C00B2F9D6 /* ChallengeCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeCode.swift; sourceTree = "<group>"; };
 		96D331D62CD1A42100D4D6A7 /* PodiumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodiumView.swift; sourceTree = "<group>"; };
 		9AB55D1D2CA5373A00C48C32 /* LoopWatchApp Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LoopWatchApp Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AB55D2F2CA5374F00C48C32 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -218,6 +220,7 @@
 		7C0B1FC12C9CB0770076B590 /* Challenges */ = {
 			isa = PBXGroup;
 			children = (
+				967D45CE2CE4288C00B2F9D6 /* ChallengeCode.swift */,
 				96D331D62CD1A42100D4D6A7 /* PodiumView.swift */,
 				D49F42042CA20A62003607BB /* Models */,
 				96354F582CA3867E003DD6F8 /* ChalLeaderboardView.swift */,
@@ -527,6 +530,7 @@
 				E25FF94E2CA629C2006FF61C /* FirebaseUploader.swift in Sources */,
 				B5B40E672C94EAE100BD9131 /* LoopApp.swift in Sources */,
 				7C0B1FC82C9CB1950076B590 /* FriendProfileView.swift in Sources */,
+				967D45CF2CE4289B00B2F9D6 /* ChallengeCode.swift in Sources */,
 				7C0B1FD52C9CB2270076B590 /* CreateChallengeView.swift in Sources */,
 				DF95BDB92CAF61F400CBDA32 /* StatsPageModel.swift in Sources */,
 				DF95BDB72CAF607400CBDA32 /* StatsPage.swift in Sources */,
