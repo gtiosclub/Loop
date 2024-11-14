@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import Firebase
+import FirebaseFirestore
 
 struct SelfProfileView: View {
     @State private var name: String = "Jane Doe"
@@ -14,6 +16,86 @@ struct SelfProfileView: View {
     @State private var following: Int = 30
     @State private var followers: Int = 30
     @State private var selectedTab = 0
+    @State private var currentUserUID: String = ""
+    @State private var userId: String
+    @State private var showingErrorAlert: Bool = false
+    @State private var errorMessage: String = ""
+    @State private var selfUser: User?
+    @State private var numFriends: Int = 0
+    private let db = Firestore.firestore()
+    
+    init(userId: String) {
+        self.userId = userId
+    }
+    
+    private func getCurrentUserUID() -> String {
+        if let uid = UserDefaults.standard.string(forKey: "currentUserUID") {
+            return uid
+        } else {
+            let uid = UUID().uuidString
+            UserDefaults.standard.set(uid, forKey: "currentUserUID")
+            return uid
+        }
+    }
+
+    private func ensureUserDocumentExists() {
+        let userRef = db.collection("users").document(currentUserUID)
+        userRef.getDocument { snapshot, error in
+            if let error = error {
+                print("Error checking user document: \(error.localizedDescription)")
+                self.errorMessage = "Failed to verify user data."
+                self.showingErrorAlert = true
+                return
+            }
+
+            if snapshot?.exists == false {
+                // Create a new user document with default fields
+                userRef.setData([
+                    "name": "Me",
+                    "incomingRequests": [],
+                    "friends": []
+                ]) { error in
+                    if let error = error {
+                        print("Error creating user document: \(error.localizedDescription)")
+                        self.errorMessage = "Failed to initialize your user data."
+                        self.showingErrorAlert = true
+                    } else {
+                        print("User document created successfully.")
+                    }
+                }
+            } else {
+                print("User document already exists.")
+            }
+        }
+    }
+    
+    func getUser(uid: String) async -> User? {
+        let db = Firestore.firestore()
+        let docRef = db.collection("users").document(uid)
+        do {
+          let document = try await docRef.getDocument()
+          if document.exists {
+              let dataDescription = document.data()
+              if let data = dataDescription {
+                  let name: String = data["name"] as! String
+                  let username: String = data["username"] as! String
+                  let challengeIds: [String] = data["challengeIds"] as! [String]
+                  let profilePictureId: String = data["profilePictureId"] as! String
+                  let friends: [String] = data["friends"] as! [String]
+                  let incomingRequest: [String] = data["incomingRequest"] as! [String]
+                  return User(uid: uid, name: name, username: username, challengeIds: challengeIds, profilePictureId: profilePictureId, friends: friends, incomingRequest: incomingRequest)
+              } else {
+                  print("User's data in Firestore Database is nil.")
+              }
+          } else {
+              print("User does not exist in the Firestore Database.")
+          }
+        } catch {
+            print("Error getting user from the Firestore Database: \(error).")
+        }
+        return nil
+    }
+    
     var body: some View {
         VStack {
             HStack {
@@ -67,21 +149,12 @@ struct SelfProfileView: View {
             HStack {
                 Spacer().frame(width: 20)
 
-                VStack(alignment: .leading) {
-                    Text("Following")
-                        .font(.subheadline)
-                    
-                    Text("\(following)")
-                        .fontWeight(.bold)
-                }
-                
-                Spacer().frame(width: 40)
-                NavigationLink(destination: ManageFriendsView()) {
+                NavigationLink(destination: ManageFriendsView(userId: selfUser?.uid ?? "", friends: selfUser?.friends ?? [])) {
                     VStack(alignment: .leading) {
-                        Text("Followers")
+                        Text("Friends")
                             .font(.subheadline)
                         
-                        Text("\(followers)")
+                        Text("\(numFriends)")
                             .fontWeight(.bold)
                     }
                 }.foregroundStyle(.black)
@@ -98,80 +171,35 @@ struct SelfProfileView: View {
                     }
                 }
             }.padding([.leading, .trailing])
-            
-            HStack {
-                
+            VStack {
                 Spacer()
-                
-                ForEach(0..<4) { _ in
-                    
-                    Spacer().frame(width: 5)
-                    
-                    Image("profile")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 80, height: 120)
-                    
-                    Spacer().frame(width: 5)
-                    
-                }.padding(.bottom)
-                
-                Spacer()
-                
-            }
-            
-            HStack {
-                Spacer()
-                
-                Button(action: {
-                    selectedTab = 0
-                }) {
-                    Text("Activity")
-                        .foregroundColor(selectedTab == 0 ? .black : .gray)
-                }
-                
-                Spacer()
-                
-                Button(action: {
-                    selectedTab = 1
-                }) {
-                    Text("Stats")
-                        .foregroundColor(selectedTab == 1 ? .black : .gray)
-                }
-                
-                Spacer()
-                
-                Button(action: {
-                    selectedTab = 2
-                }) {
-                    Text("Trophies")
-                        .foregroundColor(selectedTab == 2 ? .black : .gray)
-                }
-                
-                Spacer()
-                
-            }
-            .font(.headline)            
-            VStack(spacing: 0) {
-                Divider()
+                Text("Activity")
+                    .foregroundColor(selectedTab == 0 ? .black : .gray)
                 
                 ScrollView {
-                    if selectedTab == 0 {
-                        SelfProfileActivityView()
-                    } else if selectedTab == 1 {
-                        SelfProfileStatsView()
-                    } else {
-                        TrophyView()
-                    }
+                    SelfProfileActivityView()
                 }
+                
+                Spacer()
             }
             
-            Spacer()
+        }.onAppear() {
+            self.currentUserUID = getCurrentUserUID()
+            // Ensure the current user's document exists in Firestore
+            ensureUserDocumentExists()
+            Task {
+                let user = await getUser(uid: userId)
+                self.selfUser = user
+                self.name = selfUser?.name ?? ""
+                self.numFriends = selfUser?.friends.count ?? 0
+            }
             
         }
     }
 }
 
+
+
 #Preview {
-    SelfProfileView()
+    //SelfProfileView()
 }

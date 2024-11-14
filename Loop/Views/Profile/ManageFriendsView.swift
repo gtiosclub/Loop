@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import Firebase
+import FirebaseFirestore
 
 struct FriendRow: View {
     var friendName: String
@@ -26,13 +28,17 @@ struct FriendRow: View {
 }
 
 struct ManageFriendsView: View {
+    @State var userId: String
+    @State var friends: [String] = []
     @State private var searchText: String = ""
-    @State private var onlineFriends: [String] = ["Kevin", "Ethan", "Jason"]
-    @State private var offlineFriends: [String] = ["Kevin", "Ethan", "Jason", "Seohyun", "Dennis", "Aryun", "John"]
-    @State private var allFriends: [String] = ["Kevin", "Ethan", "Jason", "Seohyun", "Dennis", "Aryun", "Dennis", "Dennis", "Dennis"]
+    @State private var allUsers: [(uid: String, name: String)] = []
+    @State private var allFriends: [String] = []
     @State private var filteredFriends: [String] = []
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.dismiss) private var dismiss
+    @State private var showingErrorAlert: Bool = false
+    @State private var errorMessage: String = ""
+    private let db = Firestore.firestore()
     
     
     private func filterFriends() {
@@ -44,6 +50,37 @@ struct ManageFriendsView: View {
                 }
             }
         }
+    
+    private func fetchUsers() {
+        db.collection("users").getDocuments { snapshot, error in
+            if let error = error {
+                print("Error fetching users: \(error.localizedDescription)")
+                self.errorMessage = "Failed to fetch users."
+                self.showingErrorAlert = true
+                return
+            }
+
+            guard let documents = snapshot?.documents else {
+                print("No users found")
+                return
+            }
+
+            // Populate allUsers with tuples excluding current user
+            self.allUsers = documents.compactMap { doc -> (uid: String, name: String)? in
+                let data = doc.data()
+                guard let name = data["name"] as? String else { return nil }
+                let uid = doc.documentID
+                if uid == userId { return nil }  // Exclude current user
+                return (uid: uid, name: name)
+            }
+
+            // Update allFriends based on fetched users
+            DispatchQueue.main.async {
+                self.allFriends = self.allUsers.map { $0.name }
+                self.filterFriends()
+            }
+        }
+    }
 
         var body: some View {
         VStack {
@@ -80,10 +117,11 @@ struct ManageFriendsView: View {
         }
         .background(Color.gray.opacity(0.1).edgesIgnoringSafeArea(.all))
         .navigationBarBackButtonHidden(true)
-        .onAppear { filterFriends() }
+        .onAppear { filterFriends()
+            fetchUsers()}
     }
 }
 
 #Preview {
-    ManageFriendsView()
+    //ManageFriendsView()
 }
