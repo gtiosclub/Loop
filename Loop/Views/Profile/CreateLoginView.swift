@@ -146,6 +146,7 @@ struct CreateLoginView: View {
                                         }
                                         thirdRequirenment = (containsNoSpecialCharacters(in: Password)) && firstRequirenment
                                     }
+                                    .textContentType(.none)
                             } else {
                                 TextField("Password", text: $Password)
                                     .padding(.trailing, 32)
@@ -160,6 +161,7 @@ struct CreateLoginView: View {
                                         }
                                         thirdRequirenment = containsNoSpecialCharacters(in: Password) && firstRequirenment
                                     }
+                                    .textContentType(.none)
                             }
                             
                             Button(action: {
