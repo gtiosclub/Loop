@@ -13,7 +13,7 @@ struct ChalLeaderboardView: View {
     var body: some View {
         let sortedPersonList = personList.sorted(by: {$0.score > $1.score})
         
-        PodiumView(personList: Array(sortedPersonList[0...2]))
+        PodiumView(personList: sortedPersonList)
     
         ZStack {
             RoundedRectangle(cornerRadius: 14)
