@@ -151,7 +151,7 @@ struct ActivityDetailView: View {
             if !workoutStarted {
                       Button(action: {
                           workoutStarted = true
-                          viewModel.startObservingWorkoutData()
+                          //viewModel.startObservingWorkoutData()
                       }) {
                           Image(systemName: "play.fill")
                               .font(.largeTitle)
@@ -176,7 +176,7 @@ struct ActivityDetailView: View {
                           
                           Button(action: {
                               workoutStarted = false
-                              viewModel.stopObservingWorkoutData()
+                              //viewModel.stopObservingWorkoutData()
                           }) {
                               Image(systemName: "stop.fill")
                                   .font(.largeTitle)

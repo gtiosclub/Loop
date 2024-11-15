@@ -46,16 +46,6 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
         }
     }
     
-    func startObservingWorkoutData() {
-        workoutManager.startObservingWorkoutData()
-        Swift.print("Observing workout data")
-    }
-    
-    func stopObservingWorkoutData() {
-        workoutManager.stopObservingWorkoutData()
-        print("Stopped observing workout data")
-    }
-    
     func pauseWorkout() {
         workoutManager.pauseWorkout()
     }
