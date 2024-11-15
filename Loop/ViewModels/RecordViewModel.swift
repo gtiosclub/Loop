@@ -15,11 +15,12 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
     @Published var workoutInProgress = false
     let healthStore = HKHealthStore()
     let db = Firestore.firestore()
-    var uid: String?
+    var uid: String
 
-    override init() {
-        self.uid = Auth.auth().currentUser?.uid
+    init(userId: String) {
+        self.uid = userId
         super.init()
+        
         if WCSession.isSupported() {
             let session = WCSession.default
             session.delegate = self
@@ -176,7 +177,7 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
             dispatchGroup.notify(queue: .main) {
                 // Upload data to Firestore
                 let workoutData: [String: Any] = [
-                    "uid": self.uid ?? "",
+                    "uid": self.uid,
                     "workoutType": workoutTypeString,
                     "startDate": workout.startDate,
                     "endDate": workout.endDate,
@@ -192,6 +193,18 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
                         print("Error adding document: \(error.localizedDescription)")
                     } else {
                         print("Document added successfully")
+                    }
+                }
+                
+                let userRef = self.db.collection("users").document(self.uid)
+                
+                print(self.uid)
+
+                userRef.collection("workouts").addDocument(data: workoutData) { error in
+                    if let error = error {
+                        print("Error adding workout data: \(error)")
+                    } else {
+                        print("Workout data successfully added!")
                     }
                 }
             }

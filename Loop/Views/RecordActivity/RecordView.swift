@@ -9,7 +9,13 @@ import SwiftUI
 import WatchConnectivity
 
 struct RecordView: View {
-    @StateObject private var viewModel = RecordViewModel()
+    @StateObject private var viewModel: RecordViewModel
+    let userId: String
+
+    init(userId: String) {
+       self.userId = userId
+       _viewModel = StateObject(wrappedValue: RecordViewModel(userId: userId))
+   }
     
     var body: some View {
         NavigationView {
@@ -218,7 +224,7 @@ let activityData = [
 ]
 
 #Preview {
-    RecordView()
+    RecordView(userId: "0F64B991-1B91-4C3B-A899-B6953CC0D934")
         .previewDevice("iPhone 14 Pro")
         .previewDisplayName("Record View Preview")
 }
