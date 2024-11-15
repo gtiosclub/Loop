@@ -30,11 +30,18 @@ struct ContentView: View {
                 ChallengeListView().tabItem {
                     Label("Challenges", systemImage: "medal.fill")
                 }.tag(TabSelection.challenges)
-
-                RecordView().tabItem {
-                    Label("Record", systemImage: "record.circle")
-                        .foregroundColor(.red)
-                }.tag(TabSelection.record)
+                
+                if let userId = userId {
+                    RecordView(userId: userId).tabItem {
+                        Label("Record", systemImage: "record.circle")
+                            .foregroundColor(.red)
+                    }.tag(TabSelection.record)
+                } else {
+                    Text("Loading...").tabItem {
+                        Label("Record", systemImage: "record.circle")
+                            .foregroundColor(.red)
+                    }.tag(TabSelection.record)
+                }
 
                 SelfProfileView().tabItem {
                     Label("Profile", systemImage: "person.fill")

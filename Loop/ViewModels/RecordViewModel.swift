@@ -15,17 +15,18 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
     @Published var workoutInProgress = false
     let healthStore = HKHealthStore()
     let db = Firestore.firestore()
-    var uid: String?
-
-    override init() {
-        self.uid = Auth.auth().currentUser?.uid
-        super.init()
-        if WCSession.isSupported() {
-            let session = WCSession.default
-            session.delegate = self
-            session.activate()
+    var uid: String
+    
+    init(userId: String) {
+            self.uid = userId
+            super.init()
+            
+            if WCSession.isSupported() {
+                let session = WCSession.default
+                session.delegate = self
+                session.activate()
+            }
         }
-    }
 
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
         if let error = error {
@@ -176,7 +177,7 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
             dispatchGroup.notify(queue: .main) {
                 // Upload data to Firestore
                 let workoutData: [String: Any] = [
-                    "uid": self.uid ?? "",
+                    "uid": self.uid,
                     "workoutType": workoutTypeString,
                     "startDate": workout.startDate,
                     "endDate": workout.endDate,
@@ -195,20 +196,16 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
                     }
                 }
                 
-                if let currentUser = Auth.auth().currentUser {
-                    let userID = currentUser.uid
-                    print("Current User ID: \(userID)")
-                    
-                    self.db.collection("users").document(userID).collection("activity").addDocument(data: workoutData) { error in
-                        if let error = error {
-                            print("Error adding document to user's activity: \(error.localizedDescription)")
-                        } else {
-                            print("Document added successfully to user's activity")
-                        }
+                print(self.uid)
+                
+                let userRef = self.db.collection("users").document(self.uid)
+                
+                userRef.collection("workouts").addDocument(data: workoutData) { error in
+                    if let error = error {
+                        print("Error adding workout data: \(error)")
+                    } else {
+                        print("Workout data successfully added!")
                     }
-                    
-                } else {
-                    print("No user is logged in")
                 }
             }
         }
