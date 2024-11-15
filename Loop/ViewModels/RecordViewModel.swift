@@ -194,6 +194,22 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
                         print("Document added successfully")
                     }
                 }
+                
+                if let currentUser = Auth.auth().currentUser {
+                    let userID = currentUser.uid
+                    print("Current User ID: \(userID)")
+                    
+                    self.db.collection("users").document(userID).collection("activity").addDocument(data: workoutData) { error in
+                        if let error = error {
+                            print("Error adding document to user's activity: \(error.localizedDescription)")
+                        } else {
+                            print("Document added successfully to user's activity")
+                        }
+                    }
+                    
+                } else {
+                    print("No user is logged in")
+                }
             }
         }
         healthStore.execute(query)
