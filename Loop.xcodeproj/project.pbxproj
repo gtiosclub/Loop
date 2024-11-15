@@ -573,7 +573,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LoopWatchApp Watch App/Preview Content\"";
-				DEVELOPMENT_TEAM = JCY34ZWF85;
+				DEVELOPMENT_TEAM = W753YZ68Z5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "LoopWatchApp-Watch-App-Info.plist";
@@ -582,13 +582,13 @@
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Loop needs to update your health data on your behalf.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to track your workout";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = dannyByrdx.Loop;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = dannyByrdxx.Loop;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dannyByrdx.Loop.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = dannyByrdxx.Loop.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -608,7 +608,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"LoopWatchApp Watch App/Preview Content\"";
-				DEVELOPMENT_TEAM = JCY34ZWF85;
+				DEVELOPMENT_TEAM = W753YZ68Z5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "LoopWatchApp-Watch-App-Info.plist";
@@ -617,13 +617,13 @@
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Loop needs to update your health data on your behalf.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to track your workout";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = dannyByrdx.Loop;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = dannyByrdxx.Loop;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dannyByrdx.Loop.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = dannyByrdxx.Loop.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -761,7 +761,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Loop/Preview Content\"";
-				DEVELOPMENT_TEAM = JCY34ZWF85;
+				DEVELOPMENT_TEAM = W753YZ68Z5;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -783,7 +783,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dannyByrdx.Loop;
+				PRODUCT_BUNDLE_IDENTIFIER = dannyByrdxx.Loop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -804,7 +804,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Loop/Preview Content\"";
-				DEVELOPMENT_TEAM = JCY34ZWF85;
+				DEVELOPMENT_TEAM = W753YZ68Z5;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -826,7 +826,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dannyByrdx.Loop;
+				PRODUCT_BUNDLE_IDENTIFIER = dannyByrdxx.Loop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
