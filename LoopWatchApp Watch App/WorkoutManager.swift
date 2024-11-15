@@ -321,75 +321,7 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
         #endif
     }
     
-    //methods for recieving current workout data
-    func startObservingWorkoutData() {
-        guard let session = session else { return }
-
-        let distanceType = HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!
-        let caloriesType = HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
-        let heartRateType = HKObjectType.quantityType(forIdentifier: .heartRate)!
-
-        let distanceQuery = HKObserverQuery(sampleType: distanceType, predicate: nil) { [weak self] query, completionHandler, error in
-            self?.fetchLatestDistance()
-            completionHandler()
-        }
-
-        let caloriesQuery = HKObserverQuery(sampleType: caloriesType, predicate: nil) { [weak self] query, completionHandler, error in
-            self?.fetchLatestCalories()
-            completionHandler()
-        }
-
-        let heartRateQuery = HKObserverQuery(sampleType: heartRateType, predicate: nil) { [weak self] query, completionHandler, error in
-            self?.fetchLatestHeartRate()
-            completionHandler()
-        }
-
-        healthStore.execute(distanceQuery)
-        healthStore.execute(caloriesQuery)
-        healthStore.execute(heartRateQuery)
-    }
-
-    private func fetchLatestDistance() {
-        let distanceType = HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!
-        let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
-        let query = HKSampleQuery(sampleType: distanceType, predicate: nil, limit: 1, sortDescriptors: [sortDescriptor]) { [weak self] _, samples, _ in
-            guard let sample = samples?.first as? HKQuantitySample else { return }
-            DispatchQueue.main.async {
-                self?.currentDistance = sample.quantity.doubleValue(for: .mile())
-            }
-        }
-        healthStore.execute(query)
-    }
-
-    private func fetchLatestCalories() {
-        let caloriesType = HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
-        let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
-        let query = HKSampleQuery(sampleType: caloriesType, predicate: nil, limit: 1, sortDescriptors: [sortDescriptor]) { [weak self] _, samples, _ in
-            guard let sample = samples?.first as? HKQuantitySample else { return }
-            DispatchQueue.main.async {
-                self?.currentCalories = sample.quantity.doubleValue(for: .kilocalorie())
-            }
-        }
-        healthStore.execute(query)
-    }
-
-    private func fetchLatestHeartRate() {
-        let heartRateType = HKObjectType.quantityType(forIdentifier: .heartRate)!
-        let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
-        let query = HKSampleQuery(sampleType: heartRateType, predicate: nil, limit: 1, sortDescriptors: [sortDescriptor]) { [weak self] _, samples, _ in
-            guard let sample = samples?.first as? HKQuantitySample else { return }
-            DispatchQueue.main.async {
-                self?.currentHeartRate = sample.quantity.doubleValue(for: HKUnit.count().unitDivided(by: .minute()))
-            }
-        }
-        healthStore.execute(query)
-    }
-
-    func stopObservingWorkoutData() {
-        //TODO - necessary?
-        print("Stop observing workout data")
-    }
-
+    
     
     func endWorkout(_ workoutType: String) {
         #if os(watchOS)
