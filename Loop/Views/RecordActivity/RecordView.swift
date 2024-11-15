@@ -84,9 +84,8 @@ struct RecordView: View {
 
 struct ActivityDetailView: View {
     let activity: Activity
+    @StateObject private var viewModel = RecordViewModel()
     
-    @State private var timeElapsed: TimeInterval = 0.0
-    @State private var timerRunning = false
     @State private var workoutStarted = false
 
     
@@ -107,7 +106,7 @@ struct ActivityDetailView: View {
                     Text((activity.label)) .font(.headline) .padding(.top)
                         .foregroundColor(.white)
                     
-                    Text(timeString(from: timeElapsed))
+                    Text(timeString(from: viewModel.totalTime))
                         .font(.system(size: 60, weight: .bold, design: .monospaced))
                         .foregroundColor(.white)
                     
@@ -115,7 +114,7 @@ struct ActivityDetailView: View {
                         .font(.subheadline)
                         .foregroundColor(.white)
                     
-                    Text("00.00")
+                    Text(String(format: "%.2f", viewModel.currentDistance))
                         .font(.system(size: 50, weight: .bold))
                         .foregroundColor(.white)
                     
@@ -125,7 +124,7 @@ struct ActivityDetailView: View {
                     
                     HStack {
                         VStack {
-                            Text("27:31")
+                            Text(String(format: "%.2f", viewModel.currentPace))
                                 .font(.headline)
                                 .foregroundColor(.white)
                             Text("AVG PACE")
@@ -134,7 +133,7 @@ struct ActivityDetailView: View {
                         }
                         Spacer()
                         VStack {
-                            Text("197 BPM")
+                            Text(String(format: "%.0f BPM", viewModel.currentHeartRate))
                                 .font(.headline)
                                 .foregroundColor(.white)
                             Text("BPM")
@@ -152,7 +151,7 @@ struct ActivityDetailView: View {
             if !workoutStarted {
                       Button(action: {
                           workoutStarted = true
-                          timerRunning = true
+                          viewModel.startObservingWorkoutData()
                       }) {
                           Image(systemName: "play.fill")
                               .font(.largeTitle)
@@ -164,9 +163,9 @@ struct ActivityDetailView: View {
                   } else {
                       HStack(spacing: 50) {
                           Button(action: {
-                              timerRunning.toggle()
+                                viewModel.pauseWorkout()
                           }) {
-                              Image(systemName: timerRunning ? "pause.fill" : "play.fill")
+                              Image(systemName: viewModel.isPaused ? "pause.fill" : "play.fill")
                                   .font(.largeTitle)
                                   .padding(20)
                                   .background(Color.gray)
@@ -177,8 +176,7 @@ struct ActivityDetailView: View {
                           
                           Button(action: {
                               workoutStarted = false
-                              timerRunning = false
-                              timeElapsed = 0.0
+                              viewModel.stopObservingWorkoutData()
                           }) {
                               Image(systemName: "stop.fill")
                                   .font(.largeTitle)
@@ -192,16 +190,9 @@ struct ActivityDetailView: View {
                   }
               }
               .padding()
-              .onAppear(perform: startTimer)
           }
     
-    private func startTimer() {
-           Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-               if timerRunning {
-                   timeElapsed += 1.0
-               }
-           }
-       }
+    
        
        // Function to format time
        private func timeString(from time: TimeInterval) -> String {
