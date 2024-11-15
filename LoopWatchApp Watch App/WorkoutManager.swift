@@ -127,6 +127,13 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
     @Published var distance = 0.0
     @Published var calories = 0.0
     @Published var isWorkoutInProgress = false
+
+    //In-Progress Properties
+    @Published var currentDistance: Double = 0
+    @Published var currentCalories: Double = 0
+    @Published var currentHeartRate: Double = 0
+    @Published var currentPace: Double = 0
+    @Published var totatlTime: TimeInterval = 0
     
     @Published var heartRatePoints: [(Date, Double)] = []
     @Published var routePoints: [CLLocation] = []
@@ -303,7 +310,7 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
     }
 
     func resetWorkout() {
-#if os(watchOS)
+        #if os(watchOS)
         builder = nil
         session = nil
         activeEnergy = 0
@@ -312,6 +319,75 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
         distance = 0
         
         #endif
+    }
+    
+    //methods for recieving current workout data
+    func startObservingWorkoutData() {
+        guard let session = session else { return }
+
+        let distanceType = HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!
+        let caloriesType = HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
+        let heartRateType = HKObjectType.quantityType(forIdentifier: .heartRate)!
+
+        let distanceQuery = HKObserverQuery(sampleType: distanceType, predicate: nil) { [weak self] query, completionHandler, error in
+            self?.fetchLatestDistance()
+            completionHandler()
+        }
+
+        let caloriesQuery = HKObserverQuery(sampleType: caloriesType, predicate: nil) { [weak self] query, completionHandler, error in
+            self?.fetchLatestCalories()
+            completionHandler()
+        }
+
+        let heartRateQuery = HKObserverQuery(sampleType: heartRateType, predicate: nil) { [weak self] query, completionHandler, error in
+            self?.fetchLatestHeartRate()
+            completionHandler()
+        }
+
+        healthStore.execute(distanceQuery)
+        healthStore.execute(caloriesQuery)
+        healthStore.execute(heartRateQuery)
+    }
+
+    private func fetchLatestDistance() {
+        let distanceType = HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!
+        let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
+        let query = HKSampleQuery(sampleType: distanceType, predicate: nil, limit: 1, sortDescriptors: [sortDescriptor]) { [weak self] _, samples, _ in
+            guard let sample = samples?.first as? HKQuantitySample else { return }
+            DispatchQueue.main.async {
+                self?.currentDistance = sample.quantity.doubleValue(for: .mile())
+            }
+        }
+        healthStore.execute(query)
+    }
+
+    private func fetchLatestCalories() {
+        let caloriesType = HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
+        let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
+        let query = HKSampleQuery(sampleType: caloriesType, predicate: nil, limit: 1, sortDescriptors: [sortDescriptor]) { [weak self] _, samples, _ in
+            guard let sample = samples?.first as? HKQuantitySample else { return }
+            DispatchQueue.main.async {
+                self?.currentCalories = sample.quantity.doubleValue(for: .kilocalorie())
+            }
+        }
+        healthStore.execute(query)
+    }
+
+    private func fetchLatestHeartRate() {
+        let heartRateType = HKObjectType.quantityType(forIdentifier: .heartRate)!
+        let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
+        let query = HKSampleQuery(sampleType: heartRateType, predicate: nil, limit: 1, sortDescriptors: [sortDescriptor]) { [weak self] _, samples, _ in
+            guard let sample = samples?.first as? HKQuantitySample else { return }
+            DispatchQueue.main.async {
+                self?.currentHeartRate = sample.quantity.doubleValue(for: HKUnit.count().unitDivided(by: .minute()))
+            }
+        }
+        healthStore.execute(query)
+    }
+
+    func stopObservingWorkoutData() {
+        //TODO - necessary?
+        print("Stop observing workout data")
     }
 
     
@@ -519,6 +595,23 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
         // handles workout events if needed
     }
 
+    func sendWorkoutData() {
+    if WCSession.default.isReachable {
+        let workoutData: [String: Any] = [
+            "currentDistance": currentDistance,
+            "currentCalories": currentCalories,
+            "currentHeartRate": currentHeartRate,
+            "currentPace": currentPace,
+            "totalTime": totalTime
+        ]
+        WCSession.default.sendMessage(workoutData, replyHandler: nil, errorHandler: { error in
+            print("Error sending workout data: \(error.localizedDescription)")
+        })
+    } else {
+        print("Session is not reachable")
+    }
+}
+
     func workoutBuilder(_ workoutBuilder: HKLiveWorkoutBuilder, didCollectDataOf collectedTypes: Set<HKSampleType>) {
         #if os(watchOS)
         // Handle collected data if needed
@@ -534,6 +627,7 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
                             let distanceInMiles = distance.doubleValue(for: HKUnit.mile())
                             print("Distance: \(distanceInMiles) miles")
                             self.distance = distanceInMiles
+                            self.sendWorkoutData()
                         }
                     }
                 }
@@ -545,6 +639,7 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
                             let caloriesInKilocalories = calories.doubleValue(for: HKUnit.kilocalorie())
                             print("Calories Burned: \(caloriesInKilocalories) kcal")
                             self.calories = caloriesInKilocalories
+                            self.sendWorkoutData()
                         }
                         
                     }
@@ -564,6 +659,7 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
                             self.heartRate = heartRateValue
                             // Add point to heart rate chart data
                             self.heartRatePoints.append((timestamp, heartRateValue))
+                            self.sendWorkoutData()
                         }
                     }
                 }
