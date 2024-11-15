@@ -146,6 +146,7 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
     @Published var totalTime: TimeInterval = 0
     
     private var timer: Timer?
+    private var dataSendTimer: Timer?
     
     static let shared = WorkoutManager()
     private let healthStore = HKHealthStore()
@@ -181,6 +182,10 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
                     self?.updateTotalTime()
                 }
         
+        dataSendTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            self?.sendWorkoutData()
+        }
+
         let configuration:HKWorkoutConfiguration = WorkoutType(workoutType.lowercased()).configure()
 
         do {
@@ -331,6 +336,8 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
         session.end()
         timer?.invalidate()
         timer = nil
+        dataSendTimer?.invalidate()
+        dataSendTimer = nil
         pauseDate = nil
         accumulatedTime = 0
 
