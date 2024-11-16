@@ -216,7 +216,7 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
                     self.isPaused = false
                     // communication variables
                     self.isWorkoutInProgress = true
-                    self.sendWorkoutStartedMessage()
+                    self.sendWorkoutStartedMessage(workoutType: workoutType)
                     print("Successfully started workout")
                 }
             })
@@ -228,12 +228,17 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
     }
 
     // Functions to send the boolean via WC
-    private func sendWorkoutStartedMessage() {
+    private func sendWorkoutStartedMessage(workoutType: String) {
         if WCSession.default.isReachable {
             WCSession.default.sendMessage(["workoutStarted": true], replyHandler: nil, errorHandler: { error in
                 print("Error sending message: \(error.localizedDescription)")
             })
-
+            
+            print("workoutType \(workoutType)")
+                                           
+            WCSession.default.sendMessage(["workoutType": workoutType], replyHandler: nil, errorHandler: { error in
+               print("Error sending message: \(error.localizedDescription)")
+            })
 
             WCSession.default.sendMessage(["updateFirestore": false], replyHandler: nil, errorHandler: { error in
                 print("Error sending message: \(error.localizedDescription)")
@@ -484,7 +489,7 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
             let averagePace = distance / (totalTime / 60)
             let paceQuantity = HKQuantity(unit: HKUnit.mile().unitDivided(by: HKUnit.second()),
                                   doubleValue: averagePace)
-            
+                        
             let paceSample = HKQuantitySample(
                 type: paceType,
                 quantity: paceQuantity,
@@ -533,14 +538,15 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
     func workoutBuilderDidCollectEvent(_ workoutBuilder: HKLiveWorkoutBuilder) {
         // handles workout events if needed
     }
-
+    
     func sendWorkoutData() {
     if WCSession.default.isReachable {
+        
         let workoutData: [String: Any] = [
-            "currentDistance": currentDistance,
-            "currentCalories": currentCalories,
-            "currentHeartRate": currentHeartRate,
-            "currentPace": currentPace,
+            "currentDistance": self.distance2,
+            "currentCalories": self.activeEnergy,
+            "currentHeartRate": self.heartRate,
+            "currentPace": self.distance2 / (totalTime / 60),
             "totalTime": totalTime
         ]
         WCSession.default.sendMessage(workoutData, replyHandler: nil, errorHandler: { error in

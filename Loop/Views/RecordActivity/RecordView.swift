@@ -18,76 +18,31 @@ struct RecordView: View {
    }
     
     var body: some View {
-        NavigationView {
-            VStack{
-                if viewModel.workoutInProgress {
-                    Text("Workout in Progress")
-                        .padding()
-                        .background(Color.yellow)
-                        .cornerRadius(8)
-                        .padding(.top)
-                }
-                VStack(spacing: 20) {
-                    Text("Select Activity")
-                        .font(.title)
-                        .padding(.top)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    Text("Most Recent")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    VStack(alignment: .leading) {
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 15) {
-                                ForEach(activityData, id: \.self) { activity in
-                                    NavigationLink(destination: ActivityDetailView(activity: activity)) {
-                                        VStack {
-                                            Image(systemName: activity.iconName)
-                                                .resizable()
-                                                .scaledToFit()
-                                                .frame(width: 40, height: 40)
-                                                .foregroundColor(.black)
-                                            
-                                            Text(activity.label)
-                                        }
-                                        .frame(width: 80, height: 100)
-                                        .padding()
-                                        .background(Color.gray.opacity(0.2))
-                                        .cornerRadius(8)
-                                        .foregroundColor(.black)
-                                    }
-                                }
-                            }
-                            .padding()
-                        }
-                    }
-                    
-                    Text("Activities")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    List(activityData, id: \.self) { activity in
-                        HStack {
-                            Image(systemName: activity.iconName)
-                            Text(activity.label)
-                        }
-                    }
-                    .listStyle(PlainListStyle())
-                    
-                    Spacer()
-                }
-                .padding()
+        
+        if viewModel.workoutInProgress {
+            
+            if (viewModel.workoutType == "Running") {
+                let currentActivity = Activity(iconName: "figure.run", label: "Running")
+                ActivityDetailView(activity: currentActivity, viewModel: viewModel)
+            } else if (viewModel.workoutType == "Biking") {
+                let currentActivity = Activity(iconName: "bicycle", label: "Biking")
+                ActivityDetailView(activity: currentActivity, viewModel: viewModel)
+            } else if  (viewModel.workoutType == "Hiking") {
+                let currentActivity = Activity(iconName: "figure.walk", label: "Hiking")
+                ActivityDetailView(activity: currentActivity, viewModel: viewModel)
             }
+            
+        } else {
+            Text("Start a workout on your Apple Watch")
         }
     }
 }
+         
     
 
 struct ActivityDetailView: View {
     let activity: Activity
-    @StateObject private var viewModel = RecordViewModel()
-    
-    @State private var workoutStarted = false
-
+    @ObservedObject var viewModel: RecordViewModel
     
     var body: some View {
         VStack {
@@ -145,52 +100,9 @@ struct ActivityDetailView: View {
                 }
                 .padding()
             }
-            
-            Spacer()
-            
-            if !workoutStarted {
-                      Button(action: {
-                          workoutStarted = true
-                          //viewModel.startObservingWorkoutData()
-                      }) {
-                          Image(systemName: "play.fill")
-                              .font(.largeTitle)
-                              .padding(20)
-                              .background(Color.gray)
-                              .clipShape(Circle())
-                              .foregroundColor(Color.white)
-                      }
-                  } else {
-                      HStack(spacing: 50) {
-                          Button(action: {
-                                viewModel.pauseWorkout()
-                          }) {
-                              Image(systemName: viewModel.isPaused ? "pause.fill" : "play.fill")
-                                  .font(.largeTitle)
-                                  .padding(20)
-                                  .background(Color.gray)
-                                  .clipShape(Circle())
-                                  .foregroundColor(Color.white)
-
-                          }
-                          
-                          Button(action: {
-                              workoutStarted = false
-                              //viewModel.stopObservingWorkoutData()
-                          }) {
-                              Image(systemName: "stop.fill")
-                                  .font(.largeTitle)
-                                  .padding(20)
-                                  .background(Color.gray)
-                                  .clipShape(Circle())
-                                  .foregroundColor(Color.white)
-
-                          }
-                      }
-                  }
-              }
-              .padding()
-          }
+        }
+        .padding()
+    }
     
     
        

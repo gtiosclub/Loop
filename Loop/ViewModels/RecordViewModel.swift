@@ -28,6 +28,8 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
     let healthStore = HKHealthStore()
     let db = Firestore.firestore()
     var uid: String
+    
+    var workoutType: String?
 
     init(userId: String) {
         self.uid = userId
@@ -87,6 +89,10 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
             }
             if let totalTime = message["totalTime"] as? Double {
                 self.totalTime = totalTime
+            }
+            if let workoutType = message["workoutType"] as? String {
+                print("workoutType: \(workoutType)")
+                self.workoutType = workoutType
             }
             print("Received workout data from watch: \(message)")
             
@@ -223,7 +229,7 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
                 dispatchGroup.notify(queue: .main) {
                     // Upload data to Firestore
                     let workoutData: [String: Any] = [
-                        "uid": self.uid ?? "",
+                        "uid": self.uid,
                         "workoutType": workoutTypeString,
                         "startDate": workout.startDate,
                         "endDate": workout.endDate,
