@@ -117,7 +117,7 @@ struct ChallengeView: View {
                         
                         HStack {
                             Spacer()
-                                Text("ABCDE")
+                            Text(challenge.accessCode)
                                     .font(.system(size:40))
                                     .bold()
                                     .padding(8)

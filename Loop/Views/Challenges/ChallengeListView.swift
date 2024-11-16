@@ -91,14 +91,17 @@ struct ChallengeListView: View {
             
             if isShowingJoin {
                 ZStack {
-                    RoundedRectangle(cornerRadius: 25)
+                    Color(.gray).opacity(0.5).ignoresSafeArea().onTapGesture {
+                        isShowingJoin.toggle()
+                    }
+                    RoundedRectangle(cornerRadius: 10)
                         .foregroundStyle(Color(red: 0.3, green: 0.3, blue: 0.3))
                         .frame(width: 350, height: 100)
                         .overlay {
                             VStack {
                                 HStack {
                                     Spacer()
-                                    Text("Enter access code")
+                                    Text("Enter Access Code")
                                         .font(.system(size: 25, weight: .bold, design: .rounded))
                                         .foregroundStyle(.white)
                                         .padding(.top, 2)
@@ -118,7 +121,7 @@ struct ChallengeListView: View {
                                 
                                 Spacer()
                                 HStack {
-                                    TextField("access code", text: $accessCode)
+                                    TextField("Code", text: $accessCode)
                                         .textFieldStyle(.roundedBorder)
                                     
                                     Button {
