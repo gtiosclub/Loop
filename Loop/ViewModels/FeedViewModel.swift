@@ -62,7 +62,7 @@ class FeedViewModel: ObservableObject {
     }
 
     private func fetchActivitiesForFriend(friendId: String, name: String, avatar: String) {
-        db.collection("users").document(friendId).collection("activities")
+        db.collection("users").document(friendId).collection("workouts")
             .getDocuments { [weak self] (snapshot, error) in
                 if let error = error {
                     print("Error fetching activities for friend \(friendId): \(error)")
