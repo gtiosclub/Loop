@@ -18,7 +18,7 @@ class FirebaseManager {
         }
         do {
             try await db.collection("users").document(id).setData([
-                "uid": user.uid,
+                "uid": id,
                 "name": user.name,
                 "username": user.username,
                 "challengeIds": user.challengeIds,

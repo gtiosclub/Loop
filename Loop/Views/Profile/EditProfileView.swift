@@ -20,7 +20,7 @@ struct EditProfileView: View {
                         Button(action: {
                             self.presentationMode.wrappedValue.dismiss()
                         }) {
-                            Image(systemName: "arrow.left.circle.fill").font(.system(size: 30)).foregroundColor(.orange)
+                            Image(systemName: "arrow.left.circle.fill").font(.system(size: 30)).foregroundColor(.red)
                             Spacer()
                         }
                     }
@@ -36,7 +36,7 @@ struct EditProfileView: View {
                         )
 
                     //BLUE EDIT PLUS BUTTON
-                    Circle().frame(width: 40, height: 40).foregroundColor(.orange).overlay(
+                    Circle().frame(width: 40, height: 40).foregroundColor(.red).overlay(
                             Image(systemName: "plus").foregroundColor(.white).font(.system(size: 20, weight: .bold))
                         ).offset(x: 40, y: 40).onTapGesture {
                             print("Edit Profile Picture tapped")
@@ -70,7 +70,7 @@ struct EditProfileView: View {
                     Text("Save Changes")
                         .bold()
                         .frame(maxWidth: .infinity, maxHeight: 50)
-                        .background(Color.orange)
+                        .background(Color.red)
                         .foregroundColor(.white)
                         .cornerRadius(10)
                 }

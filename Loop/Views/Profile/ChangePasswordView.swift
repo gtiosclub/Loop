@@ -14,13 +14,13 @@ import SwiftUI
 struct ChangePasswordView: View {
     @State var NewPassword: String = ""
     @State var Password: String = ""
-    @State var ComfirmPassword: String = ""
+    @State var ConfirmPassword: String = ""
     @State var showAlert: Bool = false
     @State private var alertMessage: String = ""
     @State var showAlertForDifferentPassword: Bool = false
     @State var alertmessage : String = ""
     @State var alerTitle: String = ""
-    @State var ComfirmPasswordFilled :Bool = false
+    @State var ConfirmPasswordFilled :Bool = false
     @State var NewPasswordFilled :Bool = false
     @State var CurrentPasswordFilled :Bool = false
     @State var EverythingIsfilled: Bool = false
@@ -33,7 +33,7 @@ struct ChangePasswordView: View {
         }) {
             Image(systemName: "arrow.left.circle.fill")
                 .font(.system(size: 30))
-                .foregroundColor(.orange)
+                .foregroundColor(.red)
         }
         .offset(x: -150)
         .navigationBarBackButtonHidden(true)
@@ -48,7 +48,7 @@ struct ChangePasswordView: View {
             
             TextField("Current Password",text: $Password) // maybe make this a secure field
                     .autocapitalization(.none)
-                    .padding(8).background(Color.orange.opacity(0.3))
+                    .padding(8).background(Color.red.opacity(0.3))
                     .cornerRadius(8)
                     .padding(.horizontal)
                     .onChange(of: Password, initial: true) {
@@ -57,7 +57,7 @@ struct ChangePasswordView: View {
                         } else {
                             CurrentPasswordFilled = true
                         }
-                        if (CurrentPasswordFilled && NewPasswordFilled && ComfirmPasswordFilled) {
+                        if (CurrentPasswordFilled && NewPasswordFilled && ConfirmPasswordFilled) {
                             EverythingIsfilled = true
                         } else {
                             EverythingIsfilled = false
@@ -69,7 +69,7 @@ struct ChangePasswordView: View {
                 
             TextField("New Password", text: $NewPassword) //maybe make this a secure field
                     .autocapitalization(.none)
-                    .padding(8).background(Color.orange.opacity(0.3))
+                    .padding(8).background(Color.red.opacity(0.3))
                     .cornerRadius(8)
                     .padding(.horizontal)
                     .onChange(of: NewPassword, initial: true) {
@@ -78,7 +78,7 @@ struct ChangePasswordView: View {
                         } else {
                             NewPasswordFilled = true
                         }
-                        if (CurrentPasswordFilled && NewPasswordFilled && ComfirmPasswordFilled) {
+                        if (CurrentPasswordFilled && NewPasswordFilled && ConfirmPasswordFilled) {
                             EverythingIsfilled = true
                         } else {
                             EverythingIsfilled = false
@@ -88,18 +88,18 @@ struct ChangePasswordView: View {
                     }
                 
                 
-            SecureField("Comfirm Password", text: $ComfirmPassword)
+            SecureField("Confirm Password", text: $ConfirmPassword)
                     .autocapitalization(.none)
-                    .padding(8).background(Color.orange.opacity(0.3))
+                    .padding(8).background(Color.red.opacity(0.3))
                     .cornerRadius(8)
                     .padding(.horizontal)
-                    .onChange(of: ComfirmPassword, initial: true) {
-                        if (ComfirmPassword == "") {
-                            ComfirmPasswordFilled = false
+                    .onChange(of: ConfirmPassword, initial: true) {
+                        if (ConfirmPassword == "") {
+                            ConfirmPasswordFilled = false
                         } else {
-                            ComfirmPasswordFilled = true
+                            ConfirmPasswordFilled = true
                         }
-                        if (CurrentPasswordFilled && NewPasswordFilled && ComfirmPasswordFilled) {
+                        if (CurrentPasswordFilled && NewPasswordFilled && ConfirmPasswordFilled) {
                             EverythingIsfilled = true
                         } else {
                             EverythingIsfilled = false
@@ -117,9 +117,9 @@ struct ChangePasswordView: View {
                             alerTitle = "Type in your new Password"
                             
                             
-                    } else if (ComfirmPassword == "") {
+                    } else if (ConfirmPassword == "") {
                         showAlert.toggle()
-                        alerTitle = "Comfirm your Password"
+                        alerTitle = "Confirm your Password"
                         
                         
                 } else {
@@ -132,8 +132,8 @@ struct ChangePasswordView: View {
                         Text("Change Password")
                             .padding()
                             .frame(maxWidth: 250)
-                            .foregroundColor(Color.black)
-                            .padding(8).background(Color.orange.opacity(0.3))
+                            .foregroundColor(Color.white)
+                            .padding(8).background(Color.red.opacity(0.3))
                             .cornerRadius(8)
                             .padding(.horizontal)
                             .bold()
