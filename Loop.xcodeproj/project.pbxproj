@@ -46,6 +46,7 @@
 		9AB55D362CA5374F00C48C32 /* LoopWatchAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AB55D332CA5374F00C48C32 /* LoopWatchAppApp.swift */; };
 		9AB55D372CA5374F00C48C32 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AB55D2F2CA5374F00C48C32 /* Preview Assets.xcassets */; };
 		9AB55D382CA5374F00C48C32 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AB55D312CA5374F00C48C32 /* Assets.xcassets */; };
+		AA348F542CE6AB0900CA878C /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA348F532CE6AB0300CA878C /* ProfileViewModel.swift */; };
 		AA53DE7A2CB312B50029B7DB /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA53DE792CB312B50029B7DB /* EditProfileView.swift */; };
 		AAA11A552CAF64CC00445880 /* AddFriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA11A542CAF64CC00445880 /* AddFriendsView.swift */; };
 		B5B40E672C94EAE100BD9131 /* LoopApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B40E662C94EAE100BD9131 /* LoopApp.swift */; };
@@ -138,6 +139,7 @@
 		9AB55D2F2CA5374F00C48C32 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		9AB55D312CA5374F00C48C32 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9AB55D332CA5374F00C48C32 /* LoopWatchAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopWatchAppApp.swift; sourceTree = "<group>"; };
+		AA348F532CE6AB0300CA878C /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		AA53DE792CB312B50029B7DB /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		AAA11A542CAF64CC00445880 /* AddFriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendsView.swift; sourceTree = "<group>"; };
 		B5B40E632C94EAE100BD9131 /* Loop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Loop.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -204,6 +206,7 @@
 				DF95BDB82CAF61EF00CBDA32 /* StatsPageModel.swift */,
 				7C0B1FD82C9CB61C0076B590 /* ViewModel.swift */,
 				DF1CD2B12CACB9C200451888 /* FeedViewModel.swift */,
+				AA348F532CE6AB0300CA878C /* ProfileViewModel.swift */,
 				91F24CB12CDBE26900ADC3E2 /* RecordViewModel.swift */,
 			);
 			path = ViewModels;
@@ -536,6 +539,7 @@
 				E25FF94E2CA629C2006FF61C /* FirebaseUploader.swift in Sources */,
 				B5B40E672C94EAE100BD9131 /* LoopApp.swift in Sources */,
 				7C0B1FC82C9CB1950076B590 /* FriendProfileView.swift in Sources */,
+				AA348F542CE6AB0900CA878C /* ProfileViewModel.swift in Sources */,
 				7C0B1FD52C9CB2270076B590 /* CreateChallengeView.swift in Sources */,
 				DF95BDB92CAF61F400CBDA32 /* StatsPageModel.swift in Sources */,
 				DF95BDB72CAF607400CBDA32 /* StatsPage.swift in Sources */,

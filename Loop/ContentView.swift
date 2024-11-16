@@ -31,14 +31,25 @@ struct ContentView: View {
                     Label("Challenges", systemImage: "medal.fill")
                 }.tag(TabSelection.challenges)
 
-                RecordView().tabItem {
-                    Label("Record", systemImage: "record.circle")
-                        .foregroundColor(.red)
-                }.tag(TabSelection.record)
+                if let userId = userId {
+                    RecordView(userId: userId).tabItem {
+                        Label("Record", systemImage: "record.circle")
+                            .foregroundColor(.red)
+                    }.tag(TabSelection.record)
 
-                SelfProfileView().tabItem {
-                    Label("Profile", systemImage: "person.fill")
-                }.tag(TabSelection.profile)
+                    SelfProfileView(userId: userId).tabItem {
+                        Label("Profile", systemImage: "person.fill")
+                    }.tag(TabSelection.profile)
+                } else {
+                    Text("Loading...").tabItem {
+                        Label("Record", systemImage: "record.circle")
+                            .foregroundColor(.red)
+                    }.tag(TabSelection.record)
+                    
+                    Text("Loading...").tabItem {
+                        Label("Profile", systemImage: "person.fill")
+                    }.tag(TabSelection.profile)
+                }
             }
             .tint(.red)
             .onAppear {

@@ -127,6 +127,13 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
     @Published var distance = 0.0
     @Published var calories = 0.0
     @Published var isWorkoutInProgress = false
+
+    //In-Progress Properties
+    @Published var currentDistance: Double = 0
+    @Published var currentCalories: Double = 0
+    @Published var currentHeartRate: Double = 0
+    @Published var currentPace: Double = 0
+    @Published var totatlTime: TimeInterval = 0
     
     @Published var heartRatePoints: [(Date, Double)] = []
     @Published var routePoints: [CLLocation] = []
@@ -139,6 +146,7 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
     @Published var totalTime: TimeInterval = 0
     
     private var timer: Timer?
+    private var dataSendTimer: Timer?
     
     static let shared = WorkoutManager()
     private let healthStore = HKHealthStore()
@@ -174,6 +182,10 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
                     self?.updateTotalTime()
                 }
         
+        dataSendTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            self?.sendWorkoutData()
+        }
+
         let configuration:HKWorkoutConfiguration = WorkoutType(workoutType.lowercased()).configure()
 
         do {
@@ -204,7 +216,7 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
                     self.isPaused = false
                     // communication variables
                     self.isWorkoutInProgress = true
-                    self.sendWorkoutStartedMessage()
+                    self.sendWorkoutStartedMessage(workoutType: workoutType)
                     print("Successfully started workout")
                 }
             })
@@ -216,12 +228,17 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
     }
 
     // Functions to send the boolean via WC
-    private func sendWorkoutStartedMessage() {
+    private func sendWorkoutStartedMessage(workoutType: String) {
         if WCSession.default.isReachable {
             WCSession.default.sendMessage(["workoutStarted": true], replyHandler: nil, errorHandler: { error in
                 print("Error sending message: \(error.localizedDescription)")
             })
-
+            
+            print("workoutType \(workoutType)")
+                                           
+            WCSession.default.sendMessage(["workoutType": workoutType], replyHandler: nil, errorHandler: { error in
+               print("Error sending message: \(error.localizedDescription)")
+            })
 
             WCSession.default.sendMessage(["updateFirestore": false], replyHandler: nil, errorHandler: { error in
                 print("Error sending message: \(error.localizedDescription)")
@@ -303,7 +320,7 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
     }
 
     func resetWorkout() {
-#if os(watchOS)
+        #if os(watchOS)
         builder = nil
         session = nil
         activeEnergy = 0
@@ -313,7 +330,8 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
         
         #endif
     }
-
+    
+    
     
     func endWorkout(_ workoutType: String) {
         #if os(watchOS)
@@ -323,6 +341,8 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
         session.end()
         timer?.invalidate()
         timer = nil
+        dataSendTimer?.invalidate()
+        dataSendTimer = nil
         pauseDate = nil
         accumulatedTime = 0
 
@@ -469,7 +489,7 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
             let averagePace = distance / (totalTime / 60)
             let paceQuantity = HKQuantity(unit: HKUnit.mile().unitDivided(by: HKUnit.second()),
                                   doubleValue: averagePace)
-            
+                        
             let paceSample = HKQuantitySample(
                 type: paceType,
                 quantity: paceQuantity,
@@ -518,6 +538,24 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
     func workoutBuilderDidCollectEvent(_ workoutBuilder: HKLiveWorkoutBuilder) {
         // handles workout events if needed
     }
+    
+    func sendWorkoutData() {
+    if WCSession.default.isReachable {
+        
+        let workoutData: [String: Any] = [
+            "currentDistance": self.distance2,
+            "currentCalories": self.activeEnergy,
+            "currentHeartRate": self.heartRate,
+            "currentPace": self.distance2 / (totalTime / 60),
+            "totalTime": totalTime
+        ]
+        WCSession.default.sendMessage(workoutData, replyHandler: nil, errorHandler: { error in
+            print("Error sending workout data: \(error.localizedDescription)")
+        })
+    } else {
+        print("Session is not reachable")
+    }
+}
 
     func workoutBuilder(_ workoutBuilder: HKLiveWorkoutBuilder, didCollectDataOf collectedTypes: Set<HKSampleType>) {
         #if os(watchOS)
@@ -534,6 +572,7 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
                             let distanceInMiles = distance.doubleValue(for: HKUnit.mile())
                             print("Distance: \(distanceInMiles) miles")
                             self.distance = distanceInMiles
+                            self.sendWorkoutData()
                         }
                     }
                 }
@@ -545,6 +584,7 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
                             let caloriesInKilocalories = calories.doubleValue(for: HKUnit.kilocalorie())
                             print("Calories Burned: \(caloriesInKilocalories) kcal")
                             self.calories = caloriesInKilocalories
+                            self.sendWorkoutData()
                         }
                         
                     }
@@ -564,6 +604,7 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
                             self.heartRate = heartRateValue
                             // Add point to heart rate chart data
                             self.heartRatePoints.append((timestamp, heartRateValue))
+                            self.sendWorkoutData()
                         }
                     }
                 }

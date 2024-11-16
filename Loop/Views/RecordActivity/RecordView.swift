@@ -9,80 +9,40 @@ import SwiftUI
 import WatchConnectivity
 
 struct RecordView: View {
-    @StateObject private var viewModel = RecordViewModel()
+    @StateObject private var viewModel: RecordViewModel
+    let userId: String
+
+    init(userId: String) {
+       self.userId = userId
+       _viewModel = StateObject(wrappedValue: RecordViewModel(userId: userId))
+   }
     
     var body: some View {
-        NavigationView {
-            VStack{
-                if viewModel.workoutInProgress {
-                    Text("Workout in Progress")
-                        .padding()
-                        .background(Color.yellow)
-                        .cornerRadius(8)
-                        .padding(.top)
-                }
-                VStack(spacing: 20) {
-                    Text("Select Activity")
-                        .font(.title)
-                        .padding(.top)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    Text("Most Recent")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    VStack(alignment: .leading) {
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 15) {
-                                ForEach(activityData, id: \.self) { activity in
-                                    NavigationLink(destination: ActivityDetailView(activity: activity)) {
-                                        VStack {
-                                            Image(systemName: activity.iconName)
-                                                .resizable()
-                                                .scaledToFit()
-                                                .frame(width: 40, height: 40)
-                                                .foregroundColor(.black)
-                                            
-                                            Text(activity.label)
-                                        }
-                                        .frame(width: 80, height: 100)
-                                        .padding()
-                                        .background(Color.gray.opacity(0.2))
-                                        .cornerRadius(8)
-                                        .foregroundColor(.black)
-                                    }
-                                }
-                            }
-                            .padding()
-                        }
-                    }
-                    
-                    Text("Activities")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    List(activityData, id: \.self) { activity in
-                        HStack {
-                            Image(systemName: activity.iconName)
-                            Text(activity.label)
-                        }
-                    }
-                    .listStyle(PlainListStyle())
-                    
-                    Spacer()
-                }
-                .padding()
+        
+        if viewModel.workoutInProgress {
+            
+            if (viewModel.workoutType == "Running") {
+                let currentActivity = Activity(iconName: "figure.run", label: "Running")
+                ActivityDetailView(activity: currentActivity, viewModel: viewModel)
+            } else if (viewModel.workoutType == "Biking") {
+                let currentActivity = Activity(iconName: "bicycle", label: "Biking")
+                ActivityDetailView(activity: currentActivity, viewModel: viewModel)
+            } else if  (viewModel.workoutType == "Hiking") {
+                let currentActivity = Activity(iconName: "figure.walk", label: "Hiking")
+                ActivityDetailView(activity: currentActivity, viewModel: viewModel)
             }
+            
+        } else {
+            Text("Start a workout on your Apple Watch")
         }
     }
 }
+         
     
 
 struct ActivityDetailView: View {
     let activity: Activity
-    
-    @State private var timeElapsed: TimeInterval = 0.0
-    @State private var timerRunning = false
-    @State private var workoutStarted = false
-
+    @ObservedObject var viewModel: RecordViewModel
     
     var body: some View {
         VStack {
@@ -101,7 +61,7 @@ struct ActivityDetailView: View {
                     Text((activity.label)) .font(.headline) .padding(.top)
                         .foregroundColor(.white)
                     
-                    Text(timeString(from: timeElapsed))
+                    Text(timeString(from: viewModel.totalTime))
                         .font(.system(size: 60, weight: .bold, design: .monospaced))
                         .foregroundColor(.white)
                     
@@ -109,7 +69,7 @@ struct ActivityDetailView: View {
                         .font(.subheadline)
                         .foregroundColor(.white)
                     
-                    Text("00.00")
+                    Text(String(format: "%.2f", viewModel.currentDistance))
                         .font(.system(size: 50, weight: .bold))
                         .foregroundColor(.white)
                     
@@ -119,7 +79,7 @@ struct ActivityDetailView: View {
                     
                     HStack {
                         VStack {
-                            Text("27:31")
+                            Text(String(format: "%.2f", viewModel.currentPace))
                                 .font(.headline)
                                 .foregroundColor(.white)
                             Text("AVG PACE")
@@ -128,7 +88,7 @@ struct ActivityDetailView: View {
                         }
                         Spacer()
                         VStack {
-                            Text("197 BPM")
+                            Text(String(format: "%.0f BPM", viewModel.currentHeartRate))
                                 .font(.headline)
                                 .foregroundColor(.white)
                             Text("BPM")
@@ -140,62 +100,11 @@ struct ActivityDetailView: View {
                 }
                 .padding()
             }
-            
-            Spacer()
-            
-            if !workoutStarted {
-                      Button(action: {
-                          workoutStarted = true
-                          timerRunning = true
-                      }) {
-                          Image(systemName: "play.fill")
-                              .font(.largeTitle)
-                              .padding(20)
-                              .background(Color.gray)
-                              .clipShape(Circle())
-                              .foregroundColor(Color.white)
-                      }
-                  } else {
-                      HStack(spacing: 50) {
-                          Button(action: {
-                              timerRunning.toggle()
-                          }) {
-                              Image(systemName: timerRunning ? "pause.fill" : "play.fill")
-                                  .font(.largeTitle)
-                                  .padding(20)
-                                  .background(Color.gray)
-                                  .clipShape(Circle())
-                                  .foregroundColor(Color.white)
-
-                          }
-                          
-                          Button(action: {
-                              workoutStarted = false
-                              timerRunning = false
-                              timeElapsed = 0.0
-                          }) {
-                              Image(systemName: "stop.fill")
-                                  .font(.largeTitle)
-                                  .padding(20)
-                                  .background(Color.gray)
-                                  .clipShape(Circle())
-                                  .foregroundColor(Color.white)
-
-                          }
-                      }
-                  }
-              }
-              .padding()
-              .onAppear(perform: startTimer)
-          }
+        }
+        .padding()
+    }
     
-    private func startTimer() {
-           Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-               if timerRunning {
-                   timeElapsed += 1.0
-               }
-           }
-       }
+    
        
        // Function to format time
        private func timeString(from time: TimeInterval) -> String {
@@ -218,7 +127,7 @@ let activityData = [
 ]
 
 #Preview {
-    RecordView()
+    RecordView(userId: "0F64B991-1B91-4C3B-A899-B6953CC0D934")
         .previewDevice("iPhone 14 Pro")
         .previewDisplayName("Record View Preview")
 }
