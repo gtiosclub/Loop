@@ -21,13 +21,23 @@ class HealthKitManager {
         let readTypes: Set<HKObjectType> = [
             HKObjectType.workoutType(),
             HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!,
-            HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
+            HKObjectType.quantityType(forIdentifier: .distanceCycling)!,
+            HKObjectType.quantityType(forIdentifier: .distanceSwimming)!,
+            HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
+            HKQuantityType.quantityType(forIdentifier: .runningSpeed)!,
+            HKQuantityType.quantityType(forIdentifier: .heartRate)!,
+            HKSeriesType.workoutRoute()
         ]
 
         let writeTypes: Set<HKSampleType> = [
             HKObjectType.workoutType(),
             HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!,
-            HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
+            HKObjectType.quantityType(forIdentifier: .distanceCycling)!,
+            HKObjectType.quantityType(forIdentifier: .distanceSwimming)!,
+            HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
+            HKQuantityType.quantityType(forIdentifier: .runningSpeed)!,
+            HKQuantityType.quantityType(forIdentifier: .heartRate)!,
+            HKSeriesType.workoutRoute()
         ]
 
         healthStore.requestAuthorization(toShare: writeTypes, read: readTypes) { success, error in
@@ -48,16 +58,24 @@ struct LoopWatchApp_Watch_AppApp: App {
             }
         }
     }
-
+    
     // Initialize managers here
-    private let workoutManager = WorkoutManager.shared
+    @StateObject var workoutManager = WorkoutManager.shared
     private let exercisesList = ExercisesList()
 
     var body: some Scene {
         WindowGroup {
-            WatchTypesOfExerciseView()
+            
+            NavigationStack {
+                WatchTypesOfExerciseView()
+            }
                 .environmentObject(workoutManager)
                 .environmentObject(exercisesList)
+                .sheet(isPresented: $workoutManager.showingSummaryView) {
+                    SummaryView()
+                        .environmentObject(workoutManager)
+                }
+                
         }
     }
 }

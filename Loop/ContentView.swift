@@ -13,7 +13,6 @@ struct ContentView: View {
         // Set the background color of UITabBar
         UITabBar.appearance().backgroundColor = UIColor.white
     }
-    
     @State var selectedView: TabSelection = .home
     @State private var userId: String? = nil
     var body: some View {
@@ -28,18 +27,31 @@ struct ContentView: View {
                     }.tag(TabSelection.home)
                 }
 
-                ChallengeListView(challenges: Challenge.sampleData).tabItem {
-                    Label("Challenges", systemImage: "figure.run")
+                ChallengeListView().tabItem {
+                    Label("Challenges", systemImage: "medal.fill")
                 }.tag(TabSelection.challenges)
 
-                RecordView().tabItem {
-                    Label("Record", systemImage: "clock.fill")
-                }.tag(TabSelection.record)
+                if let userId = userId {
+                    RecordView(userId: userId).tabItem {
+                        Label("Record", systemImage: "record.circle")
+                            .foregroundColor(.red)
+                    }.tag(TabSelection.record)
 
-                SelfProfileView().tabItem {
-                    Label("Profile", systemImage: "person.crop.circle.fill")
-                }.tag(TabSelection.profile)
+                    SelfProfileView(userId: userId).tabItem {
+                        Label("Profile", systemImage: "person.fill")
+                    }.tag(TabSelection.profile)
+                } else {
+                    Text("Loading...").tabItem {
+                        Label("Record", systemImage: "record.circle")
+                            .foregroundColor(.red)
+                    }.tag(TabSelection.record)
+                    
+                    Text("Loading...").tabItem {
+                        Label("Profile", systemImage: "person.fill")
+                    }.tag(TabSelection.profile)
+                }
             }
+            .tint(.red)
             .onAppear {
                 if let currentUser = Auth.auth().currentUser {
                     self.userId = currentUser.uid

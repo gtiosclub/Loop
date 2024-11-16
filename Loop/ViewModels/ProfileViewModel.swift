@@ -1,31 +1,24 @@
+//
+//  ProfileViewModel.swift
+//  Loop
+//
+//  Created by Jihoon Kim on 11/14/24.
+//
+
 import SwiftUI
 import FirebaseFirestore
 
-struct WorkoutPost: Identifiable {
-    let id: String
-    let name: String
-    let avatar: String
-    let workoutType: String
-    let distance: String
-    let pace: String
-    let duration: String
-    let calories: String
-    let date: String
-    let averageHeartRate: String
-    let heartRatePoints: [HeartRateEntry]
-    let routeLocations: [RouteLocation]
-}
 
-class FeedViewModel: ObservableObject {
-    @Published var friendPosts: [WorkoutPost] = []
+class ProfileViewModel: ObservableObject {
+    @Published var selfPosts: [WorkoutPost] = []
     private let db = Firestore.firestore()
 
     func fetchFriendPosts(for userId: String) {
-        self.friendPosts = []
+        self.selfPosts = []
         db.collection("users").document(userId).getDocument { [weak self] (document, error) in
             if let document = document, document.exists {
                 if let friends = document.data()?["friends"] as? [String], !friends.isEmpty {
-                    self?.fetchActivitiesForFriends(friends)
+                    self?.fetchActivitiesForFriends([userId])
                 } else {
                     print("No friends found or 'friends' field is missing.")
                 }
@@ -62,7 +55,7 @@ class FeedViewModel: ObservableObject {
     }
 
     private func fetchActivitiesForFriend(friendId: String, name: String, avatar: String) {
-        db.collection("users").document(friendId).collection("workouts")
+        db.collection("users").document(friendId).collection("activities")
             .getDocuments { [weak self] (snapshot, error) in
                 if let error = error {
                     print("Error fetching activities for friend \(friendId): \(error)")
@@ -124,7 +117,7 @@ class FeedViewModel: ObservableObject {
                 avatar: friendAvatar,
                 workoutType: workoutType,
                 distance: String(format: "%.2f", totalDistance),
-                pace: "-", 
+                pace: "-",
                 duration: duration,
                 calories: String(format: "%.0f", totalEnergyBurned),
                 date: date,
@@ -134,7 +127,7 @@ class FeedViewModel: ObservableObject {
             )
 
             DispatchQueue.main.async {
-                self.friendPosts.append(newPost)
+                self.selfPosts.append(newPost)
             }
         } else {
             print("Start date or end date is missing in activity document.")
@@ -163,31 +156,4 @@ class FeedViewModel: ObservableObject {
     }
 }
 
-extension Array {
-    func chunked(into size: Int) -> [[Element]] {
-        var chunks = [[Element]]()
-        var index = self.startIndex
-
-        while index < self.endIndex {
-            let chunkEnd = index + size
-            let limitedChunkEnd = chunkEnd > self.endIndex ? self.endIndex : chunkEnd
-            chunks.append(Array(self[index..<limitedChunkEnd]))
-            index = limitedChunkEnd
-        }
-
-        return chunks
-    }
-}
-
-struct HeartRateEntry: Identifiable {
-    let id = UUID()
-    let date: Date
-    let value: Double
-}
-
-struct RouteLocation: Identifiable {
-    let id = UUID()
-    let latitude: Double
-    let longitude: Double
-}
 

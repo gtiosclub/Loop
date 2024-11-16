@@ -15,13 +15,15 @@ import FirebaseFirestore
 class User: ObservableObject {
     static var shared = User(uid: "", name: "", username: "", challengeIds: [], profilePictureId: "", friends: [], incomingRequest: [])
     
-    var uid: String
-    var name: String
-    var username: String
-    var challengeIds: [String]
-    var profilePictureId: String
-    var friends: [String]
-    var incomingRequest: [String] = []
+    @Published var uid: String
+    @Published var name: String
+    @Published var username: String
+    @Published var challengeIds: [String]
+    @Published var profilePictureId: String
+    @Published var friends: [String]
+    @Published var incomingRequest: [String] = []
+    
+    @Published var challenges = [Challenge]()
     
     /// Designated user initializer.
     ///
@@ -227,32 +229,99 @@ class User: ObservableObject {
     /// - Parameter challenge: The Challenge object.
     /// - Returns: The challenge id of the challenge added, otherwise nil.
     func addChallenge(challenge: Challenge) async -> String? {
-        if (uid == challenge.host) {
-            print("Cannot add challenge that you created.")
-            return nil
-        }
+//        if (uid == challenge.host) {
+//            print("Cannot add challenge that you created.")
+//            return nil
+//        }
         let challengeId = challenge.id
-        challengeIds.append(challengeId)
+        DispatchQueue.main.async {
+            self.challengeIds.append(challengeId)
+        }
+        
         var attendees = challenge.attendees
         attendees.append(uid)
+        
         let db = Firestore.firestore()
         let docRefUser = db.collection("users").document(uid)
         let docRefChallenge = db.collection("challenges").document(challengeId)
+        
+        var scores = challenge.scores
+        scores[uid] = 0
+        
         let docDataUser: [String: Any] = [
             "challengeIds": challengeIds
         ]
         let docDataChallenge: [String: Any] = [
-            "attendees": attendees
+            "attendees": attendees,
+            "scores": scores
         ]
         do {
             try await docRefUser.setData(docDataUser, merge: true)
             try await docRefChallenge.setData(docDataChallenge, merge: true)
             print("Updated the user and challenge to the Firebase database.")
+            
+            User.addSharedChallenge(challenge: challenge)
+            
+            print("ADDDED SHARED CHALLENGE")
             return challenge.id
         } catch {
             print("Error updating the user and challenge to the Firebase database: \(error).")
         }
         return nil
+    }
+    
+    func fetchChallenges() async -> [Challenge] {
+        if challengeIds.isEmpty {
+            print("NO CHALLENGES TO FETCH")
+            return []
+        }
+        let db = Firestore.firestore()
+        var challenges = [Challenge]()
+        for challengeId in challengeIds {
+            let challengeRef = db.collection("challenges").document(challengeId)
+            
+            do {
+                let document = try await challengeRef.getDocument()
+                
+                if document.exists, let data = document.data() {
+                    var scores: [String: Double]? = data["scores"] as? [String: Double]
+                    var challenge = Challenge(
+                        id: challengeId,
+                        title: data["name"] as? String ?? "",
+                        host: data["host"] as? String ?? "",
+                        attendees: data["attendees"] as? [String] ?? [],
+                        challengeType: data["challengeType"] as? String ?? "",
+                        lengthInMinutes: data["lengthInMinutes"] as? Int ?? 0,
+                        dataMeasured: data["dataMeasured"] as? String ?? "",
+                        dateCreated: (data["dateCreated"] as? Timestamp)?.dateValue() ?? Date(),
+                        endDate: (data["endDate"] as? Timestamp)?.dateValue() ?? Date(),
+                        theme: Theme(rawValue: data["theme"] as? String ?? "") ?? .indigo,
+                        accessCode: data["accessCode"] as? String ?? "",
+                        scores: scores ?? [:]
+                    )
+                    if let scores {
+                        var fullAttendees = [Person]()
+                        for attendeeID in challenge.attendees {
+                            do {
+                                let attendee = try await FirebaseManager.fetchUserFromFirestore(uid: attendeeID)
+                                let attendeeFull = Person(id: attendeeID, name: attendee.username, score: scores[attendeeID] ?? -1)
+                                fullAttendees.append(attendeeFull)
+                            }
+                        }
+                        challenge.attendeesFull = fullAttendees.sorted(by: { a1, a2 in
+                            a1.score > a2.score
+                        })
+                    }
+                    
+                    challenges.append(challenge)
+                } else {
+                    print("Document does not exist for challengeId: \(challengeId)")
+                }
+            } catch {
+                print("Error fetching document for challengeId \(challengeId): \(error.localizedDescription)")
+            }
+        }
+        return challenges
     }
     
     static func updateShared(user: User) {
@@ -264,6 +333,34 @@ class User: ObservableObject {
             shared.profilePictureId = user.profilePictureId
             shared.friends = user.friends
             shared.incomingRequest = user.incomingRequest
+            
+            print("User ID: \(User.shared.uid)")
+            print("User NAME: \(User.shared.username)")
+            print("User CHALLENGESIDS: \(User.shared.challengeIds)")
+            Task {
+                User.updateSharedChallenges(challenges: await User.shared.fetchChallenges())
+            }
+        }
+    }
+    
+    static func updateSharedChallenges(challenges: [Challenge]) {
+        DispatchQueue.main.async {
+            for challenge in challenges {
+                shared.challenges.append(challenge)
+            }
+        }
+    }
+    
+    static func addSharedChallenge(challenge: Challenge) {
+        DispatchQueue.main.async {
+            var chal = challenge
+            if !chal.attendees.contains(where: { a in
+                a == User.shared.uid
+            }) {
+//                chal.attendees.append(User.shared.uid)
+//                chal.attendeesFull.append(Person(id: User.shared.uid, name: User.shared.username, score: 0))
+            }
+            shared.challenges.append(chal)
         }
     }
 }

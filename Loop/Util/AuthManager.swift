@@ -51,6 +51,12 @@ class AuthManager: ObservableObject {
                 } else {
                     self?.isAuthenticated = true
                     self?.errorMessage = nil
+                    
+                    if let uid = result?.user.uid {
+                        Task {
+                            User.updateShared(user: try await FirebaseManager.fetchUserFromFirestore(uid: uid))
+                        }
+                    }
                     completion(true)
                 }
             }
@@ -70,6 +76,7 @@ class AuthManager: ObservableObject {
         do {
             let result = try await Auth.auth().createUser(withEmail: email, password: password)
             if let id = Auth.auth().currentUser?.uid {
+                user.uid = id
                 print("Uploading user")
                 var didUpload = await FirebaseManager.addUserToFirebase(user: user)
                 User.updateShared(user: user)

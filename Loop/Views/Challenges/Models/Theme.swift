@@ -36,31 +36,31 @@ enum Theme: String {
     var mainColor: Color {
         switch self {
         case .bubblegum:
-            return Color("bubblegum")
+            return Color.pink
         case .buttercup:
-            return Color("buttercup")
+            return Color.brown
         case .indigo:
             return Color.indigo
         case .lavender:
-            return Color("lavender")
+            return Color.green
         case .magenta:
-            return Color("magenta")
+            return Color.green
         case .navy:
-            return Color("navy")
+            return Color.blue
         case .orange:
             return Color.orange
         case .oxblood:
-            return Color("oxblood")
+            return Color.red
         case .periwinkle:
-            return Color("periwinkle")
+            return Color.mint
         case .purple:
             return Color.purple
         case .seafoam:
-            return Color("seafoam")
+            return Color.mint
         case .sky:
-            return Color("sky")
+            return Color.cyan
         case .tan:
-            return Color("tan")
+            return Color.cyan
         case .teal:
             return Color.teal
         case .yellow:

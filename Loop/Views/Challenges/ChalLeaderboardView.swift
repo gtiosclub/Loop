@@ -11,9 +11,9 @@ struct ChalLeaderboardView: View {
     var personList: [Person]
     
     var body: some View {
-        let sortedPersonList = personList.sorted(by: {$0.distance > $1.distance})
+        let sortedPersonList = personList.sorted(by: {$0.score > $1.score})
         
-        PodiumView(personList: Array(sortedPersonList[0...2]))
+        PodiumView(personList: sortedPersonList)
     
         ZStack {
             RoundedRectangle(cornerRadius: 14)
@@ -26,7 +26,7 @@ struct ChalLeaderboardView: View {
                 
                 Spacer()
                 
-                Text(String(sortedPersonList[0].distance) + " miles")
+                Text(String(sortedPersonList[0].score) + " miles")
                     .fontWeight(.medium)
                 
                 HStack {
@@ -57,7 +57,7 @@ struct ChalLeaderboardView: View {
                         
                         Spacer()
                         
-                        Text(String(sortedPersonList[index].distance) + " miles")
+                        Text(String(sortedPersonList[index].score) + " miles")
                             .fontWeight(.medium)
                         
                         HStack {
@@ -81,5 +81,5 @@ struct ChalLeaderboardView: View {
 }
 
 #Preview {
-    ChalLeaderboardView(personList: [Person(name:"Ryan", distance: 4.2), Person(name:"Max", distance: 14.8), Person(name:"Jason", distance: 7.1), Person(name:"Sam", distance: 11.4), Person(name: "Joe", distance: 5.5)])
+    ChalLeaderboardView(personList: [Person(name:"Ryan", score: 4.2), Person(name:"Max", score: 14.8), Person(name:"Jason", score: 7.1), Person(name:"Sam", score: 11.4), Person(name: "Joe", score: 5.5)])
 }

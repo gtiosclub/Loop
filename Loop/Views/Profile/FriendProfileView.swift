@@ -61,7 +61,7 @@ struct FriendProfileView: View {
                 }
                 
                 Spacer().frame(width: 40)
-                NavigationLink(destination: ManageFriendsView()) {
+                //NavigationLink(destination: ManageFriendsView()) {
                     VStack(alignment: .leading) {
                         Text("Followers")
                             .font(.subheadline)
@@ -69,7 +69,7 @@ struct FriendProfileView: View {
                         Text("\(followers)")
                             .fontWeight(.bold)
                     }
-                }.foregroundStyle(.black)
+                //}.foregroundStyle(.black)
                 
                 Spacer()
                 

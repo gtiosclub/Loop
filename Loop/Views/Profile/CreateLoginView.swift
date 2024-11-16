@@ -76,7 +76,6 @@ struct CreateLoginView: View {
                         }
                         .frame(alignment: .center)
                         .offset(x: 125, y: 10)
-
                     }
 
                     
@@ -136,6 +135,7 @@ struct CreateLoginView: View {
                                 SecureField("Password", text: $Password)
                                     .padding(.trailing, 32) // Add padding to leave space for the button
                                     .autocapitalization(.none)
+                                    .textContentType(.none)
                                     .onChange(of: Password, initial: true) {
                                         secondRequirenment = containsNumber(in: Password)
                                         if (Password.count >= 8) {
@@ -146,6 +146,7 @@ struct CreateLoginView: View {
                                         }
                                         thirdRequirenment = (containsNoSpecialCharacters(in: Password)) && firstRequirenment
                                     }
+                                    .textContentType(.none)
                             } else {
                                 TextField("Password", text: $Password)
                                     .padding(.trailing, 32)
@@ -160,6 +161,7 @@ struct CreateLoginView: View {
                                         }
                                         thirdRequirenment = containsNoSpecialCharacters(in: Password) && firstRequirenment
                                     }
+                                    .textContentType(.none)
                             }
                             
                             Button(action: {
@@ -186,6 +188,7 @@ struct CreateLoginView: View {
                             if isSecure2 {
                                 SecureField("Comfirm Password", text: $ConfirmPassword)
                                     .padding(.trailing, 32) // Add padding to leave space for the button
+                                    .textContentType(.none)
                             } else {
                                 TextField("Comfirm Password", text: $ConfirmPassword)
                                     .padding(.trailing, 32)
