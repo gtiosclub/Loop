@@ -51,6 +51,11 @@ class FeedViewModel: ObservableObject {
 
     func fetchFriendPosts(for userId: String) {
         self.friendPosts = []
+        
+        // First fetch current user's posts
+        fetchCurrentUserPosts(userId)
+        
+        // Then fetch friends' posts
         db.collection("users").document(userId).getDocument { [weak self] (document, error) in
             if let document = document, document.exists {
                 if let friends = document.data()?["friends"] as? [String], !friends.isEmpty {
@@ -60,6 +65,19 @@ class FeedViewModel: ObservableObject {
                 }
             } else {
                 print("User document does not exist.")
+            }
+        }
+    }
+    
+    private func fetchCurrentUserPosts(_ userId: String) {
+        db.collection("users").document(userId).getDocument { [weak self] (document, error) in
+            if let document = document, document.exists {
+                let userData = document.data()
+                let name = userData?["name"] as? String ?? "Unknown"
+                let avatar = userData?["profilePictureId"] as? String ?? "person.crop.circle"
+                
+                // Fetch user's own workouts
+                self?.fetchActivitiesForFriend(friendId: userId, name: name, avatar: avatar)
             }
         }
     }
@@ -107,8 +125,6 @@ class FeedViewModel: ObservableObject {
     
     private func fetchWorkoutWithSocialData(_ document: QueryDocumentSnapshot, friendName: String, friendAvatar: String, friendId: String) {
         let workoutRef = document.reference
-        
- 
         let group = DispatchGroup()
         
         var likes: [String] = []
@@ -232,7 +248,6 @@ class FeedViewModel: ObservableObject {
         }
     }
     
-    
     func toggleLike(for post: WorkoutPost) {
         let workoutRef = db.collection("users")
             .document(post.userId)
@@ -312,7 +327,6 @@ class FeedViewModel: ObservableObject {
         }
     }
 
-    
     private static func formatDate(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium

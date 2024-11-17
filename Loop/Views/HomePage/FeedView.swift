@@ -82,6 +82,10 @@ struct WorkoutCardView: View {
         post.likes.contains(viewModel.currentUserId)
     }
     
+    private var isOwnPost: Bool {
+        post.userId == viewModel.currentUserId
+    }
+    
     private var workoutColor: Color {
         switch post.workoutType {
         case "Running": return .blue
@@ -94,6 +98,21 @@ struct WorkoutCardView: View {
     var body: some View {
         NavigationLink(destination: DetailedStatsView(workoutPost: post)) {
             VStack(spacing: 0) {
+                if isOwnPost {
+                    HStack {
+                        Text("Your Workout")
+                            .font(.caption)
+                            .foregroundColor(.red)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(Color.red.opacity(0.1))
+                            .cornerRadius(4)
+                        Spacer()
+                    }
+                    .padding(.horizontal)
+                    .padding(.top, 8)
+                }
+                
                 // Header
                 HStack {
                     Image(systemName: post.avatar)
@@ -189,7 +208,6 @@ struct WorkoutCardView: View {
                 }
                 .padding()
                 
-          
                 HStack(spacing: 20) {
                     Button(action: {
                         withAnimation {
@@ -230,6 +248,14 @@ struct WorkoutCardView: View {
             .background(Color(.systemBackground))
             .cornerRadius(12)
             .shadow(radius: 5)
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(isOwnPost ? Color.red.opacity(0.3) : Color.clear, lineWidth: 2)
+            )
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(isOwnPost ? Color.red.opacity(0.05) : Color.clear)
+            )
         }
         .buttonStyle(PlainButtonStyle())
         .sheet(isPresented: $showingComments) {
