@@ -95,7 +95,7 @@ struct ChallengeListView: View {
                         isShowingJoin.toggle()
                     }
                     RoundedRectangle(cornerRadius: 10)
-                        .foregroundStyle(Color(red: 0.3, green: 0.3, blue: 0.3))
+                        .foregroundStyle(Color(red: 0.99, green: 0.99, blue: 0.99))
                         .frame(width: 350, height: 100)
                         .overlay {
                             VStack {
@@ -103,7 +103,7 @@ struct ChallengeListView: View {
                                     Spacer()
                                     Text("Enter Access Code")
                                         .font(.system(size: 25, weight: .bold, design: .rounded))
-                                        .foregroundStyle(.white)
+                                        .foregroundStyle(.black)
                                         .padding(.top, 2)
                                     Spacer()
                                     Button {
@@ -155,8 +155,8 @@ struct ChallengeListView: View {
                                             ProgressView()
                                             //                                                .frame(width: 50, height: 50)
                                         } else {
-                                            Text("Search")
-                                                .foregroundStyle(.white)
+                                            Text("Join")
+                                                .foregroundStyle(.black)
                                         }
                                     }
                                     .buttonStyle(.borderedProminent)
