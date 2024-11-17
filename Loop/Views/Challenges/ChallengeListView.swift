@@ -9,17 +9,14 @@ import SwiftUI
 
 struct ChallengeListView: View {
     @ObservedObject var user = User.shared
-        
-    var challenges: [Challenge] {
-        return user.challenges
-    }
-        
+    
     //Joining a challenge variables
     @State private var isShowingJoin = false
     @State private var accessCode = ""
     @State private var isLoadingJoin = false
     @State private var joinErrorMessage: String?
     @State private var selectedTab: String = "Active Challenges"
+    @State private var isLoadingChallenges = false
     var tabs = ["Active Challenges", "Past Challenges"]
     
     var body: some View {
@@ -79,9 +76,14 @@ struct ChallengeListView: View {
                 .padding(.top, 1).padding(.bottom, 10)
                 
                 ScrollView {
-                    ForEach(challenges, id: \.id) { challenge in
-                        CardView(challenge: challenge)
-                            .padding(.bottom, 5)
+                    if isLoadingChallenges {
+                        ProgressView()
+                    } else {
+                        ForEach(user.challenges, id: \.id) { challenge in
+                            CardView(challenge: challenge)
+                                .id(challenge.id)
+                                .padding(.bottom, 5)
+                        }
                     }
                 }
                 .scrollIndicators(.hidden)
@@ -164,6 +166,13 @@ struct ChallengeListView: View {
                             .padding(.horizontal, 25)
                         }
                 }
+            }
+        }
+        .onAppear {
+            Task {
+                isLoadingChallenges = true
+                await user.challenges = user.fetchChallenges()
+                isLoadingChallenges = false
             }
         }
     }

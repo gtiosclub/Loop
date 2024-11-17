@@ -11,20 +11,20 @@ import FirebaseFirestore
 
 // TODO: 1) Change host type to User.
 // TODO: 2) Change attendees type to [User].
-struct Challenge: Identifiable {  // Previously DailyScrum
-    var id: String = ""
-    var title: String
-    var host: String
-    var attendees: [String]
-    var challengeType: String
-    var lengthInMinutes: Int
-    var dataMeasured: String
-    var dateCreated: Date = .now
-    var endDate: Date
-    var theme: Theme
-    var accessCode: String
-    var scores: [String: Double]
-    var attendeesFull = [Person]()
+class Challenge: Identifiable, ObservableObject {  // Previously DailyScrum
+    @Published var id: String = ""
+    @Published var title: String
+    @Published var host: String
+    @Published var attendees: [String]
+    @Published var challengeType: String
+    @Published var lengthInMinutes: Int
+    @Published var dataMeasured: String
+    @Published var dateCreated: Date = .now
+    @Published var endDate: Date
+    @Published var theme: Theme
+    @Published var accessCode: String
+    @Published var scores: [String: Double]
+    @Published var attendeesFull = [Person]()
     
     ///full initializer
     init(id: String = "",
@@ -68,7 +68,7 @@ struct Challenge: Identifiable {  // Previously DailyScrum
         self.title = title
         self.host = host
         self.attendees = attendees
-        self.attendees.append(host)
+//        self.attendees.append(host)
         self.challengeType = challengeType
         self.lengthInMinutes = lengthInMinutes
         self.dataMeasured = dataMeasured
@@ -86,7 +86,7 @@ struct Challenge: Identifiable {  // Previously DailyScrum
     /// - Parameter lengthInMinutes: How long the challenge will last for. (?)
     /// - Parameter dateMeasured: The data measured in the challenge. (?)
     /// - Parameter endDate: The date when the challenge will end.
-    init(title: String, host: String, challengeType: String, lengthInMinutes: Int, dataMeasured: String, endDate: Date) {
+    convenience init(title: String, host: String, challengeType: String, lengthInMinutes: Int, dataMeasured: String, endDate: Date) {
         self.init(title: title, host: host, attendees: [], challengeType: challengeType, lengthInMinutes: lengthInMinutes, dataMeasured: dataMeasured, endDate: endDate, theme: Theme.bubblegum)
     }
     
@@ -96,7 +96,7 @@ struct Challenge: Identifiable {  // Previously DailyScrum
     // TODO: 1) Add challenge id to the host's challengeIds.
     // TODO:    Solution: Have to change host to User type so that
     // TODO:              we can access the host's challengeIds and append it.
-    mutating func addChallenge() async -> String? {
+    func addChallenge() async -> String? {
         let docData: [String: Any] = [
             "name" : title,
             "type" : challengeType,
@@ -216,6 +216,7 @@ struct Challenge: Identifiable {  // Previously DailyScrum
             
         return "\(startDateString) - \(endDateString)"
     }
+    
 }
 
 extension Challenge {

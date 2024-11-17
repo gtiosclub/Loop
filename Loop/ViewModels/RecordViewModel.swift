@@ -259,6 +259,9 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
                             print("Workout data successfully added!")
                         }
                     }
+                    
+                    print("UPDATING SCORES")
+                    User.updateSharedScores(workout: workoutData)
                 }
             }
             healthStore.execute(query)

@@ -234,22 +234,23 @@ class User: ObservableObject {
 //            return nil
 //        }
         let challengeId = challenge.id
-        DispatchQueue.main.async {
-            self.challengeIds.append(challengeId)
-        }
+        var challengeIDS = challengeIds
+        challengeIDS.append(challengeId)
+        
         
         var attendees = challenge.attendees
         attendees.append(uid)
         
         let db = Firestore.firestore()
         let docRefUser = db.collection("users").document(uid)
+        print("PATH: \(docRefUser.path)")
         let docRefChallenge = db.collection("challenges").document(challengeId)
         
         var scores = challenge.scores
         scores[uid] = 0
         
         let docDataUser: [String: Any] = [
-            "challengeIds": challengeIds
+            "challengeIds": challengeIDS
         ]
         let docDataChallenge: [String: Any] = [
             "attendees": attendees,
@@ -259,6 +260,10 @@ class User: ObservableObject {
             try await docRefUser.setData(docDataUser, merge: true)
             try await docRefChallenge.setData(docDataChallenge, merge: true)
             print("Updated the user and challenge to the Firebase database.")
+            
+            DispatchQueue.main.async {
+                self.challengeIds.append(challengeId)
+            }
             
             User.addSharedChallenge(challenge: challenge)
             
@@ -290,7 +295,7 @@ class User: ObservableObject {
                         title: data["name"] as? String ?? "",
                         host: data["host"] as? String ?? "",
                         attendees: data["attendees"] as? [String] ?? [],
-                        challengeType: data["challengeType"] as? String ?? "",
+                        challengeType: data["type"] as? String ?? "",
                         lengthInMinutes: data["lengthInMinutes"] as? Int ?? 0,
                         dataMeasured: data["dataMeasured"] as? String ?? "",
                         dateCreated: (data["dateCreated"] as? Timestamp)?.dateValue() ?? Date(),
@@ -355,12 +360,49 @@ class User: ObservableObject {
         DispatchQueue.main.async {
             var chal = challenge
             if !chal.attendees.contains(where: { a in
-                a == User.shared.uid
+                a == shared.uid
             }) {
 //                chal.attendees.append(User.shared.uid)
 //                chal.attendeesFull.append(Person(id: User.shared.uid, name: User.shared.username, score: 0))
             }
             shared.challenges.append(chal)
+        }
+    }
+    
+    static func updateSharedScores(workout: [String: Any]) {
+        print("Chalsss: \(shared.challenges)")
+        print("ChalIDS: \(shared.challengeIds)")
+        DispatchQueue.main.async {
+            let db = Firestore.firestore()
+            var newSharedChallenges = [Challenge]()
+            for (index,challenge) in shared.challenges.enumerated() {
+                switch challenge.challengeType {
+                case "Running":
+                    switch challenge.dataMeasured {
+                    case "Distance":
+                        let workoutDistance: Double = workout["totalDistance"] as? Double ?? 0.0
+                        var currentScore: Double = challenge.scores[shared.uid] ?? 0.0
+                        currentScore += workoutDistance
+                        challenge.scores[shared.uid] = currentScore
+                        shared.challenges[index] = challenge
+                        newSharedChallenges.append(challenge)
+                        let challengeRef = db.collection("challenges").document(challenge.id)
+                        challengeRef.updateData(["scores": challenge.scores]) { error in
+                            if let error {
+                                print("ERRRORR Uploading change in score")
+                            } else {
+                                print("Score successfully updated")
+                            }
+                        }
+                    default:
+                        continue
+                    }
+                default:
+                    continue
+                }
+            }
+            shared.challenges = newSharedChallenges
+
         }
     }
 }
