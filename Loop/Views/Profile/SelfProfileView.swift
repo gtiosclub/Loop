@@ -175,29 +175,31 @@ struct SelfProfileView: View {
                     }
                 }
             }.padding([.leading, .trailing])
-            VStack {
-                Spacer()
-                Text("Activity")
-                    .foregroundColor(selectedTab == 0 ? .black : .gray)
-                    .frame(alignment: .top)
-                VStack(spacing: 16) {
-                    ForEach(viewModel.selfPosts, id: \.id) { post in
-                        WorkoutCardView(
-                            post: post
-                        )
-                        .padding(.horizontal)
+            ScrollView{
+                VStack {
+                    Spacer()
+                    Text("Activity")
+                        .foregroundColor(selectedTab == 0 ? .black : .gray)
+                        .frame(alignment: .top)
+                    VStack(spacing: 16) {
+                        ForEach(viewModel.selfPosts, id: \.id) { post in
+                            WorkoutCardView(
+                                post: post
+                            )
+                            .padding(.horizontal)
+                        }
+                        .padding(.top)
                     }
-                    .padding(.top)
+                    Spacer()
                 }
-                Spacer()
+                .frame(alignment:.top)
             }
-            .frame(alignment:.top)
             
         }.onAppear() {
             self.currentUserUID = getCurrentUserUID()
             // Ensure the current user's document exists in Firestore
             ensureUserDocumentExists()
-            viewModel.fetchFriendPosts(for: userId)
+            viewModel.fetchActivitiesForMyself(uid: self.userId, name: self.name, avatar: "")
             Task {
                 let user = await getUser(uid: userId)
                 self.selfUser = user

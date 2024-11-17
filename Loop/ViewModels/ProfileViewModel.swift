@@ -14,6 +14,7 @@ class ProfileViewModel: ObservableObject {
     private let db = Firestore.firestore()
 
     func fetchFriendPosts(for userId: String) {
+        print("fetchFriendPosts \(userId)")
         self.selfPosts = []
         db.collection("users").document(userId).getDocument { [weak self] (document, error) in
             if let document = document, document.exists {
@@ -48,17 +49,19 @@ class ProfileViewModel: ObservableObject {
                         let name = userData["name"] as? String ?? "Unknown"
                         let avatar = userData["profilePictureId"] as? String ?? "person.crop.circle"
 
-                        self?.fetchActivitiesForFriend(friendId: friendId, name: name, avatar: avatar)
+//                        self?.fetchActivitiesForFriend(friendId: friendId, name: name, avatar: avatar)
                     }
                 }
         }
     }
 
-    private func fetchActivitiesForFriend(friendId: String, name: String, avatar: String) {
-        db.collection("users").document(friendId).collection("activities")
+    func fetchActivitiesForMyself(uid: String, name: String, avatar: String) {
+        
+        
+        db.collection("users").document(uid).collection("workouts")
             .getDocuments { [weak self] (snapshot, error) in
                 if let error = error {
-                    print("Error fetching activities for friend \(friendId): \(error)")
+                    print("Error fetching activities for friend \(uid): \(error)")
                     return
                 }
 
