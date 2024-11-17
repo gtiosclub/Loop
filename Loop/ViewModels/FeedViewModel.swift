@@ -52,10 +52,8 @@ class FeedViewModel: ObservableObject {
     func fetchFriendPosts(for userId: String) {
         self.friendPosts = []
         
-        // First fetch current user's posts
         fetchCurrentUserPosts(userId)
         
-        // Then fetch friends' posts
         db.collection("users").document(userId).getDocument { [weak self] (document, error) in
             if let document = document, document.exists {
                 if let friends = document.data()?["friends"] as? [String], !friends.isEmpty {
@@ -76,7 +74,6 @@ class FeedViewModel: ObservableObject {
                 let name = userData?["name"] as? String ?? "Unknown"
                 let avatar = userData?["profilePictureId"] as? String ?? "person.crop.circle"
                 
-                // Fetch user's own workouts
                 self?.fetchActivitiesForFriend(friendId: userId, name: name, avatar: avatar)
             }
         }

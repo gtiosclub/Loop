@@ -113,7 +113,6 @@ struct WorkoutCardView: View {
                     .padding(.top, 8)
                 }
                 
-                // Header
                 HStack {
                     Image(systemName: post.avatar)
                         .font(.title2)
