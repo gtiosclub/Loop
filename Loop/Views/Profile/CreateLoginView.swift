@@ -431,6 +431,17 @@ struct CreateLoginView: View {
         }
         
         Task {
+            if HavePicture {
+                FirebaseUploader.uploadPhoto(image: selectedImage, uid: profilePicID) { url in
+                    if let url {
+                        user.profilePictureId = url.absoluteString
+                        User.updatedSharedProfilePic(picURL: user.profilePictureId)
+                        print("PROFILE PICTURE URL: \(user.profilePictureId)")
+                    } else {
+                        print("NO IMAGE UPLOADED")
+                    }
+                }
+            
             var result = await authManager.signUp(email: Email, password: Password, user: user)
             if (!result) {
                 alertMessage = authManager.errorMessage ?? "Unknown error occured"
@@ -438,8 +449,6 @@ struct CreateLoginView: View {
                 return
             }
             
-            if HavePicture {
-                FirebaseUploader.uploadPhoto(image: selectedImage, uid: profilePicID)
             } else {
                 print("No profile pic")
             }

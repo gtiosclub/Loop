@@ -57,7 +57,7 @@ class FirebaseManager {
                     name: data["name"] as? String ?? "No name found",
                     username: data["username"] as? String ?? "No username found",
                     challengeIds: data["challengeIds"] as? [String] ?? [],
-                    profilePictureId: data["profilePictureId"] as? String ?? "No profilePictureId found",
+                    profilePictureId: data["profilePictureId"] as? String ?? "None",
                     friends: data["friends"] as? [String] ?? [],
                     incomingRequest: data["incomingRequest"] as? [String] ?? []
                 )
@@ -105,7 +105,7 @@ class FirebaseManager {
             )
             if !challenge.attendees.contains(User.shared.uid) {
                 challenge.attendees.append(User.shared.uid)
-                challenge.attendeesFull.append(Person(id: User.shared.uid, name: User.shared.username, score: 0))
+                challenge.attendeesFull.append(Person(id: User.shared.uid, name: User.shared.username, score: 0, profilePicURL: User.shared.profilePictureId))
             }
             
             _ = await User.shared.addChallenge(challenge: challenge)
