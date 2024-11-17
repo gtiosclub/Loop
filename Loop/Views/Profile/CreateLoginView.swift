@@ -64,16 +64,22 @@ struct CreateLoginView: View {
                       
                     HStack {
                         ZStack {
-                            Circle().frame(width: 120, height: 120).foregroundColor(.gray).overlay(
-                                Image(systemName: "person.fill").resizable().frame(width: 60, height: 60).foregroundColor(.white)
-                            ).frame(alignment:.center)
-                            
-                            //BLUE EDIT PLUS BUTTON
-                            Circle().frame(width: 40, height: 40).foregroundColor(.red).overlay(
-                                Image(systemName: "plus").foregroundColor(.white).font(.system(size: 20, weight: .bold))
-                            ).offset(x: 40, y: 40).onTapGesture {
-                                print("Edit Profile Picture tapped")
-                            }
+                            Button(action: {
+                                                isPickerShowing.toggle()
+                                            }, label: {
+                                                if (HavePicture) {
+                                                    Image(uiImage: selectedImage!)
+                                                        .resizable()
+                                                        .scaledToFit()
+                                                        .clipShape(.circle)
+                                                        .frame(width: 100, height: 100)
+                                                } else {
+                                                    Image(systemName: ProfilePicture)
+                                                        .resizable()
+                                                        .scaledToFit()
+                                                        .frame(width: 100, height: 100)
+                                                }
+                                            })
                         }
                         .frame(alignment: .center)
                         .offset(x: 125, y: 10)
