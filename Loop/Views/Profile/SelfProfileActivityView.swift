@@ -10,12 +10,15 @@ import SwiftUI
 struct SelfProfileActivityView: View {
     @State private var name: String = "Jane Doe"
     @State private var wins: Int = 0
-    @State private var activityName: String = "No recent activity"    
+    @State private var activityName: String = "Physical Activity"
+    @State private var competitionName: String = "Competition Name"
+    @State private var time: String = "Today at 9:16 PM"
+
     var body: some View {
         VStack {
             VStack {
                 ForEach(1...3, id: \.self) { index in
-                    VStack(alignment: .leading, spacing: 10) {
+                    VStack(spacing: 10) {
                         HStack {
                             Image(systemName: "person.circle.fill")
                                 .resizable()
@@ -24,34 +27,33 @@ struct SelfProfileActivityView: View {
                             Text(name)
                                 .font(.subheadline)
                             Spacer()
-                        }.padding(.horizontal)
+                            Text(activityName)
+                                .font(.subheadline)
+                        }.padding([.leading, .trailing, .top])
                         
-                        Text(activityName)
-                            .font(.headline)
-                            .padding(.horizontal)
+                        Divider()
+                            .frame(height: 2)
+                            .background(Color.gray)
+                        
+                        Text(competitionName)
+                                .font(.title2)
+                        
+                        Image("pedestal")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 300, height: 150)
+                        
+                        Text(name + " Placed 1st!")
+                                .font(.title2)
                         
                         HStack {
-                            Image(systemName: "chart.bar.fill")
-                                .resizable()
-                                .frame(width: 80, height: 40)
-                                .padding(.horizontal)
-                            Text( name + " Placed 1st!")
-                                .font(.headline)
-                            Spacer()
-                        }.padding(.horizontal)
-            
-                        HStack {
-                            Text("Today at 9:16 PM")
+                            Text(time)
                             .font(.caption)
-                            .foregroundColor(.gray)
-                            .padding(.horizontal)
                         Spacer()
             
-                        Image(systemName: "eye.slash.fill")
-                                .padding(.horizontal)
-                        }
+                        Image(systemName: "eye.slash")
+                        }.padding()
                     }
-                    .padding()
                     .background(Color.gray.opacity(0.1))
                     .cornerRadius(15)
 

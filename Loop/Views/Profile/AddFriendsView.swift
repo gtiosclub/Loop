@@ -247,8 +247,6 @@ struct AddFriendsView: View {
                     }
             }
             .padding(.horizontal)
-
-            // Matched Friends List
             VStack(alignment: .leading) {
                 if matchedFriends.isEmpty && !searchText.isEmpty {
                     Text("No users found")

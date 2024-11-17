@@ -28,7 +28,7 @@ struct ChangeEmailView: View {
         }) {
             Image(systemName: "arrow.left.circle.fill")
                 .font(.system(size: 30))
-                .foregroundColor(.orange)
+                .foregroundColor(.red)
         }
         .offset(x: -150)
         .navigationBarBackButtonHidden(true)
@@ -42,7 +42,7 @@ struct ChangeEmailView: View {
                     .foregroundStyle(.black)
                 TextField("New Email",text: $NewEmail)
                     .autocapitalization(.none)
-                    .padding(8).background(Color.orange.opacity(0.3))
+                    .padding(8).background(Color.red.opacity(0.3))
                     .cornerRadius(8)
                     .padding(.horizontal)
                     .onChange(of: NewEmail, initial: true) {
@@ -63,7 +63,7 @@ struct ChangeEmailView: View {
                 
                 TextField("Comfirm Email", text: $ComfirmEmail)
                     .autocapitalization(.none)
-                    .padding(8).background(Color.orange.opacity(0.3))
+                    .padding(8).background(Color.red.opacity(0.3))
                     .cornerRadius(8)
                     .padding(.horizontal)
                     .onChange(of: ComfirmEmail, initial: true) {
@@ -83,7 +83,7 @@ struct ChangeEmailView: View {
                 
                 SecureField("Password", text: $Password)
                     .autocapitalization(.none)
-                    .padding(8).background(Color.orange.opacity(0.3))
+                    .padding(8).background(Color.red.opacity(0.3))
                     .cornerRadius(8)
                     .padding(.horizontal)
                     .onChange(of: Password, initial: true) {
@@ -132,7 +132,7 @@ struct ChangeEmailView: View {
                             .padding()
                             .frame(maxWidth: 250)
                             .foregroundColor(Color.black)
-                            .padding(8).background(Color.orange.opacity(0.3))
+                            .padding(8).background(Color.red.opacity(0.3))
                             .cornerRadius(8)
                             .padding(.horizontal)
                             .bold()
