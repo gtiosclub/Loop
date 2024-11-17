@@ -131,6 +131,7 @@ struct AcceptFriendRow: View {
 
 // MARK: - AddFriendsView
 struct AddFriendsView: View {
+    @State var friends: [String] = []
     // Search and Friend Lists
     @State private var searchText: String = ""
     @State private var allFriends: [String] = []           // All available friends fetched from Firestore
@@ -330,6 +331,8 @@ struct AddFriendsView: View {
                 guard let name = data["name"] as? String else { return nil }
                 let uid = doc.documentID
                 if uid == currentUserUID { return nil }  // Exclude current user
+                if friends.contains(uid) {return nil}
+                if allUsers.contains(where: { $0.uid == uid }){return nil}
                 return (uid: uid, name: name)
             }
 

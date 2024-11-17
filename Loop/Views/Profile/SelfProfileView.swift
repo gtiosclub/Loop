@@ -164,7 +164,7 @@ struct SelfProfileView: View {
                 }.foregroundStyle(.black)
                 
                 Spacer()
-                NavigationLink(destination: AddFriendsView(userId: userId)){
+                NavigationLink(destination: AddFriendsView(friends: selfUser?.friends ?? [], userId: userId)){
                     ZStack {
                         Rectangle()
                             .foregroundColor(.red)
