@@ -311,7 +311,7 @@ class User: ObservableObject {
                         for attendeeID in challenge.attendees {
                             do {
                                 let attendee = try await FirebaseManager.fetchUserFromFirestore(uid: attendeeID)
-                                let attendeeFull = Person(id: attendeeID, name: attendee.username, score: scores[attendeeID] ?? 0)
+                                let attendeeFull = Person(id: attendeeID, name: attendee.username, score: scores[attendeeID] ?? 0, profilePicURL: attendee.profilePictureId)
                                 fullAttendees.append(attendeeFull)
                             }
                         }
@@ -368,6 +368,15 @@ class User: ObservableObject {
 //                chal.attendeesFull.append(Person(id: User.shared.uid, name: User.shared.username, score: 0))
             }
             shared.challenges.append(chal)
+        }
+    }
+    
+    static func updatedSharedProfilePic(picURL: String) {
+        DispatchQueue.main.async {
+            shared.profilePictureId = picURL
+            let db = Firestore.firestore()
+            let userRef = db.collection("users").document(shared.uid)
+            userRef.setData(["profilePictureId" : picURL], merge: true)
         }
     }
     

@@ -11,7 +11,6 @@ struct PodiumView: View {
     var personList: [Person]
     
     var body: some View {
-        
         VStack {
             HStack {
                 if (personList.count > 2) {
@@ -163,9 +162,26 @@ struct PersonView: View {
     var person: Person
     var body: some View {
         VStack(alignment:.center) {
+            if person.profilePicURL.isEmpty || person.profilePicURL == "None" {
+                Circle()
+                    .foregroundColor(.gray)
+                    .frame(width: 65, height: 65)
+            } else {
+                if let url = URL(string: person.profilePicURL) {
+                    AsyncImage(url: url) { image in
+                        image.resizable().frame(width: 65, height: 65).clipShape(.circle)
+                    } placeholder: {
                         Circle()
-                            .foregroundColor(.gray)
                             .frame(width: 65, height: 65)
+                            .foregroundColor(.gray)
+                            .padding()
+                            .overlay {
+                                ProgressView()
+                            }
+                    }
+
+                }
+            }
 
                         Text(person.name)
                             .font(.system(size: 16, weight: .light))

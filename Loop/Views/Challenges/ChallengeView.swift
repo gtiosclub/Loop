@@ -11,19 +11,22 @@ class Person {
     var id: String
     var name: String
     var score: Double
+    var profilePicURL: String
     
     //Testing purposes
     init(name: String, score: Double) {
         self.id = ""
         self.name = name
         self.score = score
+        self.profilePicURL = "None"
     }
     
     //Full init
-    init(id: String, name: String, score: Double) {
+    init(id: String, name: String, score: Double, profilePicURL: String) {
         self.id = id
         self.name = name
         self.score = score
+        self.profilePicURL = profilePicURL
     }
 }
 
