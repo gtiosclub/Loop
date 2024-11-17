@@ -546,7 +546,7 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
             "currentDistance": self.distance2,
             "currentCalories": self.activeEnergy,
             "currentHeartRate": self.heartRate,
-            "currentPace": self.distance2 / (totalTime / 60),
+            "currentPace": self.distance2 / (self.totalTime / 60),
             "totalTime": totalTime
         ]
         WCSession.default.sendMessage(workoutData, replyHandler: nil, errorHandler: { error in
