@@ -89,10 +89,27 @@ struct SelfProfileView: View {
         VStack {
             HStack {
                 Spacer().frame(width: 20)
-                Circle()
-                    .frame(width: 70, height: 70)
-                    .foregroundColor(.gray)
-                    .padding()
+                if User.shared.profilePictureId.isEmpty || User.shared.profilePictureId == "None" {
+                    Circle()
+                        .frame(width: 70, height: 70)
+                        .foregroundColor(.gray)
+                        .padding()
+                } else {
+                    if let url = URL(string: User.shared.profilePictureId) {
+                        AsyncImage(url: url) { image in
+                            image.resizable().frame(width: 70, height: 70).clipShape(.circle)
+                        } placeholder: {
+                            Circle()
+                                .frame(width: 70, height: 70)
+                                .foregroundColor(.blue)
+                                .padding()
+                                .overlay {
+                                    ProgressView()
+                                }
+                        }
+
+                    }
+                }
                 
                 VStack(alignment: .leading) {
                     Text(name)

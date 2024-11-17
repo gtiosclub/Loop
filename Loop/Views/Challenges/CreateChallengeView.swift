@@ -54,7 +54,7 @@ struct CreateChallengeView: View {
                             scores: [User.shared.uid:0]
                         )
                         
-                        challenge.attendeesFull.append(Person(id: User.shared.uid, name: User.shared.username, score: 0))
+                        challenge.attendeesFull.append(Person(id: User.shared.uid, name: User.shared.username, score: 0, profilePicURL: User.shared.profilePictureId))
                         
                         if let challengeId = await challenge.addChallenge() {
                             print("Challenge created with ID: \(challengeId)")
