@@ -1,20 +1,20 @@
-//
-//  DetailedStatsView.swift
-//  Loop
-//
-//  Created by Jason Nair on 10/8/24.
-//
-
 import SwiftUI
 import Charts
+import CoreLocation
+import MapKit
 
 struct DetailedStatsView: View {
     var workoutPost: WorkoutPost
+    
+    private var routePoints: [CLLocation] {
+        workoutPost.routeLocations.map { location in
+            CLLocation(latitude: location.latitude, longitude: location.longitude)
+        }
+    }
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
-
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Workout Summary")
                         .font(.largeTitle)
@@ -33,7 +33,19 @@ struct DetailedStatsView: View {
                     duration: workoutPost.duration,
                     calories: workoutPost.calories
                 )
+                
+                // Route Map Section
+                if !workoutPost.routeLocations.isEmpty {
+                    ChartSection(
+                        title: "Route Map",
+                        chart: AnyView(
+                            MapViewUI(routePoints: routePoints)
+                                .frame(height: 300)
+                        )
+                    )
+                }
 
+                // Heart Rate Chart Section
                 if !workoutPost.heartRatePoints.isEmpty {
                     ChartSection(
                         title: "Heart Rate Over Time",
@@ -59,8 +71,6 @@ struct DetailedStatsView: View {
                     Text("No heart rate data available.")
                         .padding()
                 }
-
-
             }
             .padding(.vertical)
         }
@@ -80,7 +90,6 @@ struct ChartSection: View {
                 .font(.headline)
 
             chart
-                .frame(height: 200)
         }
         .padding()
         .background(
@@ -148,7 +157,11 @@ struct DetailedStatsView_Previews: PreviewProvider {
             date: "Nov 11, 2024 at 1:53 PM",
             averageHeartRate: "120 bpm",
             heartRatePoints: [],
-            routeLocations: []
+            routeLocations: [
+                RouteLocation(latitude: 42.047285, longitude: -87.680009),
+                RouteLocation(latitude: 42.047294, longitude: -87.680312)
+            ],
+            timestamp: Date()
         )
         DetailedStatsView(workoutPost: samplePost)
     }

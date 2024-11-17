@@ -123,7 +123,8 @@ class ProfileViewModel: ObservableObject {
                 date: date,
                 averageHeartRate: String(format: "%.0f bpm", averageHeartRate),
                 heartRatePoints: heartRatePoints,
-                routeLocations: routeLocations
+                routeLocations: routeLocations,
+                timestamp: endDate
             )
 
             DispatchQueue.main.async {
