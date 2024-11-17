@@ -28,14 +28,14 @@ struct SummaryView: View {
 
                 SummaryMetricView(
                     title: "Total Distance",
-                    value: Measurement(value: workoutManager.distance, unit: UnitLength.meters).formatted(
-                        .measurement(width: .abbreviated, usage: .road)
+                    value: Measurement(value: workoutManager.distance, unit: UnitLength.miles).formatted(
+                        .measurement(width: .abbreviated, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(2)))
                     )
                 ).accentColor(Color.green)
 
                 SummaryMetricView(
                     title: "Total Energy",
-                    value: Measurement(value: workoutManager.activeEnergy, unit: UnitEnergy.kilocalories).formatted(
+                    value: Measurement(value: workoutManager.calories, unit: UnitEnergy.kilocalories).formatted(
                         .measurement(width: .abbreviated, usage: .workout, numberFormatStyle: .number.precision(.fractionLength(0)))
                     )
                 ).accentColor(Color.pink)
