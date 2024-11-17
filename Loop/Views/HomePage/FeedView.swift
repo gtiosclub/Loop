@@ -10,22 +10,57 @@ import FirebaseFirestore
 
 struct FeedView: View {
     @StateObject private var viewModel = FeedViewModel()
+    @State private var selectedFilter: WorkoutType = .all
+    @State private var showFilterSheet = false
     let userId: String
+    
+    enum WorkoutType: String, CaseIterable {
+        case all = "All"
+        case running = "Running"
+        case cycling = "Cycling"
+        case walking = "Walking"
+    }
+    
+    var filteredPosts: [WorkoutPost] {
+        if selectedFilter == .all {
+            return viewModel.friendPosts
+        }
+        return viewModel.friendPosts.filter { $0.workoutType == selectedFilter.rawValue }
+    }
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 16) {
-                    ForEach(viewModel.friendPosts, id: \.id) { post in
-                        WorkoutCardView(
-                            post: post
-                        )
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 12) {
+                            ForEach(WorkoutType.allCases, id: \.self) { type in
+                                FilterChip(
+                                    title: type.rawValue,
+                                    isSelected: selectedFilter == type,
+                                    action: { selectedFilter = type }
+                                )
+                            }
+                        }
                         .padding(.horizontal)
                     }
                     .padding(.top)
+                    
+                    ForEach(filteredPosts) { post in
+                        WorkoutCardView(post: post)
+                            .padding(.horizontal)
+                    }
                 }
             }
             .navigationTitle("Activity Feed")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: { showFilterSheet.toggle() }) {
+                        Image(systemName: "line.3.horizontal.decrease.circle")
+                            .foregroundStyle(.blue)
+                    }
+                }
+            }
             .onAppear {
                 viewModel.fetchFriendPosts(for: userId)
             }
@@ -35,49 +70,165 @@ struct FeedView: View {
 
 struct WorkoutCardView: View {
     var post: WorkoutPost
+    @State private var isLiked = false
+    @State private var showingComments = false
+    @State private var animateHeart = false
+    
+    private var workoutColor: Color {
+        switch post.workoutType {
+        case "Running": return .blue
+        case "Cycling": return .green
+        case "Walking": return .orange
+        default: return .purple
+        }
+    }
 
     var body: some View {
         NavigationLink(destination: DetailedStatsView(workoutPost: post)) {
             VStack(spacing: 0) {
+                HStack {
+                    Image(systemName: post.avatar)
+                        .font(.title2)
+                        .foregroundColor(workoutColor)
+                        .padding(8)
+                        .background(workoutColor.opacity(0.1))
+                        .clipShape(Circle())
+                    
+                    VStack(alignment: .leading) {
+                        Text(post.name)
+                            .font(.headline)
+                        Text(post.date)
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                    }
+                    Spacer()
+                    
+                    Menu {
+                        Button(action: {}) {
+                            Label("Share Workout", systemImage: "square.and.arrow.up")
+                        }
+                        Button(action: {}) {
+                            Label("Save to Collection", systemImage: "bookmark")
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis")
+                            .foregroundColor(.gray)
+                            .padding(8)
+                    }
+                }
+                .padding(.horizontal)
+                .padding(.top)
+                
                 ZStack(alignment: .bottomLeading) {
                     Image("runner_stock")
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(height: 160)
                         .clipped()
-                    LinearGradient(
-                        gradient: Gradient(colors: [.clear, .black.opacity(0.3)]),
-                        startPoint: .top,
-                        endPoint: .bottom
-                    )
-                    Text(post.workoutType)
-                        .font(.system(size: 16, weight: .medium))
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 8)
-                        .background(Color.white.opacity(0.2))
-                        .cornerRadius(20)
-                        .padding(16)
-                }
-
-                VStack(alignment: .leading, spacing: 16) {
-                    Text("\(post.name)'s \(post.workoutType) Session")
-                        .font(.title3)
-                        .fontWeight(.bold)
-
-                    HStack(spacing: 24) {
-                        StatItem(title: "Distance", value: "\(post.distance) mi")
-                        StatItem(title: "Avg HR", value: post.averageHeartRate)
-                        StatItem(title: "Time", value: post.duration)
-                        StatItem(title: "Calories", value: "\(post.calories) kcal")
+                        .overlay {
+                            LinearGradient(
+                                gradient: Gradient(colors: [
+                                    .clear,
+                                    workoutColor.opacity(0.7)
+                                ]),
+                                startPoint: .top,
+                                endPoint: .bottom
+                            )
+                        }
+                    
+                    HStack {
+                        WorkoutTypeTag(type: post.workoutType, color: workoutColor)
+                        Spacer()
+                        if !post.routeLocations.isEmpty {
+                            Image(systemName: "map.fill")
+                                .foregroundColor(.white)
+                                .padding(8)
+                                .background(Color.white.opacity(0.2))
+                                .clipShape(Circle())
+                        }
                     }
-
-                    Text(post.date)
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
+                    .padding(16)
                 }
-                .padding(16)
-                .background(Color(.systemBackground))
+                .onTapGesture(count: 2) {
+                    withAnimation {
+                        isLiked = true
+                        animateHeart = true
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        animateHeart = false
+                    }
+                }
+                .overlay {
+                    if animateHeart {
+                        Image(systemName: "heart.fill")
+                            .font(.system(size: 80))
+                            .foregroundColor(.white)
+                            .transition(.scale)
+                    }
+                }
+
+                LazyVGrid(columns: [
+                    GridItem(.flexible()),
+                    GridItem(.flexible()),
+                    GridItem(.flexible()),
+                    GridItem(.flexible())
+                ], spacing: 16) {
+                    StatItem(
+                        title: "Distance",
+                        value: "\(post.distance) mi",
+                        icon: "figure.run",
+                        color: workoutColor
+                    )
+                    StatItem(
+                        title: "Heart Rate",
+                        value: post.averageHeartRate,
+                        icon: "heart.fill",
+                        color: .red
+                    )
+                    StatItem(
+                        title: "Duration",
+                        value: post.duration,
+                        icon: "clock.fill",
+                        color: .orange
+                    )
+                    StatItem(
+                        title: "Calories",
+                        value: "\(post.calories)",
+                        icon: "flame.fill",
+                        color: .pink
+                    )
+                }
+                .padding()
+                
+                HStack(spacing: 20) {
+                    Button(action: {
+                        withAnimation { isLiked.toggle() }
+                    }) {
+                        HStack {
+                            Image(systemName: isLiked ? "heart.fill" : "heart")
+                                .foregroundColor(isLiked ? .red : .gray)
+                            Text(isLiked ? "Liked" : "Like")
+                                .foregroundColor(isLiked ? .red : .gray)
+                        }
+                    }
+                    
+                    Button(action: { showingComments.toggle() }) {
+                        HStack {
+                            Image(systemName: "message")
+                            Text("Comment")
+                        }
+                        .foregroundColor(.gray)
+                    }
+                    
+                    Spacer()
+                    
+                    ShareLink(item: "Check out this awesome workout!") {
+                        Image(systemName: "square.and.arrow.up")
+                            .foregroundColor(.gray)
+                    }
+                }
+                .padding(.horizontal)
+                .padding(.bottom)
             }
             .background(Color(.systemBackground))
             .cornerRadius(12)
@@ -87,18 +238,69 @@ struct WorkoutCardView: View {
     }
 }
 
-struct StatItem: View {
-    var title: String
-    var value: String
-
+struct FilterChip: View {
+    let title: String
+    let isSelected: Bool
+    let action: () -> Void
+    
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        Button(action: action) {
             Text(title)
-                .font(.caption)
-                .foregroundColor(.gray)
-            Text(value)
-                .font(.system(size: 16, weight: .semibold))
+                .font(.subheadline)
+                .fontWeight(.medium)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
+                .background(isSelected ? .blue : .gray.opacity(0.1))
+                .foregroundColor(isSelected ? .white : .primary)
+                .clipShape(Capsule())
         }
+        .buttonStyle(PlainButtonStyle())
     }
 }
 
+struct WorkoutTypeTag: View {
+    let type: String
+    let color: Color
+    
+    var body: some View {
+        HStack(spacing: 4) {
+            Image(systemName: type == "Running" ? "figure.run" :
+                            type == "Cycling" ? "figure.outdoor.cycle" :
+                            type == "Walking" ? "figure.walk" : "figure.mixed.cardio")
+            Text(type)
+                .font(.system(size: 16, weight: .medium))
+        }
+        .foregroundColor(.white)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 8)
+        .background(color.opacity(0.3))
+        .cornerRadius(20)
+    }
+}
+
+struct StatItem: View {
+    var title: String
+    var value: String
+    var icon: String
+    var color: Color
+    
+    var body: some View {
+        VStack(spacing: 8) {
+            Image(systemName: icon)
+                .font(.title2)
+                .foregroundColor(color)
+                .frame(width: 32, height: 32)
+                .background(color.opacity(0.1))
+                .clipShape(Circle())
+            
+            Text(value)
+                .font(.system(size: 16, weight: .semibold))
+                .minimumScaleFactor(0.8)
+            
+            Text(title)
+                .font(.caption)
+                .foregroundColor(.gray)
+        }
+        .frame(maxWidth: .infinity)
+    }
+}
