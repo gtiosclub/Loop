@@ -14,6 +14,7 @@ struct WorkoutPost: Identifiable {
     let averageHeartRate: String
     let heartRatePoints: [HeartRateEntry]
     let routeLocations: [RouteLocation]
+    let timestamp: Date
 }
 
 class FeedViewModel: ObservableObject {
@@ -130,11 +131,14 @@ class FeedViewModel: ObservableObject {
                 date: date,
                 averageHeartRate: String(format: "%.0f bpm", averageHeartRate),
                 heartRatePoints: heartRatePoints,
-                routeLocations: routeLocations
+                routeLocations: routeLocations,
+                timestamp: endDate
+                
             )
 
             DispatchQueue.main.async {
                 self.friendPosts.append(newPost)
+                self.friendPosts.sort { $0.timestamp > $1.timestamp }
             }
         } else {
             print("Start date or end date is missing in activity document.")
