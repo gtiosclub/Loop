@@ -74,10 +74,17 @@ struct CreateLoginView: View {
                                                         .clipShape(.circle)
                                                         .frame(width: 100, height: 100)
                                                 } else {
-                                                    Image(systemName: ProfilePicture)
-                                                        .resizable()
-                                                        .scaledToFit()
-                                                        .frame(width: 100, height: 100)
+                                                    ZStack {
+                                                        Circle().frame(width: 110, height: 110).foregroundColor(.gray).overlay(
+                                                                                    Image(systemName: "person.fill").resizable().frame(width: 70, height: 70).foregroundColor(.white)
+                                                                                ).frame(alignment:.center)
+                                                                                
+                                                                                //BLUE EDIT PLUS BUTTON
+                                                                                Circle().frame(width: 40, height: 40).foregroundColor(.red).overlay(
+                                                                                    Image(systemName: "plus").foregroundColor(.white).font(.system(size: 20, weight: .bold))
+                                                                                ).offset(x: 40, y: 40)
+                                                                            }
+                                                                            .frame(alignment: .center)
                                                 }
                                             })
                         }
