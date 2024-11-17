@@ -35,9 +35,9 @@ struct WorkoutPost: Identifiable {
     let heartRatePoints: [HeartRateEntry]
     let routeLocations: [RouteLocation]
     let timestamp: Date
-    var likes: [String]  // Array of user IDs who liked the post
+    var likes: [String]
     var comments: [Comment]
-    let userId: String // Add this to know which user owns the workout
+    let userId: String
 }
 
 class FeedViewModel: ObservableObject {
@@ -108,13 +108,12 @@ class FeedViewModel: ObservableObject {
     private func fetchWorkoutWithSocialData(_ document: QueryDocumentSnapshot, friendName: String, friendAvatar: String, friendId: String) {
         let workoutRef = document.reference
         
-        // Create dispatch group for parallel fetching
+ 
         let group = DispatchGroup()
         
         var likes: [String] = []
         var comments: [Comment] = []
         
-        // Fetch likes
         group.enter()
         workoutRef.collection("likes").getDocuments { snapshot, error in
             defer { group.leave() }
@@ -123,7 +122,6 @@ class FeedViewModel: ObservableObject {
             }
         }
         
-        // Fetch comments
         group.enter()
         workoutRef.collection("comments")
             .order(by: "timestamp", descending: false)
@@ -148,7 +146,6 @@ class FeedViewModel: ObservableObject {
                 }
             }
         
-        // When both likes and comments are fetched, create the post
         group.notify(queue: .main) { [weak self] in
             self?.createWorkoutPost(
                 from: document,
@@ -235,7 +232,6 @@ class FeedViewModel: ObservableObject {
         }
     }
     
-    // MARK: - Social Interactions
     
     func toggleLike(for post: WorkoutPost) {
         let workoutRef = db.collection("users")
@@ -246,14 +242,12 @@ class FeedViewModel: ObservableObject {
         let likeRef = workoutRef.collection("likes").document(currentUserId)
         
         if post.likes.contains(currentUserId) {
-            // Unlike
             likeRef.delete { [weak self] error in
                 if error == nil {
                     self?.updateLocalLikes(for: post, removing: self?.currentUserId)
                 }
             }
         } else {
-            // Like
             likeRef.setData([:]) { [weak self] error in
                 if error == nil {
                     self?.updateLocalLikes(for: post, adding: self?.currentUserId)
@@ -278,7 +272,6 @@ class FeedViewModel: ObservableObject {
     }
     
     func addComment(to post: WorkoutPost, text: String) {
-        // First fetch the current user's name
         db.collection("users").document(currentUserId).getDocument { [weak self] snapshot, error in
             guard let self = self,
                   let data = snapshot?.data(),
@@ -319,7 +312,6 @@ class FeedViewModel: ObservableObject {
         }
     }
 
-    // MARK: - Helpers
     
     private static func formatDate(_ date: Date) -> String {
         let formatter = DateFormatter()

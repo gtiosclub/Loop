@@ -146,10 +146,10 @@ struct DetailedStatsView_Previews: PreviewProvider {
             averageHeartRate: "120 bpm",
             heartRatePoints: [],
             routeLocations: [],
-            timestamp: Date(),  // Current date for preview
-            likes: [],          // Empty array for likes
-            comments: [],       // Empty array for comments
-            userId: "sample-user-id"  // Sample user ID
+            timestamp: Date(),
+            likes: [],
+            comments: [],
+            userId: "sample-user-id"
         )
         DetailedStatsView(workoutPost: samplePost)
     }

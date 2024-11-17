@@ -128,7 +128,6 @@ struct WorkoutCardView: View {
                 .padding(.horizontal)
                 .padding(.top)
                 
-                // Workout Image and Type
                 ZStack(alignment: .bottomLeading) {
                     Image("runner_stock")
                         .resizable()
@@ -177,7 +176,6 @@ struct WorkoutCardView: View {
                     }
                 }
 
-                // Stats Grid
                 LazyVGrid(columns: [
                     GridItem(.flexible()),
                     GridItem(.flexible()),
@@ -191,7 +189,7 @@ struct WorkoutCardView: View {
                 }
                 .padding()
                 
-                // Social Interactions
+          
                 HStack(spacing: 20) {
                     Button(action: {
                         withAnimation {
