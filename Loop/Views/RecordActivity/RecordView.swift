@@ -27,13 +27,19 @@ struct RecordView: View {
             } else if (viewModel.workoutType == "Biking") {
                 let currentActivity = Activity(iconName: "bicycle", label: "Biking")
                 ActivityDetailView(activity: currentActivity, viewModel: viewModel)
-            } else if  (viewModel.workoutType == "Hiking") {
+            } else if (viewModel.workoutType == "Hiking") {
                 let currentActivity = Activity(iconName: "figure.walk", label: "Hiking")
                 ActivityDetailView(activity: currentActivity, viewModel: viewModel)
             }
             
         } else {
-            Text("Start a workout on your Apple Watch")
+            ZStack {
+                Color.black
+                
+                Image("Pair Watch")
+                    .resizable()
+                    .scaledToFit()
+            }
         }
     }
 }
@@ -44,67 +50,79 @@ struct ActivityDetailView: View {
     let activity: Activity
     @ObservedObject var viewModel: RecordViewModel
     
+    
     var body: some View {
-        VStack {
-            ZStack {
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(Color.gray)
-                    .frame(height: 500)
-                
-                VStack(spacing: 20) {
-                    Image(systemName: activity.iconName)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 45, height: 45)
-                        .foregroundColor(.white)
-                    
-                    Text((activity.label)) .font(.headline) .padding(.top)
-                        .foregroundColor(.white)
-                    
-                    Text(timeString(from: viewModel.totalTime))
-                        .font(.system(size: 60, weight: .bold, design: .monospaced))
-                        .foregroundColor(.white)
-                    
-                    Text("Moving Time")
-                        .font(.subheadline)
-                        .foregroundColor(.white)
-                    
-                    Text(String(format: "%.2f", viewModel.currentDistance))
-                        .font(.system(size: 50, weight: .bold))
-                        .foregroundColor(.white)
-                    
-                    Text("Miles")
-                        .font(.subheadline)
-                        .foregroundColor(.white)
+        ZStack {
+            Color.black
+            
+            VStack(spacing: 20){
+                ZStack {
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(Color.gray)
+                        .frame(width: 150, height: 50)
                     
                     HStack {
-                        VStack {
-                            Text(String(format: "%.2f", viewModel.currentPace))
-                                .font(.headline)
-                                .foregroundColor(.white)
-                            Text("AVG PACE")
-                                .font(.caption)
-                                .foregroundColor(.white)
-                        }
-                        Spacer()
-                        VStack {
-                            Text(String(format: "%.0f BPM", viewModel.currentHeartRate))
-                                .font(.headline)
-                                .foregroundColor(.white)
-                            Text("BPM")
-                                .font(.caption)
-                                .foregroundColor(.white)
-                        }
+                        Image(systemName: activity.iconName)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 20, height: 20)
+                        
+                        Text((activity.label))
+                            .font(.headline)
                     }
-                    .padding(.horizontal, 40)
+                }
+                .padding(.bottom, 50)
+                                
+                VStack {
+                    Text(timeString(from: viewModel.totalTime))
+                        .font(.system(size: 50, weight: .bold, design: .monospaced))
+                        .foregroundColor(.yellow)
+                    Text("TIME ELAPSED")
+                        .foregroundColor(.yellow)
+                }
+                .padding()
+                
+                VStack {
+                    Text(String(format: "%.2f", viewModel.currentDistance))
+                        .font(.system(size: 100, weight: .bold))
+                        .foregroundColor(.white)
+                    Text("DISTANCE (m)")
+                        .foregroundColor(.white)
+                }
+                .padding()
+                
+                HStack {
+                    VStack {
+                        Text(String(format: "%.2f", viewModel.currentPace))
+                            .font(.system(size: 50, weight: .bold))
+                            .foregroundColor(.blue)
+                        Text("PACE (100m)")
+                            .font(.caption)
+                            .foregroundColor(.blue)
+                    }
+                    Spacer()
+                    VStack {
+                        Text(String(format: "%.0f BPM", viewModel.currentHeartRate))
+                            .font(.system(size: 50, weight: .bold))
+                            .foregroundColor(.red)
+                        Text("BPM")
+                            .font(.caption)
+                            .foregroundColor(.red)
+                    }
+                }
+                .padding(.horizontal, 50)
+                
+                VStack {
+                    Text(String(format: "%.0f", 155))
+                        .font(.system(size: 75, weight: .bold))
+                        .foregroundColor(.yellow)
+                    Text("CALORIES BURNT")
+                        .foregroundColor(.yellow)
                 }
                 .padding()
             }
         }
-        .padding()
     }
-    
-    
        
        // Function to format time
        private func timeString(from time: TimeInterval) -> String {
@@ -119,12 +137,6 @@ struct Activity: Hashable {
     let iconName: String
     let label: String
 }
-
-let activityData = [
-    Activity(iconName: "figure.run", label: "Running"),
-    Activity(iconName: "bicycle", label: "Biking"),
-    Activity(iconName: "figure.walk", label: "Hiking")
-]
 
 #Preview {
     RecordView(userId: "0F64B991-1B91-4C3B-A899-B6953CC0D934")
