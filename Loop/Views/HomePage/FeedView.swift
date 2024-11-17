@@ -4,15 +4,19 @@
 //
 //  Created by Victor Andrade on 10/1/24.
 //
-
 import SwiftUI
 import FirebaseFirestore
 
 struct FeedView: View {
-    @StateObject private var viewModel = FeedViewModel()
+    @StateObject private var viewModel: FeedViewModel
     @State private var selectedFilter: WorkoutType = .all
     @State private var showFilterSheet = false
     let userId: String
+    
+    init(userId: String) {
+        self.userId = userId
+        _viewModel = StateObject(wrappedValue: FeedViewModel(currentUserId: userId))
+    }
     
     enum WorkoutType: String, CaseIterable {
         case all = "All"
@@ -27,7 +31,7 @@ struct FeedView: View {
         }
         return viewModel.friendPosts.filter { $0.workoutType == selectedFilter.rawValue }
     }
-
+    
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -47,7 +51,7 @@ struct FeedView: View {
                     .padding(.top)
                     
                     ForEach(filteredPosts) { post in
-                        WorkoutCardView(post: post)
+                        WorkoutCardView(post: post, viewModel: viewModel)
                             .padding(.horizontal)
                     }
                 }
@@ -70,9 +74,13 @@ struct FeedView: View {
 
 struct WorkoutCardView: View {
     var post: WorkoutPost
-    @State private var isLiked = false
+    @ObservedObject var viewModel: FeedViewModel
     @State private var showingComments = false
     @State private var animateHeart = false
+    
+    private var isLiked: Bool {
+        post.likes.contains(viewModel.currentUserId)
+    }
     
     private var workoutColor: Color {
         switch post.workoutType {
@@ -82,10 +90,11 @@ struct WorkoutCardView: View {
         default: return .purple
         }
     }
-
+    
     var body: some View {
         NavigationLink(destination: DetailedStatsView(workoutPost: post)) {
             VStack(spacing: 0) {
+                // Header
                 HStack {
                     Image(systemName: post.avatar)
                         .font(.title2)
@@ -151,7 +160,7 @@ struct WorkoutCardView: View {
                 }
                 .onTapGesture(count: 2) {
                     withAnimation {
-                        isLiked = true
+                        viewModel.toggleLike(for: post)
                         animateHeart = true
                     }
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -173,49 +182,37 @@ struct WorkoutCardView: View {
                     GridItem(.flexible()),
                     GridItem(.flexible())
                 ], spacing: 16) {
-                    StatItem(
-                        title: "Distance",
-                        value: "\(post.distance) mi",
-                        icon: "figure.run",
-                        color: workoutColor
-                    )
-                    StatItem(
-                        title: "Heart Rate",
-                        value: post.averageHeartRate,
-                        icon: "heart.fill",
-                        color: .red
-                    )
-                    StatItem(
-                        title: "Duration",
-                        value: post.duration,
-                        icon: "clock.fill",
-                        color: .orange
-                    )
-                    StatItem(
-                        title: "Calories",
-                        value: "\(post.calories)",
-                        icon: "flame.fill",
-                        color: .pink
-                    )
+                    StatItem(title: "Distance", value: "\(post.distance) mi", icon: "figure.run", color: workoutColor)
+                    StatItem(title: "Heart Rate", value: post.averageHeartRate, icon: "heart.fill", color: .red)
+                    StatItem(title: "Duration", value: post.duration, icon: "clock.fill", color: .orange)
+                    StatItem(title: "Calories", value: "\(post.calories) kcal", icon: "flame.fill", color: .pink)
                 }
                 .padding()
                 
+          
                 HStack(spacing: 20) {
                     Button(action: {
-                        withAnimation { isLiked.toggle() }
+                        withAnimation {
+                            viewModel.toggleLike(for: post)
+                        }
                     }) {
                         HStack {
                             Image(systemName: isLiked ? "heart.fill" : "heart")
-                                .foregroundColor(isLiked ? .red : .gray)
                             Text(isLiked ? "Liked" : "Like")
-                                .foregroundColor(isLiked ? .red : .gray)
+                            if !post.likes.isEmpty {
+                                Text("(\(post.likes.count))")
+                            }
                         }
+                        .foregroundColor(isLiked ? .red : .gray)
                     }
                     
                     Button(action: { showingComments.toggle() }) {
                         HStack {
                             Image(systemName: "message")
-                            Text("Comment")
+                            Text("Comments")
+                            if !post.comments.isEmpty {
+                                Text("(\(post.comments.count))")
+                            }
                         }
                         .foregroundColor(.gray)
                     }
@@ -235,6 +232,71 @@ struct WorkoutCardView: View {
             .shadow(radius: 5)
         }
         .buttonStyle(PlainButtonStyle())
+        .sheet(isPresented: $showingComments) {
+            CommentsView(post: post, viewModel: viewModel)
+        }
+    }
+}
+
+struct CommentsView: View {
+    let post: WorkoutPost
+    @ObservedObject var viewModel: FeedViewModel
+    @State private var newCommentText = ""
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        NavigationStack {
+            VStack {
+                List {
+                    ForEach(post.comments) { comment in
+                        CommentRow(comment: comment)
+                    }
+                }
+                
+                HStack {
+                    TextField("Add a comment...", text: $newCommentText)
+                        .textFieldStyle(.roundedBorder)
+                        .padding(.horizontal)
+                    
+                    Button(action: {
+                        guard !newCommentText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+                        viewModel.addComment(to: post, text: newCommentText)
+                        newCommentText = ""
+                    }) {
+                        Image(systemName: "paperplane.fill")
+                            .foregroundColor(.blue)
+                    }
+                    .padding(.trailing)
+                }
+                .padding(.vertical, 8)
+                .background(Color(.systemBackground))
+                .shadow(radius: 2)
+            }
+            .navigationTitle("Comments")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Done") { dismiss() }
+                }
+            }
+        }
+    }
+}
+
+struct CommentRow: View {
+    let comment: Comment
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(comment.userName)
+                .font(.headline)
+            Text(comment.text)
+                .font(.body)
+            Text(comment.timestamp.formatted())
+                .font(.caption)
+                .foregroundColor(.gray)
+        }
+        .padding(.vertical, 4)
     }
 }
 

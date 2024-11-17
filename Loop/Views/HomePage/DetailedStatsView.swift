@@ -157,11 +157,11 @@ struct DetailedStatsView_Previews: PreviewProvider {
             date: "Nov 11, 2024 at 1:53 PM",
             averageHeartRate: "120 bpm",
             heartRatePoints: [],
-            routeLocations: [
-                RouteLocation(latitude: 42.047285, longitude: -87.680009),
-                RouteLocation(latitude: 42.047294, longitude: -87.680312)
-            ],
-            timestamp: Date()
+            routeLocations: [],
+            timestamp: Date(),
+            likes: [],
+            comments: [],
+            userId: "sample-user-id"
         )
         DetailedStatsView(workoutPost: samplePost)
     }
