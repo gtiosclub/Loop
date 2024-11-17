@@ -12,7 +12,6 @@ import FirebaseFirestore
 // MARK: - AddFriendRow View
 struct AddFriendRow: View {
     var friendName: String
-    var status: String
     var isRequestSent: Bool
     var onAdd: (() -> Void)? = nil  // Optional closure for add action
 
@@ -27,9 +26,6 @@ struct AddFriendRow: View {
             VStack(alignment: .leading) {
                 Text(friendName)
                     .font(.headline)
-                Text(status)
-                    .font(.caption)
-                    .foregroundColor(.gray)
             }
             
             Spacer()
@@ -258,7 +254,7 @@ struct AddFriendsView: View {
                         ForEach(matchedFriends, id: \.self) { friend in
                             // Determine if a request has been sent to this friend
                             let isRequestSent = sentRequests.contains(friend)
-                            AddFriendRow(friendName: friend, status: "Now Active", isRequestSent: isRequestSent) {
+                            AddFriendRow(friendName: friend, isRequestSent: isRequestSent) {
                                 addFriend(to: friend)
                             }
                         }
