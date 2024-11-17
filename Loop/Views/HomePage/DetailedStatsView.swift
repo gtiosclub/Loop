@@ -1,15 +1,16 @@
-//
-//  DetailedStatsView.swift
-//  Loop
-//
-//  Created by Jason Nair on 10/8/24.
-//
-
 import SwiftUI
 import Charts
+import CoreLocation
+import MapKit
 
 struct DetailedStatsView: View {
     var workoutPost: WorkoutPost
+    
+    private var routePoints: [CLLocation] {
+        workoutPost.routeLocations.map { location in
+            CLLocation(latitude: location.latitude, longitude: location.longitude)
+        }
+    }
 
     var body: some View {
         ScrollView {
@@ -32,7 +33,19 @@ struct DetailedStatsView: View {
                     duration: workoutPost.duration,
                     calories: workoutPost.calories
                 )
+                
+                // Route Map Section
+                if !workoutPost.routeLocations.isEmpty {
+                    ChartSection(
+                        title: "Route Map",
+                        chart: AnyView(
+                            MapViewUI(routePoints: routePoints)
+                                .frame(height: 300)
+                        )
+                    )
+                }
 
+                // Heart Rate Chart Section
                 if !workoutPost.heartRatePoints.isEmpty {
                     ChartSection(
                         title: "Heart Rate Over Time",
@@ -77,7 +90,6 @@ struct ChartSection: View {
                 .font(.headline)
 
             chart
-                .frame(height: 200)
         }
         .padding()
         .background(
