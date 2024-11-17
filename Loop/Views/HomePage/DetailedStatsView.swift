@@ -14,7 +14,6 @@ struct DetailedStatsView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
-
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Workout Summary")
                         .font(.largeTitle)
@@ -59,8 +58,6 @@ struct DetailedStatsView: View {
                     Text("No heart rate data available.")
                         .padding()
                 }
-
-
             }
             .padding(.vertical)
         }
@@ -148,7 +145,11 @@ struct DetailedStatsView_Previews: PreviewProvider {
             date: "Nov 11, 2024 at 1:53 PM",
             averageHeartRate: "120 bpm",
             heartRatePoints: [],
-            routeLocations: []
+            routeLocations: [],
+            timestamp: Date(),  // Current date for preview
+            likes: [],          // Empty array for likes
+            comments: [],       // Empty array for comments
+            userId: "sample-user-id"  // Sample user ID
         )
         DetailedStatsView(workoutPost: samplePost)
     }
