@@ -239,7 +239,9 @@ class User: ObservableObject {
         
         
         var attendees = challenge.attendees
-        attendees.append(uid)
+        if !attendees.contains(uid) {
+            attendees.append(uid)
+        }
         
         let db = Firestore.firestore()
         let docRefUser = db.collection("users").document(uid)
@@ -298,8 +300,8 @@ class User: ObservableObject {
                         challengeType: data["type"] as? String ?? "",
                         lengthInMinutes: data["lengthInMinutes"] as? Int ?? 0,
                         dataMeasured: data["dataMeasured"] as? String ?? "",
-                        dateCreated: (data["dateCreated"] as? Timestamp)?.dateValue() ?? Date(),
-                        endDate: (data["endDate"] as? Timestamp)?.dateValue() ?? Date(),
+                        dateCreated: (data["start"] as? Timestamp)?.dateValue() ?? Date(),
+                        endDate: (data["end"] as? Timestamp)?.dateValue() ?? Date(),
                         theme: Theme(rawValue: data["theme"] as? String ?? "") ?? .indigo,
                         accessCode: data["accessCode"] as? String ?? "",
                         scores: scores ?? [:]
@@ -309,7 +311,7 @@ class User: ObservableObject {
                         for attendeeID in challenge.attendees {
                             do {
                                 let attendee = try await FirebaseManager.fetchUserFromFirestore(uid: attendeeID)
-                                let attendeeFull = Person(id: attendeeID, name: attendee.username, score: scores[attendeeID] ?? -1)
+                                let attendeeFull = Person(id: attendeeID, name: attendee.username, score: scores[attendeeID] ?? 0)
                                 fullAttendees.append(attendeeFull)
                             }
                         }

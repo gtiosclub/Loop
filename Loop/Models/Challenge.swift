@@ -220,7 +220,6 @@ class Challenge: Identifiable, ObservableObject {  // Previously DailyScrum
 }
 
 extension Challenge {
-
     static var sampleData: [Challenge] {
         let calendar = Calendar.current
         let date1 = calendar.date(from: DateComponents(year: 2024, month: 12, day:16))
