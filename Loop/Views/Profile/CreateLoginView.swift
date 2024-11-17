@@ -65,28 +65,24 @@ struct CreateLoginView: View {
                     HStack {
                         ZStack {
                             Button(action: {
-                                                isPickerShowing.toggle()
-                                            }, label: {
-                                                if (HavePicture) {
-                                                    Image(uiImage: selectedImage!)
-                                                        .resizable()
-                                                        .scaledToFit()
-                                                        .clipShape(.circle)
-                                                        .frame(width: 100, height: 100)
-                                                } else {
-                                                    ZStack {
-                                                        Circle().frame(width: 110, height: 110).foregroundColor(.gray).overlay(
-                                                                                    Image(systemName: "person.fill").resizable().frame(width: 70, height: 70).foregroundColor(.white)
-                                                                                ).frame(alignment:.center)
-                                                                                
-                                                                                //BLUE EDIT PLUS BUTTON
-                                                                                Circle().frame(width: 40, height: 40).foregroundColor(.red).overlay(
-                                                                                    Image(systemName: "plus").foregroundColor(.white).font(.system(size: 20, weight: .bold))
-                                                                                ).offset(x: 40, y: 40)
-                                                                            }
-                                                                            .frame(alignment: .center)
-                                                }
-                                            })
+                                isPickerShowing.toggle()
+                            }, label: {
+                                if (HavePicture) {
+                                    Image(uiImage: selectedImage!)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .clipShape(.circle)
+                                        .frame(width: 100, height: 100)
+                                } else {
+                                    ZStack {
+                                        Circle().frame(width: 110, height: 110).foregroundColor(.gray).overlay(
+                                        Image(systemName: "person.fill").resizable().frame(width: 70, height: 70).foregroundColor(.white)).frame(alignment:.center)
+                                        Circle().frame(width: 40, height: 40).foregroundColor(.red).overlay(
+                                        Image(systemName: "plus").foregroundColor(.white).font(.system(size: 20, weight: .bold))).offset(x: 40, y: 40)
+                                    }
+                                    .frame(alignment: .center)
+                                }
+                            })
                         }
                         .frame(alignment: .center)
                         .offset(x: 125, y: 10)
@@ -368,13 +364,6 @@ struct CreateLoginView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.bottom, 10)
-               
-               
-                
-                
-                
-                
-                
                 
                 HStack {
                     
@@ -393,8 +382,6 @@ struct CreateLoginView: View {
                             .ignoresSafeArea()
                           
                     }
-                    
-                    
                     .navigationBarBackButtonHidden(true)
                
                 }
@@ -422,7 +409,7 @@ struct CreateLoginView: View {
     
     func signup() {
         let uid = UUID().uuidString
-        var profilePicID = HavePicture ? uid : "None"
+        let profilePicID = HavePicture ? uid : "None"
         let user = User(uid: uid, name: Name, username: Username, challengeIds: [], profilePictureId: profilePicID, friends: [], incomingRequest: [])
         
         if (Password != ConfirmPassword) {
@@ -431,7 +418,7 @@ struct CreateLoginView: View {
         }
         
         Task {
-            var result = await authManager.signUp(email: Email, password: Password, user: user)
+            let result = await authManager.signUp(email: Email, password: Password, user: user)
             if (!result) {
                 alertMessage = authManager.errorMessage ?? "Unknown error occured"
                 showAlert.toggle()
@@ -444,7 +431,7 @@ struct CreateLoginView: View {
                 print("No profile pic")
             }
             
-            var success = await user.addUser()
+            let success = await user.addUser()
             
             if success != nil {
                 authManager.isAuthenticated = true

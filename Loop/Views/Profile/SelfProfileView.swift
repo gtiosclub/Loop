@@ -5,6 +5,7 @@ import FirebaseFirestore
 struct SelfProfileView: View {
     @StateObject private var viewModel: ProfileViewModel
     @State private var name: String = "Jane Doe"
+    @State private var username: String = "username"
     @State private var location: String = "Atlanta, GA"
     @State private var createdDate: String = "Oct 2024"
     @State private var following: Int = 30
@@ -98,7 +99,7 @@ struct SelfProfileView: View {
                     Text(name)
                         .font(.title2)
                         .fontWeight(.bold)
-                    
+                    Text("@"+username)
                     HStack {
                         Text(location)
                             .padding(3)
@@ -204,6 +205,7 @@ struct SelfProfileView: View {
                 let user = await getUser(uid: userId)
                 self.selfUser = user
                 self.name = selfUser?.name ?? ""
+                self.username = selfUser?.username ?? ""
                 self.numFriends = selfUser?.friends.count ?? 0
             }
         }
