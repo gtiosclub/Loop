@@ -366,14 +366,13 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
                         return
                     }
                     
+                    // Update iPhone app
                     self.saveWorkoutToHealthStore(workout: workout, workoutType)
                 })
             } else if let error = error {
                 print("Error ending workout collection: \(error.localizedDescription)")
             }
         }
-        // Update iPhone app
-        self.sendWorkoutEndedMessage()
         showingSummaryView = true
         print("showingSummaryView set to \(showingSummaryView)")
         #endif
@@ -486,7 +485,7 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
         
         // Add average pace sample
         if let paceType = HKQuantityType.quantityType(forIdentifier: .runningSpeed) {
-            let averagePace = distance / (totalTime / 60)
+            let averagePace = self.distance / (self.totalTime / 60)
             let paceQuantity = HKQuantity(unit: HKUnit.mile().unitDivided(by: HKUnit.second()),
                                   doubleValue: averagePace)
                         
@@ -507,6 +506,8 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
             } else {
                 print("Workout successfully saved to HealthKit")
             }
+            self.sendWorkoutEndedMessage()
+
         }
     }
 }
@@ -596,12 +597,15 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
                     
                     // Get the statistics for heart rate
                     if let statistics = workoutBuilder.statistics(for: quantityType),
-                       let heartRate = statistics.mostRecentQuantity() {
+                       let heartRate = statistics.mostRecentQuantity(),
+                       let avgHeartRate = statistics.averageQuantity() {
                         let heartRateValue = heartRate.doubleValue(for: heartRateUnit)
+                        let avgHeartRateValue = avgHeartRate.doubleValue(for: heartRateUnit)
                         let timestamp = statistics.mostRecentQuantityDateInterval()?.start ?? Date()
                         
                         DispatchQueue.main.async {
                             self.heartRate = heartRateValue
+                            self.averageHeartRate = avgHeartRateValue
                             // Add point to heart rate chart data
                             self.heartRatePoints.append((timestamp, heartRateValue))
                             self.sendWorkoutData()

@@ -93,7 +93,7 @@ struct ActivityDetailView: View {
                     Text(String(format: "%.2f", viewModel.currentDistance))
                         .font(.system(size: 100, weight: .bold))
                         .foregroundColor(.white)
-                    Text("DISTANCE (m)")
+                    Text("DISTANCE (mi)")
                         .foregroundColor(.white)
                 }
                 .padding()
@@ -103,7 +103,7 @@ struct ActivityDetailView: View {
                         Text(String(format: "%.2f", viewModel.currentPace))
                             .font(.system(size: 50, weight: .bold))
                             .foregroundColor(.blue)
-                        Text("PACE (100m)")
+                        Text("PACE (mi)")
                             .font(.caption)
                             .foregroundColor(.blue)
                     }

@@ -36,17 +36,9 @@ struct StatsView: View {
                         workoutManager.heartRate.formatted(.number.precision(.fractionLength(0))) + " bpm"
                     )
                     
-                    Text(
-                        Measurement(
-                            value: workoutManager.distance,
-                            unit: UnitLength.meters
-                        ).formatted(
-                            .measurement(
-                                width: .abbreviated,
-                                usage: .road
-                            )
-                        )
-                    )
+                    let formattedDistance = String(format: "%.2f", workoutManager.distance)
+                    Text("\(formattedDistance) mi")
+
                 }
                 .font(.system(.title, design: .rounded)
                         .monospacedDigit()
