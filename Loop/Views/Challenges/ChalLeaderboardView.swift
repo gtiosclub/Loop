@@ -14,6 +14,7 @@ struct ChalLeaderboardView: View {
         let sortedPersonList = personList.sorted(by: {$0.score > $1.score})
         
         PodiumView(personList: sortedPersonList)
+            .padding(.vertical, -55)
     
         ZStack {
             RoundedRectangle(cornerRadius: 14)
