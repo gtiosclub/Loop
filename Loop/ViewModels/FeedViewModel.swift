@@ -41,6 +41,7 @@ struct WorkoutPost: Identifiable {
 }
 
 class FeedViewModel: ObservableObject {
+    @Published var selfPosts: [WorkoutPost] = []
     @Published var friendPosts: [WorkoutPost] = []
     private let db = Firestore.firestore()
     let currentUserId: String
@@ -96,8 +97,9 @@ class FeedViewModel: ObservableObject {
                         let userData = userDoc.data()
                         let friendId = userDoc.documentID
                         let name = userData["name"] as? String ?? "Unknown"
-                        let avatar = userData["profilePictureId"] as? String ?? "person.crop.circle"
-
+                        var avatar = userData["profilePictureId"] as? String ?? "person.crop.circle"
+                        avatar = avatar == "None" ? "person.crop.circle" : avatar
+                    
                         self?.fetchActivitiesForFriend(friendId: friendId, name: name, avatar: avatar)
                     }
                 }
@@ -116,6 +118,40 @@ class FeedViewModel: ObservableObject {
 
                 for document in documents {
                     self?.fetchWorkoutWithSocialData(document, friendName: name, friendAvatar: avatar, friendId: friendId)
+                }
+            }
+    }
+    
+    func fetchSelfPosts(for userId: String) {
+        self.friendPosts = []
+        db.collection("users").document(userId).getDocument { [weak self] (document, error) in
+            if let document = document, document.exists {
+                let userData = document.data()
+                let name = userData?["name"] as? String ?? "Unknown"
+                var avatar = userData?["profilePictureId"] as? String ?? "person.crop.circle"
+                avatar = avatar == "None" ? "person.crop.circle" : avatar
+                
+                // Fetch user's workouts with social data
+                self?.fetchWorkouts(userId: userId, name: name, avatar: avatar)
+            } else {
+                print("User document does not exist.")
+            }
+        }
+    }
+
+    private func fetchWorkouts(userId: String, name: String, avatar: String) {
+        db.collection("users").document(userId).collection("workouts")
+            .order(by: "endDate", descending: true)
+            .getDocuments { [weak self] (snapshot, error) in
+                if let error = error {
+                    print("Error fetching workouts: \(error)")
+                    return
+                }
+
+                guard let documents = snapshot?.documents else { return }
+
+                for document in documents {
+                    self?.fetchWorkoutWithSocialData(document, friendName: name, friendAvatar: avatar, friendId: userId)
                 }
             }
     }
