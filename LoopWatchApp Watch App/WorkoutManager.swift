@@ -176,13 +176,13 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
 
     func startWorkout(_ workoutType: String) {
         #if os(watchOS)
-        distance = 0
-        calories = 0
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+        self.distance = 0
+        self.calories = 0
+        self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
                     self?.updateTotalTime()
                 }
         
-        dataSendTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+        self.dataSendTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
             self?.sendWorkoutData()
         }
 
@@ -323,10 +323,10 @@ class WorkoutManager: NSObject, ObservableObject, WCSessionDelegate {
         #if os(watchOS)
         builder = nil
         session = nil
-        activeEnergy = 0
-        averageHeartRate = 0
-        heartRate = 0
-        distance = 0
+        self.activeEnergy = 0
+        self.averageHeartRate = 0
+        self.heartRate = 0
+        self.distance = 0
         
         #endif
     }
@@ -543,10 +543,10 @@ extension WorkoutManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate
     if WCSession.default.isReachable {
         
         let workoutData: [String: Any] = [
-            "currentDistance": self.distance2,
-            "currentCalories": self.activeEnergy,
+            "currentDistance": self.distance,
+            "currentCalories": self.calories,
             "currentHeartRate": self.heartRate,
-            "currentPace": self.distance2 / (self.totalTime / 60),
+            "currentPace": self.distance / (self.totalTime / 60),
             "totalTime": totalTime
         ]
         WCSession.default.sendMessage(workoutData, replyHandler: nil, errorHandler: { error in

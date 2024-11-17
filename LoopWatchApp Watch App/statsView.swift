@@ -21,7 +21,7 @@ struct StatsView: View {
                     
                     Text(
                         Measurement(
-                            value: workoutManager.activeEnergy,
+                            value: workoutManager.calories,
                             unit: UnitEnergy.kilocalories
                         ).formatted(
                             .measurement(

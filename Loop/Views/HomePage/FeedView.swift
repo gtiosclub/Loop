@@ -114,7 +114,7 @@ struct WorkoutCardView: View {
                 }
                 
                 HStack {
-                    Image(systemName: post.avatar)
+                    Image(systemName: post.avatar == "None" ? "person.crop.circle" : post.avatar)
                         .font(.title2)
                         .foregroundColor(workoutColor)
                         .padding(8)

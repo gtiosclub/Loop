@@ -30,8 +30,15 @@ struct RecordView: View {
             } else if (viewModel.workoutType == "Hiking") {
                 let currentActivity = Activity(iconName: "figure.walk", label: "Hiking")
                 ActivityDetailView(activity: currentActivity, viewModel: viewModel)
+            } else {
+                ZStack {
+                    Color.black
+                    
+                    Image("Pair Watch")
+                        .resizable()
+                        .scaledToFit()
+                }
             }
-            
         } else {
             ZStack {
                 Color.black
@@ -102,7 +109,7 @@ struct ActivityDetailView: View {
                     }
                     Spacer()
                     VStack {
-                        Text(String(format: "%.0f BPM", viewModel.currentHeartRate))
+                        Text(String(format: "%.0f", viewModel.currentHeartRate))
                             .font(.system(size: 50, weight: .bold))
                             .foregroundColor(.red)
                         Text("BPM")
@@ -113,7 +120,7 @@ struct ActivityDetailView: View {
                 .padding(.horizontal, 50)
                 
                 VStack {
-                    Text(String(format: "%.0f", 155))
+                    Text(String(format: "%.0f", viewModel.currentCalories))
                         .font(.system(size: 75, weight: .bold))
                         .foregroundColor(.yellow)
                     Text("CALORIES BURNT")

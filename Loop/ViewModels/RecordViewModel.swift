@@ -19,7 +19,8 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
     @Published var currentCalories: Double = 0.0
     @Published var currentHeartRate: Double = 0.0
     @Published var currentPace: Double = 0.0
-    @Published var totalTime: Double = 0.0
+    var totalTime: Double = 0.0
+    var timer: Timer?
     @Published var isPaused: Bool = false
     
     //probably bugged
@@ -38,8 +39,11 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
         workoutManager.$currentCalories.assign(to: &$currentCalories)
         workoutManager.$currentHeartRate.assign(to: &$currentHeartRate)
         workoutManager.$currentPace.assign(to: &$currentPace)
-        workoutManager.$totalTime.assign(to: &$totalTime)
         workoutManager.$isPaused.assign(to: &$isPaused)
+        
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+                self?.incrementTime()
+            }
                 
         if WCSession.isSupported() {
             let session = WCSession.default
@@ -48,13 +52,33 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
         }
     }
     
-    func pauseWorkout() {
-        workoutManager.pauseWorkout()
+    func startTimer() {
+        // Ensure timer is not already running
+        stopTimer()
+        totalTime = 0
+            
+            // Schedule a timer to fire every second
+            timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+                self?.incrementTime()
+            }
     }
     
-    func resumeWorkout() {
-        workoutManager.resumeWorkout()
+    private func incrementTime() {
+        totalTime += 1
     }
+        
+    func stopTimer() {
+        timer?.invalidate()
+        timer = nil
+    }
+    
+//    func pauseWorkout() {
+//        workoutManager.pauseWorkout()
+//    }
+//    
+//    func resumeWorkout() {
+//        workoutManager.resumeWorkout()
+//    }
     
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
         if let error = error {
@@ -100,6 +124,17 @@ class RecordViewModel: NSObject, ObservableObject, WCSessionDelegate {
             if let workoutStarted = message["workoutStarted"] as? Bool {
                 DispatchQueue.main.async {
                     self.workoutInProgress = workoutStarted
+                    self.currentDistance = 0
+                    self.currentCalories = 0
+                    self.currentHeartRate = 0
+                    self.currentPace = 0
+                    
+                    if workoutStarted {
+                        self.startTimer()
+                    } else {
+                        self.stopTimer()
+                    }
+
                     print("Received message from watch: \(workoutStarted)")
                 }
             }
