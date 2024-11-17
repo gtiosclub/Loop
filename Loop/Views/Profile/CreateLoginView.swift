@@ -196,6 +196,7 @@ struct CreateLoginView: View {
                             } else {
                                 TextField("Comfirm Password", text: $ConfirmPassword)
                                     .padding(.trailing, 32)
+                                    .textContentType(.none)
                             }
                             
                             Button(action: {

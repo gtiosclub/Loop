@@ -12,7 +12,6 @@ import FirebaseFirestore
 // MARK: - AddFriendRow View
 struct AddFriendRow: View {
     var friendName: String
-    var status: String
     var isRequestSent: Bool
     var onAdd: (() -> Void)? = nil  // Optional closure for add action
 
@@ -27,9 +26,6 @@ struct AddFriendRow: View {
             VStack(alignment: .leading) {
                 Text(friendName)
                     .font(.headline)
-                Text(status)
-                    .font(.caption)
-                    .foregroundColor(.gray)
             }
             
             Spacer()
@@ -131,6 +127,9 @@ struct AcceptFriendRow: View {
 
 // MARK: - AddFriendsView
 struct AddFriendsView: View {
+    @State var hasAppeared: Bool
+    @State private var addedUids: [String] = []
+    @State var friends: [String] = []
     // Search and Friend Lists
     @State private var searchText: String = ""
     @State private var allFriends: [String] = []           // All available friends fetched from Firestore
@@ -257,7 +256,7 @@ struct AddFriendsView: View {
                         ForEach(matchedFriends, id: \.self) { friend in
                             // Determine if a request has been sent to this friend
                             let isRequestSent = sentRequests.contains(friend)
-                            AddFriendRow(friendName: friend, status: "Now Active", isRequestSent: isRequestSent) {
+                            AddFriendRow(friendName: friend, isRequestSent: isRequestSent) {
                                 addFriend(to: friend)
                             }
                         }
@@ -298,14 +297,17 @@ struct AddFriendsView: View {
             Alert(title: Text("Notification"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
         }
         .onAppear {
-            // Generate or retrieve the current user's UID
-            self.currentUserUID = getCurrentUserUID()
-            // Ensure the current user's document exists in Firestore
-            ensureUserDocumentExists()
-            // Fetch all users from Firestore
-            fetchUsers()
-            // Fetch incoming friend requests
-            fetchIncomingRequests()
+            if !hasAppeared {
+                // Generate or retrieve the current user's UID
+                self.currentUserUID = getCurrentUserUID()
+                // Ensure the current user's document exists in Firestore
+                ensureUserDocumentExists()
+                // Fetch all users from Firestore
+                fetchUsers()
+                // Fetch incoming friend requests
+                fetchIncomingRequests()
+                hasAppeared = true
+            }
         }
     }
 
@@ -329,7 +331,11 @@ struct AddFriendsView: View {
                 let data = doc.data()
                 guard let name = data["name"] as? String else { return nil }
                 let uid = doc.documentID
-                if uid == currentUserUID { return nil }  // Exclude current user
+                if uid == userId { return nil }  // Exclude current user
+                if friends.contains(uid) {return nil}
+                if addedUids.contains(name) {return nil}
+                if requestingFriends.contains(uid) {return nil}
+                addedUids.append(name)
                 return (uid: uid, name: name)
             }
 
@@ -522,6 +528,6 @@ struct AddFriendsView: View {
 // MARK: - Preview
 struct AddFriendsView_Previews: PreviewProvider {
     static var previews: some View {
-        AddFriendsView(userId: "7HeVe5w1fMO20fM2wDBgX0JslhH3")
+        AddFriendsView(hasAppeared: false, userId: "7HeVe5w1fMO20fM2wDBgX0JslhH3")
     }
 }
