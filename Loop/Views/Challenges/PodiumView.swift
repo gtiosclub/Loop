@@ -192,7 +192,7 @@ struct PersonView: View {
                                 .fill(Color(red: 232/255, green: 78/255, blue:78/255))
                                 .frame(width: 70, height: 25)
 
-                            Text(String(person.score) + " miles")
+                            Text(String(format: "%.1f miles", person.score))
                                 .font(.system(size: 12, weight: .light))
                                 .foregroundStyle(.white)
                         }
