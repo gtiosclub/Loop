@@ -103,11 +103,11 @@ struct FriendProfileView: View {
                             ZStack {
                                 Circle()
                                     .frame(width: 70, height: 70)
-                                    .foregroundColor(.blue)
+                                    .foregroundColor(.gray)
                                     .padding()
                                 Image(systemName: "person.circle")
                                     .frame(width: 50, height: 50)
-                                    .foregroundColor(.black)
+                                    .foregroundColor(.white)
                             }
                         }
 
