@@ -5,6 +5,7 @@ import FirebaseFirestore
 struct SelfProfileView: View {
     @StateObject private var viewModel: FeedViewModel
     @State private var name: String = "Jane Doe"
+    @State private var username: String = "username"
     @State private var location: String = "Atlanta, GA"
     @State private var createdDate: String = "Oct 2024"
     @State private var following: Int = 30
@@ -117,7 +118,7 @@ struct SelfProfileView: View {
                     Text(name)
                         .font(.title2)
                         .fontWeight(.bold)
-                    
+                    Text("@"+username)
                     HStack {
                         Text(location)
                             .padding(3)
@@ -138,7 +139,7 @@ struct SelfProfileView: View {
                 
                 Spacer()
                 VStack {
-                    NavigationLink(destination: SettingsView()) {
+                    NavigationLink(destination: SettingsView(user: selfUser ?? User(uid: "uid", name: "Name", username: "Username", challengeIds: [], profilePictureId: "profilePicID", friends: [], incomingRequest: []))) {
                         VStack(spacing: 5) {
                             Rectangle()
                                 .frame(height: 4)
@@ -218,6 +219,7 @@ struct SelfProfileView: View {
                 let user = await getUser(uid: userId)
                 self.selfUser = user
                 self.name = selfUser?.name ?? ""
+                self.username = selfUser?.username ?? ""
                 self.numFriends = selfUser?.friends.count ?? 0
             }
         }

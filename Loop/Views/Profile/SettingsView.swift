@@ -10,7 +10,7 @@ import FirebaseAuth
 
 struct SettingsView: View {
     @EnvironmentObject var authManager: AuthManager
-    
+    @State var user: User
     @Environment(\.presentationMode) var presentationMode
     var body: some View {
         ZStack {
@@ -81,6 +81,18 @@ struct SettingsView: View {
                         }.padding().background(Color.white).cornerRadius(10).shadow(radius: 2).padding(.horizontal);
                     }
                 }
+                VStack {
+                    NavigationLink(destination: EditProfileView(user: user)) {
+                        HStack{
+                            Image(systemName: "person.fill.badge.plus").font(.system(size:40)).foregroundColor(.gray)
+                            VStack(alignment: .leading) {
+                                Text("Edit Profile").font(.headline).foregroundColor(.black)
+                            }
+                            Spacer()
+                        }.padding().background(Color.white).cornerRadius(10).shadow(radius: 2).padding(.horizontal)
+                    }
+                }
+                
                 
                 Spacer()
                 
@@ -109,5 +121,5 @@ struct SettingsView: View {
 }
 
 #Preview {
-    SettingsView()
+    //SettingsView(user)
 }

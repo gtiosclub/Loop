@@ -11,7 +11,7 @@ import FirebaseFirestore
 
 struct FriendRow: View {
     var friendName: String
-    var status: String
+    var username: String
     
     var body: some View {
         HStack {
@@ -19,7 +19,7 @@ struct FriendRow: View {
                 Image(systemName: "person.circle.fill").font(.system(size: 40)).foregroundColor(.gray)
                 VStack(alignment: .leading) {
                     Text(friendName).font(.headline)
-                    Text(status).font(.caption).foregroundColor(.gray)
+                    Text(username).font(.caption).foregroundColor(.gray)
                 }
                 Spacer()
             }.padding().background(Color.white).cornerRadius(10).shadow(radius: 2).padding(.horizontal)
@@ -109,7 +109,7 @@ struct ManageFriendsView: View {
             // Friends List
             ScrollView {
                 ForEach(filteredFriends, id: \.self) { friend in
-                    FriendRow(friendName: friend, status: "")
+                    FriendRow(friendName: friend, username: "")
                 }
             }
             .padding(.top)

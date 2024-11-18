@@ -119,6 +119,22 @@ class User: ObservableObject {
         return nil
     }
     
+    
+    func updateUser() async -> Bool {
+        // Prepare the data to be updated
+        let data: [String: Any] = ["name": name, "username": username, "profilePictureId": profilePictureId]
+        do {
+            // Reference the user document in Firestore
+            let userDoc = Firestore.firestore().collection("users").document(uid)
+            try await userDoc.updateData(data)
+            print("User updated successfully")
+            return true
+        } catch {
+            print("Error updating user: \(error)")
+            return false
+        }
+    }
+    
     /// Sends a friend request to another user.
     ///
     /// If the other user's incoming request already contains this user,
