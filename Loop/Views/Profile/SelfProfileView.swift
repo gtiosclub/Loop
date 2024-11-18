@@ -139,7 +139,7 @@ struct SelfProfileView: View {
                 
                 Spacer()
                 VStack {
-                    NavigationLink(destination: SettingsView()) {
+                    NavigationLink(destination: SettingsView(user: selfUser ?? User(uid: "uid", name: "Name", username: "Username", challengeIds: [], profilePictureId: "profilePicID", friends: [], incomingRequest: []))) {
                         VStack(spacing: 5) {
                             Rectangle()
                                 .frame(height: 4)

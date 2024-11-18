@@ -125,16 +125,13 @@ struct EditProfileView: View {
 import SwiftUI
 
 struct EditProfileView: View {
-    @State var Email: String = ""
-    @State var Password: String = ""
     @State var Username: String = ""
     @State var Name: String = ""
-    @State var ConfirmPassword: String = ""
     @State var ConfirmButton: String = ""
     @State var ProfilePicture: String =  "person.crop.circle"
     @State var HavePicture: Bool = false
     @Environment(\.presentationMode) var presentationMode
-    
+    @State var user: User
     @State private var isPickerShowing = false
     @State private var selectedImage: UIImage?
     @EnvironmentObject var authManager: AuthManager
@@ -162,7 +159,8 @@ struct EditProfileView: View {
                 showAlert.toggle()
                 alerTitle = "Username is Empty "
         } else {
-            alerTitle = "Account created successfully"
+            showAlert.toggle()
+            alerTitle = "Account edited successfully"
             edit()
         }
     }
@@ -206,7 +204,7 @@ struct EditProfileView: View {
 
                     VStack (spacing: -10){
                         HStack {
-                            TextField("Full Name", text: $Name)
+                            TextField("Name", text: $Name)
                                 .autocapitalization(.none)
                         }
                         .padding()
@@ -299,35 +297,24 @@ struct EditProfileView: View {
     func edit() {
         let uid = UUID().uuidString
         let profilePicID = HavePicture ? uid : "None"
-        let user = User(uid: uid, name: Name, username: Username, challengeIds: [], profilePictureId: profilePicID, friends: [], incomingRequest: [])
-        
-        if (Password != ConfirmPassword) {
-            alertMessage = "Passwords do not match"
-            showAlert.toggle()
-        }
+        user.name = Name
+        user.username = Username
         
         Task {
-            let result = await authManager.signUp(email: Email, password: Password, user: user)
-            if (!result) {
-                alertMessage = authManager.errorMessage ?? "Unknown error occured"
-                showAlert.toggle()
-                return
-            }
-            
             if HavePicture {
-                FirebaseUploader.uploadPhoto(image: selectedImage, uid: profilePicID)
-            } else {
-                print("No profile pic")
+                FirebaseUploader.uploadPhoto(image: selectedImage, uid: profilePicID) { url in
+                    if let url {
+                        user.profilePictureId = url.absoluteString
+                        User.updatedSharedProfilePic(picURL: user.profilePictureId)
+                        print("PROFILE PICTURE URL: \(user.profilePictureId)")
+                    } else {
+                        print("NO IMAGE UPLOADED")
+                    }
+                }
             }
             
-            let success = await user.addUser()
+            let success = await user.updateUser()
             
-            if success != nil {
-                authManager.isAuthenticated = true
-            } else {
-                alertMessage = "Could not create account"
-                showAlert.toggle()
-            }
             
         }
 
@@ -342,12 +329,8 @@ private func isValidEmail(_ email: String) -> Bool {
     }
 
 
-#Preview {
-    CreateLoginView()
-        .environmentObject(AuthManager())
-}
 
 
 #Preview {
-    EditProfileView()
+    //EditProfileView(userId: "")
 }
