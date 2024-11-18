@@ -9,14 +9,44 @@ import SwiftUI
 import Firebase
 import FirebaseFirestore
 
+struct Friend {
+    var name: String
+    var username: String
+    var userId: String
+    var profileImage: String
+}
+
 struct FriendRow: View {
     var friendName: String
     var username: String
+    var userId: String
+    var profileImage: String
     
     var body: some View {
         HStack {
-            NavigationLink(destination: FriendProfileView(name: friendName)) {
-                Image(systemName: "person.circle.fill").font(.system(size: 40)).foregroundColor(.gray)
+            NavigationLink(destination: FriendProfileView(userId: userId)) {
+                if User.shared.profilePictureId.isEmpty || User.shared.profilePictureId == "None" {
+                    Circle()
+                        .frame(width: 50, height: 50)
+                        .foregroundColor(.gray)
+                        .padding()
+                } else {
+                    if let url = URL(string: profileImage) {
+                        AsyncImage(url: url) { image in
+                            image.resizable().frame(width: 50, height: 50).clipShape(.circle)
+                        } placeholder: {
+                            ZStack {
+                                Circle()
+                                    .frame(width: 50, height: 50)
+                                    .foregroundColor(.gray)
+                                Image(systemName: "person.circle")
+                                    .frame(width: 30, height: 30)
+                                    .foregroundColor(.white)
+                            }
+                        }
+
+                    }
+                }
                 VStack(alignment: .leading) {
                     Text(friendName).font(.headline)
                     Text(username).font(.caption).foregroundColor(.gray)
@@ -31,9 +61,9 @@ struct ManageFriendsView: View {
     @State var userId: String
     @State var friends: [String] = []
     @State private var searchText: String = ""
-    @State private var allUsers: [(uid: String, name: String)] = []
-    @State private var allFriends: [String] = []
-    @State private var filteredFriends: [String] = []
+    @State private var allUsers: [Friend] = []
+    @State private var allFriends: [Friend] = []
+    @State private var filteredFriends: [Friend] = []
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.dismiss) private var dismiss
     @State private var showingErrorAlert: Bool = false
@@ -42,13 +72,13 @@ struct ManageFriendsView: View {
     
     
     private func filterFriends() {
-            if searchText.isEmpty {
-                filteredFriends = allFriends
-            } else {
-                filteredFriends = allFriends.filter {
-                    $0.lowercased().contains(searchText.lowercased())
-                }
+        if searchText.isEmpty {
+            filteredFriends = allFriends
+        } else {
+            filteredFriends = allFriends.filter { friend in
+                friend.name.lowercased().contains(searchText.lowercased())
             }
+        }
         }
     
     private func fetchUsers() {
@@ -66,18 +96,22 @@ struct ManageFriendsView: View {
             }
 
             // Populate allUsers with tuples excluding current user
-            self.allUsers = documents.compactMap { doc -> (uid: String, name: String)? in
+            self.allUsers = documents.compactMap { doc -> (Friend)? in
                 let data = doc.data()
                 guard let name = data["name"] as? String else { return nil }
+                guard let username = data["username"] as? String else {return nil}
+                guard let profileImage = data["profilePictureId"] as? String else { return nil }
                 let uid = doc.documentID
                 if uid == userId { return nil }  // Exclude current user
                 if !friends.contains(uid) {return nil}
-                return (uid: uid, name: name)
+                return Friend(name: name, username: username, userId: uid, profileImage: profileImage)
             }
 
             // Update allFriends based on fetched users
             DispatchQueue.main.async {
-                self.allFriends = self.allUsers.map { $0.name }
+                self.allFriends = self.allUsers.map { user in
+                    Friend(name: user.name, username: user.username, userId: user.userId, profileImage: user.profileImage)
+                }
                 self.filterFriends()
             }
         }
@@ -108,8 +142,8 @@ struct ManageFriendsView: View {
 
             // Friends List
             ScrollView {
-                ForEach(filteredFriends, id: \.self) { friend in
-                    FriendRow(friendName: friend, username: "")
+                ForEach(filteredFriends, id: \.userId) { friend in
+                    FriendRow(friendName: friend.name, username: friend.username, userId: friend.userId, profileImage: friend.profileImage)
                 }
             }
             .padding(.top)

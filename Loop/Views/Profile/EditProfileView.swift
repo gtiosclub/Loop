@@ -152,17 +152,9 @@ struct EditProfileView: View {
     }
     
     func checkConditions() {
-        if (Name == "" ) {
-            showAlert.toggle()
-            alerTitle = "Full Name is Empty"
-        } else if (Username == "") {
-                showAlert.toggle()
-                alerTitle = "Username is Empty "
-        } else {
             showAlert.toggle()
             alerTitle = "Account edited successfully"
             edit()
-        }
     }
     
     var body: some View {
@@ -247,7 +239,6 @@ struct EditProfileView: View {
                         .padding(.horizontal, 40)
                 
                 })
-                .disabled(!hasAllFields)
                 .padding(.vertical, 8)
                 
                 .alert(isPresented: $showAlert) {
@@ -297,9 +288,12 @@ struct EditProfileView: View {
     func edit() {
         let uid = UUID().uuidString
         let profilePicID = HavePicture ? uid : "None"
-        user.name = Name
-        user.username = Username
-        
+        if !Name.isEmpty {
+            user.name = Name
+        }
+        if !Username.isEmpty {
+            user.username = Username
+        }
         Task {
             if HavePicture {
                 FirebaseUploader.uploadPhoto(image: selectedImage, uid: profilePicID) { url in

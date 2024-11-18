@@ -1,217 +1,206 @@
-//
-//  FriendProfileView.swift
-//  Loop
-//
-//  Created by Ryan O’Meara on 9/19/24.
-//
-
 import SwiftUI
+import Firebase
+import FirebaseFirestore
 
 struct FriendProfileView: View {
-    @State var name: String
+    @StateObject private var viewModel: FeedViewModel
+    @State private var name: String = "Jane Doe"
+    @State private var username: String = "username"
     @State private var location: String = "Atlanta, GA"
     @State private var createdDate: String = "Oct 2024"
     @State private var following: Int = 30
     @State private var followers: Int = 30
     @State private var selectedTab = 0
+    @State private var currentUserUID: String = ""
+    @State private var userId: String
+    @State private var showingErrorAlert: Bool = false
+    @State private var errorMessage: String = ""
+    @State private var selfUser: User?
+    @State private var numFriends: Int = 0
+    private let db = Firestore.firestore()
+    
+    init(userId: String) {
+        self.userId = userId
+        _viewModel = StateObject(wrappedValue: FeedViewModel(currentUserId: userId))
+    }
+    
+    private func getCurrentUserUID() -> String {
+        if let uid = UserDefaults.standard.string(forKey: "currentUserUID") {
+            return uid
+        } else {
+            let uid = UUID().uuidString
+            UserDefaults.standard.set(uid, forKey: "currentUserUID")
+            return uid
+        }
+    }
+
+    private func ensureUserDocumentExists() {
+        let userRef = db.collection("users").document(currentUserUID)
+        userRef.getDocument { snapshot, error in
+            if let error = error {
+                print("Error checking user document: \(error.localizedDescription)")
+                self.errorMessage = "Failed to verify user data."
+                self.showingErrorAlert = true
+                return
+            }
+
+            if snapshot?.exists == false {
+                userRef.setData([
+                    "name": "Me",
+                    "incomingRequests": [],
+                    "friends": []
+                ]) { error in
+                    if let error = error {
+                        print("Error creating user document: \(error.localizedDescription)")
+                        self.errorMessage = "Failed to initialize your user data."
+                        self.showingErrorAlert = true
+                    } else {
+                        print("User document created successfully.")
+                    }
+                }
+            } else {
+                print("User document already exists.")
+            }
+        }
+    }
+    
+    func getUser(uid: String) async -> User? {
+        let docRef = db.collection("users").document(uid)
+        do {
+            let document = try await docRef.getDocument()
+            if document.exists {
+                let dataDescription = document.data()
+                if let data = dataDescription {
+                    let name: String = data["name"] as! String
+                    let username: String = data["username"] as! String
+                    let challengeIds: [String] = data["challengeIds"] as! [String]
+                    let profilePictureId: String = data["profilePictureId"] as! String
+                    let friends: [String] = data["friends"] as! [String]
+                    let incomingRequest: [String] = data["incomingRequest"] as! [String]
+                    return User(uid: uid, name: name, username: username, challengeIds: challengeIds, profilePictureId: profilePictureId, friends: friends, incomingRequest: incomingRequest)
+                }
+            }
+        } catch {
+            print("Error getting user from the Firestore Database: \(error).")
+        }
+        return nil
+    }
     
     var body: some View {
         VStack {
             HStack {
                 Spacer().frame(width: 20)
-                Circle()
-                    .frame(width: 70, height: 70)
-                    .foregroundColor(.gray)
-                    .padding()
-                
+                if User.shared.profilePictureId.isEmpty || User.shared.profilePictureId == "None" {
+                    Circle()
+                        .frame(width: 70, height: 70)
+                        .foregroundColor(.gray)
+                        .padding()
+                } else {
+                    if let url = URL(string: selfUser?.profilePictureId ?? User.shared.profilePictureId) {
+                        AsyncImage(url: url) { image in
+                            image.resizable().frame(width: 70, height: 70).clipShape(.circle)
+                        } placeholder: {
+                            ZStack {
+                                Circle()
+                                    .frame(width: 70, height: 70)
+                                    .foregroundColor(.blue)
+                                    .padding()
+                                Image(systemName: "person.circle")
+                                    .frame(width: 50, height: 50)
+                                    .foregroundColor(.black)
+                            }
+                        }
+
+                    }
+                }
+                Spacer().frame(width: 10)
                 VStack(alignment: .leading) {
                     Text(name)
                         .font(.title2)
                         .fontWeight(.bold)
-                    
+                    Text("@"+username)
                     HStack {
-                        Text(location)
+                        /*Text(location)
                             .padding(3)
                             .background(Color.red)
+                            .foregroundColor(Color.white)
                             .cornerRadius(4)
-                            .foregroundColor(.white)
                         
                         Spacer().frame(width: 18)
                         
                         Text(createdDate)
                             .padding(3)
                             .background(Color.red)
-                            .cornerRadius(4)
-                            .foregroundColor(.white)
+                            .foregroundColor(Color.white)
+                            .cornerRadius(4)*/
                     }
                     .font(.subheadline)
                 }
                 
                 Spacer()
             }
+            
             HStack {
                 Spacer().frame(width: 20)
-
-                VStack(alignment: .leading) {
-                    Text("Following")
-                        .font(.subheadline)
-                    
-                    Text("\(following)")
-                        .fontWeight(.bold)
-                }
                 
-                Spacer().frame(width: 40)
-                //NavigationLink(destination: ManageFriendsView()) {
+                NavigationLink(destination: ManageFriendsView(userId: selfUser?.uid ?? "", friends: selfUser?.friends ?? [])) {
                     VStack(alignment: .leading) {
-                        Text("Followers")
+                        Text("Friends")
                             .font(.subheadline)
                         
-                        Text("\(followers)")
+                        Text("\(numFriends)")
                             .fontWeight(.bold)
+                            .frame(alignment: .center)
                     }
-                //}.foregroundStyle(.black)
+                }.foregroundStyle(.black)
                 
                 Spacer()
-                
             }.padding([.leading, .trailing])
             
-            HStack {
-
-                
+            VStack {
                 Spacer()
-                
-                ForEach(0..<4) { _ in
-                    
-                    Spacer().frame(width: 5)
-                    
-                    Image("profile")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 80, height: 120)
-                    
-                    Spacer().frame(width: 5)
-                    
-                }.padding(.bottom)
-                
-                Spacer()
-                
-            }
-            
-            HStack {
-                Spacer()
-                
-                Button(action: {
-                    selectedTab = 0
-                }) {
-                    Text("Activity")
-                        .foregroundColor(selectedTab == 0 ? .black : .gray)
-                }
-                
-                Spacer()
-                
-                Button(action: {
-                    selectedTab = 1
-                }) {
-                    Text("Stats")
-                        .foregroundColor(selectedTab == 1 ? .black : .gray)
-                }
-                
-                Spacer()
-                
-                Button(action: {
-                    selectedTab = 2
-                }) {
-                    Text("Trophies")
-                        .foregroundColor(selectedTab == 2 ? .black : .gray)
-                }
-                
-                Spacer()
-                
-            }
-            .font(.headline)
-            VStack(spacing: 0) {
-                Divider()
+                Text("Recent Activities")
+                    .foregroundColor(selectedTab == 0 ? .black : .gray)
+                    .frame(alignment: .top)
+                    .fontWeight(.bold)
                 
                 ScrollView {
-                    if selectedTab == 0 {
-                        SelfProfileActivityView()
-                    } else if selectedTab == 1 {
-                        SelfProfileStatsView()
-                    } else {
-                        TrophyView()
+                    VStack(spacing: 16) {
+                        ForEach(viewModel.friendPosts) { post in
+                            WorkoutCardView(
+                                post: post,
+                                viewModel: viewModel
+                            )
+                            .padding(.horizontal)
+                        }
+                        .padding(.top)
                     }
                 }
-                .padding(.trailing)
+                
+                
+                Spacer()
             }
+            .frame(alignment:.top)
             
-            Spacer()
-            
+        }
+        .onAppear {
+            self.currentUserUID = getCurrentUserUID()
+            ensureUserDocumentExists()
+            viewModel.fetchSelfPosts(for: userId)  // Commented out until social features are ready
+            Task {
+                let user = await getUser(uid: userId)
+                self.selfUser = user
+                self.name = selfUser?.name ?? ""
+                self.username = selfUser?.username ?? ""
+                self.numFriends = selfUser?.friends.count ?? 0
+            }
+        }
+        .alert("Error", isPresented: $showingErrorAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text(errorMessage)
         }
     }
 }
 
-
-struct ActivityCardView: View {
-    @State var name: String
-    var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            HStack {
-                Image(systemName: "person.circle.fill")
-                    .resizable()
-                    .frame(width: 30, height: 30)
-                    .foregroundColor(.gray)
-
-                Text(name)
-                    .font(.subheadline)
-
-                Spacer()
-
-                Text("Physical Activity")
-                    .font(.subheadline)
-                    .foregroundColor(.gray)
-            }
-            .padding(.horizontal)
-
-            Text("Competition Name")
-                .font(.headline)
-                .padding(.horizontal)
-
-            HStack {
-                Image(systemName: "chart.bar.fill")
-                    .resizable()
-                    .frame(width: 80, height: 40)
-                    .padding(.horizontal)
-
-                Text( name + " Placed 1st!")
-                    .font(.headline)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.5)
-                Spacer()
-            }
-            .padding(.horizontal)
-
-            HStack {
-                Text("Today at 9:16 PM")
-                    .font(.caption)
-                    .foregroundColor(.gray)
-                    .padding(.horizontal)
-
-                Spacer()
-
-                Image(systemName: "eye.slash.fill")
-                    .padding(.horizontal)
-            }
-        }
-        .padding()
-        .background(Color.gray.opacity(0.1))
-        .cornerRadius(15)
-    }
-}
-
-struct FriendProfileView_Previews: PreviewProvider {
-    static var previews: some View {
-        FriendProfileView(name: "name")
-            .previewLayout(.fixed(width: 375, height: 800))
-    }
-}
 
