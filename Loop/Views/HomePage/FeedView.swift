@@ -22,7 +22,7 @@ struct FeedView: View {
         case all = "All"
         case running = "Running"
         case biking = "Biking"
-        case walking = "Walking"
+        case swimming = "Swimming"
     }
     
     var filteredPosts: [WorkoutPost] {
@@ -90,7 +90,7 @@ struct WorkoutCardView: View {
         switch post.workoutType {
         case "Running": return .blue
         case "Biking": return .purple
-        case "Walking": return .orange
+        case "Swimming": return .orange
         default: return .green
         }
     }
@@ -396,7 +396,7 @@ struct WorkoutTypeTag: View {
         HStack(spacing: 4) {
             Image(systemName: type == "Running" ? "figure.run" :
                             type == "Biking" ? "figure.outdoor.cycle" :
-                            type == "Walking" ? "figure.walk" : "figure.mixed.cardio")
+                            type == "Swimming" ? "figure.pool.swim" : "figure.mixed.cardio")
             Text(type)
                 .font(.system(size: 16, weight: .medium))
         }
