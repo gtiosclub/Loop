@@ -27,9 +27,9 @@ struct ChalLeaderboardView: View {
                 
                 Spacer()
                 
-                Text(String(sortedPersonList[0].score) + " miles")
+                Text(String(format: "%.1f miles", sortedPersonList[0].score))
                     .fontWeight(.medium)
-                
+
                 HStack {
                     Text("1")
                     Image(systemName: "arrowtriangle.up.fill")
@@ -58,7 +58,7 @@ struct ChalLeaderboardView: View {
                         
                         Spacer()
                         
-                        Text(String(sortedPersonList[index].score) + " miles")
+                        Text(String(format: "%.1f miles", sortedPersonList[index].score))
                             .fontWeight(.medium)
                         
                         HStack {
