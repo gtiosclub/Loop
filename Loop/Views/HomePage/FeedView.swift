@@ -21,7 +21,7 @@ struct FeedView: View {
     enum WorkoutType: String, CaseIterable {
         case all = "All"
         case running = "Running"
-        case cycling = "Cycling"
+        case biking = "Biking"
         case walking = "Walking"
     }
     
@@ -89,9 +89,9 @@ struct WorkoutCardView: View {
     private var workoutColor: Color {
         switch post.workoutType {
         case "Running": return .blue
-        case "Cycling": return .green
+        case "Biking": return .purple
         case "Walking": return .orange
-        default: return .purple
+        default: return .green
         }
     }
     
@@ -170,21 +170,41 @@ struct WorkoutCardView: View {
                 .padding(.top)
                 
                 ZStack(alignment: .bottomLeading) {
-                    Image("runner_stock")
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(height: 160)
-                        .clipped()
-                        .overlay {
-                            LinearGradient(
-                                gradient: Gradient(colors: [
-                                    .clear,
-                                    workoutColor.opacity(0.7)
-                                ]),
-                                startPoint: .top,
-                                endPoint: .bottom
-                            )
-                        }
+                    if post.workoutType == "Running" {
+                        Image("runner_stock")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(height: 160)
+                            .clipped()
+                            .overlay {
+                                LinearGradient(
+                                    gradient: Gradient(colors: [
+                                        .clear,
+                                        workoutColor.opacity(0.7)
+                                    ]),
+                                    startPoint: .top,
+                                    endPoint: .bottom
+                                )
+                            }
+                    }
+                    else if post.workoutType == "Biking" {
+                        Image("stock_cycler")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(height: 160)
+                            .clipped()
+                            .overlay {
+                                LinearGradient(
+                                    gradient: Gradient(colors: [
+                                        .clear,
+                                        workoutColor.opacity(0.7)
+                                    ]),
+                                    startPoint: .top,
+                                    endPoint: .bottom
+                                )
+                            }
+                    }
+                    
                     
                     HStack {
                         WorkoutTypeTag(type: post.workoutType, color: workoutColor)
@@ -375,7 +395,7 @@ struct WorkoutTypeTag: View {
     var body: some View {
         HStack(spacing: 4) {
             Image(systemName: type == "Running" ? "figure.run" :
-                            type == "Cycling" ? "figure.outdoor.cycle" :
+                            type == "Biking" ? "figure.outdoor.cycle" :
                             type == "Walking" ? "figure.walk" : "figure.mixed.cardio")
             Text(type)
                 .font(.system(size: 16, weight: .medium))
