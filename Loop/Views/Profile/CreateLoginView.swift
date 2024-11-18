@@ -37,10 +37,10 @@ struct CreateLoginView: View {
     
     var hasAllFields: Bool {
         !Email.isEmpty
-        || !Password.isEmpty
-        || !Username.isEmpty
-        || !Name.isEmpty
-        || !ConfirmPassword.isEmpty
+        && !Password.isEmpty
+        && !Username.isEmpty
+        && !Name.isEmpty
+        && !ConfirmPassword.isEmpty
     }
     
     var body: some View {
@@ -65,28 +65,24 @@ struct CreateLoginView: View {
                     HStack {
                         ZStack {
                             Button(action: {
-                                                isPickerShowing.toggle()
+                                isPickerShowing.toggle()
                                             }, label: {
-                                                if (HavePicture) {
-                                                    Image(uiImage: selectedImage!)
-                                                        .resizable()
-                                                        .scaledToFit()
-                                                        .clipShape(.circle)
-                                                        .frame(width: 100, height: 100)
-                                                } else {
-                                                    ZStack {
-                                                        Circle().frame(width: 110, height: 110).foregroundColor(.gray).overlay(
-                                                                                    Image(systemName: "person.fill").resizable().frame(width: 70, height: 70).foregroundColor(.white)
-                                                                                ).frame(alignment:.center)
+                                if (HavePicture) {
+                                    Image(uiImage: selectedImage!)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .clipShape(.circle)
+                                        .frame(width: 100, height: 100)
+                                } else {
+                                    ZStack {
+                                        Circle().frame(width: 110, height: 110).foregroundColor(.gray).overlay(
+                                        Image(systemName: "person.fill").resizable().frame(width: 70, height: 70).foregroundColor(.white)).frame(alignment:.center)
                                                                                 
-                                                                                //BLUE EDIT PLUS BUTTON
-                                                                                Circle().frame(width: 40, height: 40).foregroundColor(.red).overlay(
-                                                                                    Image(systemName: "plus").foregroundColor(.white).font(.system(size: 20, weight: .bold))
-                                                                                ).offset(x: 40, y: 40)
-                                                                            }
-                                                                            .frame(alignment: .center)
-                                                }
-                                            })
+                                        Circle().frame(width: 40, height: 40).foregroundColor(.red).overlay(
+                                        Image(systemName: "plus").foregroundColor(.white).font(.system(size: 20, weight: .bold))).offset(x: 40, y: 40)
+                                    }
+                                    .frame(alignment: .center)
+                                }})
                         }
                         .frame(alignment: .center)
                         .offset(x: 125, y: 10)
@@ -328,7 +324,10 @@ struct CreateLoginView: View {
                     } else if (ConfirmPassword != Password) {
                         showAlert.toggle()
                         alerTitle = "Comfirm Password is not the same as Password"
-
+                    
+                    } else if (!HavePicture) {
+                        showAlert.toggle()
+                        alerTitle = "Did not choose a profile picture"
                     } else {
                         alerTitle = "Account created successfully"
                         signup()

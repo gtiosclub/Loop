@@ -99,13 +99,15 @@ struct SelfProfileView: View {
                         AsyncImage(url: url) { image in
                             image.resizable().frame(width: 70, height: 70).clipShape(.circle)
                         } placeholder: {
-                            Circle()
-                                .frame(width: 70, height: 70)
-                                .foregroundColor(.blue)
-                                .padding()
-                                .overlay {
-                                    ProgressView()
-                                }
+                            ZStack {
+                                Circle()
+                                    .frame(width: 70, height: 70)
+                                    .foregroundColor(.blue)
+                                    .padding()
+                                Image(systemName: "person.circle")
+                                    .frame(width: 50, height: 50)
+                                    .foregroundColor(.black)
+                            }
                         }
 
                     }
