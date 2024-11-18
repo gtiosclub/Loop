@@ -277,7 +277,7 @@ struct EditProfileView: View {
             .offset(y:20)
             
         }
-        .sheet(isPresented: $isPickerShowing) {
+        .fullScreenCover(isPresented: $isPickerShowing) {
             ImagePicker(selectedImage: $selectedImage, isPickerShowing: $isPickerShowing)
         }
         .onChange(of: selectedImage) { _, newValue in
