@@ -103,24 +103,24 @@ struct SelfProfileView: View {
                             ZStack {
                                 Circle()
                                     .frame(width: 70, height: 70)
-                                    .foregroundColor(.blue)
+                                    .foregroundColor(.gray)
                                     .padding()
                                 Image(systemName: "person.circle")
                                     .frame(width: 50, height: 50)
-                                    .foregroundColor(.black)
+                                    .foregroundColor(.white)
                             }
                         }
 
                     }
                 }
-                
+                Spacer().frame(width: 10)
                 VStack(alignment: .leading) {
                     Text(name)
                         .font(.title2)
                         .fontWeight(.bold)
                     Text("@"+username)
                     HStack {
-                        Text(location)
+                        /*Text(location)
                             .padding(3)
                             .background(Color.red)
                             .foregroundColor(Color.white)
@@ -132,7 +132,7 @@ struct SelfProfileView: View {
                             .padding(3)
                             .background(Color.red)
                             .foregroundColor(Color.white)
-                            .cornerRadius(4)
+                            .cornerRadius(4)*/
                     }
                     .font(.subheadline)
                 }
