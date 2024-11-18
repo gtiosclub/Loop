@@ -4,6 +4,10 @@
 //
 //  Created by Jihoon Kim on 11/14/24.
 //
+
+// DEPRICATED
+
+/*
 import SwiftUI
 import FirebaseFirestore
 
@@ -284,3 +288,5 @@ class ProfileViewModel: ObservableObject {
         }
     }
 }
+
+*/

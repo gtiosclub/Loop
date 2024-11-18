@@ -57,7 +57,7 @@ class FirebaseManager {
                     name: data["name"] as? String ?? "No name found",
                     username: data["username"] as? String ?? "No username found",
                     challengeIds: data["challengeIds"] as? [String] ?? [],
-                    profilePictureId: data["profilePictureId"] as? String ?? "No profilePictureId found",
+                    profilePictureId: data["profilePictureId"] as? String ?? "None",
                     friends: data["friends"] as? [String] ?? [],
                     incomingRequest: data["incomingRequest"] as? [String] ?? []
                 )
@@ -91,21 +91,21 @@ class FirebaseManager {
             
             var challenge = Challenge(
                 id: document.documentID,
-                title: data["title"] as? String ?? "",
+                title: data["name"] as? String ?? "",
                 host: data["host"] as? String ?? "",
                 attendees: data["attendees"] as? [String] ?? [],
-                challengeType: data["challengeType"] as? String ?? "",
+                challengeType: data["type"] as? String ?? "",
                 lengthInMinutes: data["lengthInMinutes"] as? Int ?? 0,
                 dataMeasured: data["dataMeasured"] as? String ?? "",
-                dateCreated: (data["dateCreated"] as? Timestamp)?.dateValue() ?? Date(),
-                endDate: (data["endDate"] as? Timestamp)?.dateValue() ?? Date(),
+                dateCreated: (data["start"] as? Timestamp)?.dateValue() ?? Date(),
+                endDate: (data["end"] as? Timestamp)?.dateValue() ?? Date(),
                 theme: Theme(rawValue: data["theme"] as? String ?? "") ?? .bubblegum,
                 accessCode: data["accessCode"] as? String ?? "",
                 scores: data["scores"] as? [String: Double] ?? [:]
             )
             if !challenge.attendees.contains(User.shared.uid) {
                 challenge.attendees.append(User.shared.uid)
-                challenge.attendeesFull.append(Person(id: User.shared.uid, name: User.shared.username, score: 0))
+                challenge.attendeesFull.append(Person(id: User.shared.uid, name: User.shared.username, score: 0, profilePicURL: User.shared.profilePictureId))
             }
             
             _ = await User.shared.addChallenge(challenge: challenge)

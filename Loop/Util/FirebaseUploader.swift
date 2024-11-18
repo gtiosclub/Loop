@@ -11,21 +11,32 @@ import UIKit
 
 class FirebaseUploader {
     
-    static func uploadPhoto(image: UIImage?, uid: String) {
+    static func uploadPhoto(image: UIImage?, uid: String, completion: @escaping (URL?) -> Void) {
         let storageRef = Storage.storage().reference()
         
-        let imageData = image!.jpegData(compressionQuality: 0.8)
-        
-        guard imageData != nil else {
+        guard let imageData = image?.jpegData(compressionQuality: 0.8) else {
+            completion(nil)
             return
         }
         
         let fileRef = storageRef.child("images/\(uid).jpg")
         
-        let uploadTask = fileRef.putData(imageData!, metadata: nil) { metadata, error in
-            
+        let uploadTask = fileRef.putData(imageData, metadata: nil) { metadata, error in
             if error == nil && metadata != nil {
-                print(error?.localizedDescription)
+                // Fetch the download URL
+                fileRef.downloadURL { url, error in
+                    if let downloadURL = url {
+                        // Successfully got the download URL
+                        completion(downloadURL)
+                    } else {
+                        // Error getting download URL
+                        completion(nil)
+                    }
+                }
+            } else {
+                // Upload failed
+                print("Upload error: \(error?.localizedDescription ?? "Unknown error")")
+                completion(nil)
             }
         }
     }

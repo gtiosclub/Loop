@@ -114,12 +114,35 @@ struct WorkoutCardView: View {
                 }
                 
                 HStack {
-                    Image(systemName: post.avatar)
-                        .font(.title2)
-                        .foregroundColor(workoutColor)
-                        .padding(8)
-                        .background(workoutColor.opacity(0.1))
-                        .clipShape(Circle())
+                    if post.avatar == "person.crop.circle" {
+                        Image(systemName: post.avatar)
+                            .font(.title2)
+                            .foregroundColor(workoutColor)
+                            .padding(8)
+                            .background(workoutColor.opacity(0.1))
+                            .clipShape(Circle())
+                    } else {
+                        if let url = URL(string: post.avatar) {
+                            AsyncImage(url: url) { image in
+                                image.resizable().frame(width: 30, height: 30).clipShape(.circle)
+                            } placeholder: {
+                                Circle()
+                                    .frame(width: 30, height: 30)
+                                    .foregroundColor(workoutColor.opacity(0.1))
+                                    .padding()
+                                    .overlay {
+                                        ProgressView()
+                                    }
+                            }
+                        } else {
+                            Image(systemName: "person.crop.circle")
+                                .font(.title2)
+                                .foregroundColor(workoutColor)
+                                .padding(8)
+                                .background(workoutColor.opacity(0.1))
+                                .clipShape(Circle())
+                        }
+                    }
                     
                     VStack(alignment: .leading) {
                         Text(post.name)

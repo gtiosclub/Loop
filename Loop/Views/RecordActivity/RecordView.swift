@@ -30,8 +30,15 @@ struct RecordView: View {
             } else if (viewModel.workoutType == "Hiking") {
                 let currentActivity = Activity(iconName: "figure.walk", label: "Hiking")
                 ActivityDetailView(activity: currentActivity, viewModel: viewModel)
+            } else {
+                ZStack {
+                    Color.black
+                    
+                    Image("Pair Watch")
+                        .resizable()
+                        .scaledToFit()
+                }
             }
-            
         } else {
             ZStack {
                 Color.black
@@ -86,7 +93,7 @@ struct ActivityDetailView: View {
                     Text(String(format: "%.2f", viewModel.currentDistance))
                         .font(.system(size: 100, weight: .bold))
                         .foregroundColor(.white)
-                    Text("DISTANCE (m)")
+                    Text("DISTANCE (mi)")
                         .foregroundColor(.white)
                 }
                 .padding()
@@ -96,13 +103,13 @@ struct ActivityDetailView: View {
                         Text(String(format: "%.2f", viewModel.currentPace))
                             .font(.system(size: 50, weight: .bold))
                             .foregroundColor(.blue)
-                        Text("PACE (100m)")
+                        Text("PACE (mi)")
                             .font(.caption)
                             .foregroundColor(.blue)
                     }
                     Spacer()
                     VStack {
-                        Text(String(format: "%.0f BPM", viewModel.currentHeartRate))
+                        Text(String(format: "%.0f", viewModel.currentHeartRate))
                             .font(.system(size: 50, weight: .bold))
                             .foregroundColor(.red)
                         Text("BPM")
@@ -113,7 +120,7 @@ struct ActivityDetailView: View {
                 .padding(.horizontal, 50)
                 
                 VStack {
-                    Text(String(format: "%.0f", 155))
+                    Text(String(format: "%.0f", viewModel.currentCalories))
                         .font(.system(size: 75, weight: .bold))
                         .foregroundColor(.yellow)
                     Text("CALORIES BURNT")

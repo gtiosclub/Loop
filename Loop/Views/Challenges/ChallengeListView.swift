@@ -9,17 +9,14 @@ import SwiftUI
 
 struct ChallengeListView: View {
     @ObservedObject var user = User.shared
-        
-    var challenges: [Challenge] {
-        return user.challenges
-    }
-        
+    
     //Joining a challenge variables
     @State private var isShowingJoin = false
     @State private var accessCode = ""
     @State private var isLoadingJoin = false
     @State private var joinErrorMessage: String?
     @State private var selectedTab: String = "Active Challenges"
+    @State private var isLoadingChallenges = false
     var tabs = ["Active Challenges", "Past Challenges"]
     
     var body: some View {
@@ -79,9 +76,14 @@ struct ChallengeListView: View {
                 .padding(.top, 1).padding(.bottom, 10)
                 
                 ScrollView {
-                    ForEach(challenges, id: \.id) { challenge in
-                        CardView(challenge: challenge)
-                            .padding(.bottom, 5)
+                    if isLoadingChallenges {
+                        ProgressView()
+                    } else {
+                        ForEach(user.challenges, id: \.id) { challenge in
+                            CardView(challenge: challenge)
+                                .id(challenge.id)
+                                .padding(.bottom, 5)
+                        }
                     }
                 }
                 .scrollIndicators(.hidden)
@@ -91,16 +93,19 @@ struct ChallengeListView: View {
             
             if isShowingJoin {
                 ZStack {
-                    RoundedRectangle(cornerRadius: 25)
-                        .foregroundStyle(Color(red: 0.3, green: 0.3, blue: 0.3))
+                    Color(.gray).opacity(0.5).ignoresSafeArea().onTapGesture {
+                        isShowingJoin.toggle()
+                    }
+                    RoundedRectangle(cornerRadius: 10)
+                        .foregroundStyle(Color(red: 0.99, green: 0.99, blue: 0.99))
                         .frame(width: 350, height: 100)
                         .overlay {
                             VStack {
                                 HStack {
                                     Spacer()
-                                    Text("Enter access code")
+                                    Text("Enter Access Code")
                                         .font(.system(size: 25, weight: .bold, design: .rounded))
-                                        .foregroundStyle(.white)
+                                        .foregroundStyle(.black)
                                         .padding(.top, 2)
                                     Spacer()
                                     Button {
@@ -118,7 +123,7 @@ struct ChallengeListView: View {
                                 
                                 Spacer()
                                 HStack {
-                                    TextField("access code", text: $accessCode)
+                                    TextField("Code", text: $accessCode)
                                         .textFieldStyle(.roundedBorder)
                                     
                                     Button {
@@ -152,8 +157,8 @@ struct ChallengeListView: View {
                                             ProgressView()
                                             //                                                .frame(width: 50, height: 50)
                                         } else {
-                                            Text("Search")
-                                                .foregroundStyle(.white)
+                                            Text("Join")
+                                                .foregroundStyle(.black)
                                         }
                                     }
                                     .buttonStyle(.borderedProminent)
@@ -164,6 +169,13 @@ struct ChallengeListView: View {
                             .padding(.horizontal, 25)
                         }
                 }
+            }
+        }
+        .onAppear {
+            Task {
+                isLoadingChallenges = true
+                await user.challenges = user.fetchChallenges()
+                isLoadingChallenges = false
             }
         }
     }

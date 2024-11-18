@@ -3,7 +3,7 @@ import Firebase
 import FirebaseFirestore
 
 struct SelfProfileView: View {
-    @StateObject private var viewModel: ProfileViewModel
+    @StateObject private var viewModel: FeedViewModel
     @State private var name: String = "Jane Doe"
     @State private var username: String = "username"
     @State private var location: String = "Atlanta, GA"
@@ -21,7 +21,7 @@ struct SelfProfileView: View {
     
     init(userId: String) {
         self.userId = userId
-        _viewModel = StateObject(wrappedValue: ProfileViewModel(currentUserId: userId))
+        _viewModel = StateObject(wrappedValue: FeedViewModel(currentUserId: userId))
     }
     
     private func getCurrentUserUID() -> String {
@@ -90,10 +90,29 @@ struct SelfProfileView: View {
         VStack {
             HStack {
                 Spacer().frame(width: 20)
-                Circle()
-                    .frame(width: 70, height: 70)
-                    .foregroundColor(.gray)
-                    .padding()
+                if User.shared.profilePictureId.isEmpty || User.shared.profilePictureId == "None" {
+                    Circle()
+                        .frame(width: 70, height: 70)
+                        .foregroundColor(.gray)
+                        .padding()
+                } else {
+                    if let url = URL(string: User.shared.profilePictureId) {
+                        AsyncImage(url: url) { image in
+                            image.resizable().frame(width: 70, height: 70).clipShape(.circle)
+                        } placeholder: {
+                            ZStack {
+                                Circle()
+                                    .frame(width: 70, height: 70)
+                                    .foregroundColor(.blue)
+                                    .padding()
+                                Image(systemName: "person.circle")
+                                    .frame(width: 50, height: 50)
+                                    .foregroundColor(.black)
+                            }
+                        }
+
+                    }
+                }
                 
                 VStack(alignment: .leading) {
                     Text(name)
@@ -168,19 +187,14 @@ struct SelfProfileView: View {
             
             VStack {
                 Spacer()
-                Text("Activity")
+                Text("Your Activities")
                     .foregroundColor(selectedTab == 0 ? .black : .gray)
                     .frame(alignment: .top)
+                    .fontWeight(.bold)
                 
-                // Temporarily replaced with placeholder
-                Text("Activity feed coming soon")
-                    .foregroundColor(.gray)
-                    .padding()
-                
-                /* Commented out until social features are ready
                 ScrollView {
                     VStack(spacing: 16) {
-                        ForEach(viewModel.selfPosts) { post in
+                        ForEach(viewModel.friendPosts) { post in
                             WorkoutCardView(
                                 post: post,
                                 viewModel: viewModel
@@ -190,7 +204,7 @@ struct SelfProfileView: View {
                         .padding(.top)
                     }
                 }
-                */
+                
                 
                 Spacer()
             }
@@ -200,7 +214,7 @@ struct SelfProfileView: View {
         .onAppear {
             self.currentUserUID = getCurrentUserUID()
             ensureUserDocumentExists()
-            // viewModel.fetchSelfPosts(for: userId)  // Commented out until social features are ready
+            viewModel.fetchSelfPosts(for: userId)  // Commented out until social features are ready
             Task {
                 let user = await getUser(uid: userId)
                 self.selfUser = user
