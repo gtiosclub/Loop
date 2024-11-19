@@ -9,9 +9,11 @@ import SwiftUI
 
 struct ChalLeaderboardView: View {
     var personList: [Person]
+    @ObservedObject var user = User.shared
     
     var body: some View {
         let sortedPersonList = personList.sorted(by: {$0.score > $1.score})
+        let userRank = sortedPersonList.firstIndex(where: { $0.id == user.uid })
         
         PodiumView(personList: sortedPersonList)
             .padding(.vertical, -55)
@@ -27,11 +29,11 @@ struct ChalLeaderboardView: View {
                 
                 Spacer()
                 
-                Text(String(format: "%.1f miles", sortedPersonList[0].score))
+                Text(String(format: "%.1f miles", sortedPersonList[userRank!].score))
                     .fontWeight(.medium)
 
                 HStack {
-                    Text("1")
+                    Text("\(userRank! + 1)")
                     Image(systemName: "arrowtriangle.up.fill")
                         .font(.system(size: 9, weight: .regular))
                         .opacity(0.5)
@@ -84,20 +86,36 @@ struct ChalLeaderboardView: View {
                         Text(String(format: "%.1f miles", sortedPersonList[index].score))
                             .fontWeight(.medium)
                         
-                        HStack {
-                            Text(String(index + 1))
-                            Image(systemName: "arrowtriangle.up.fill")
-                                .font(.system(size: 9, weight: .regular))
-                                .opacity(0.5)
+                            
+                            HStack {
+                                Circle()
+                                    .foregroundColor(.gray)
+                                    .frame(width: 30, height: 30)
+                                
+                                Text(sortedPersonList[index].name)
+                                    .fontWeight(.light)
+                                
+                                Spacer()
+                                
+                                Text(String(format: "%.1f miles", sortedPersonList[index].score))
+                                    .fontWeight(.medium)
+                                
+                                HStack {
+                                    Text(String(index + 1))
+                                    Image(systemName: "arrowtriangle.up.fill")
+                                        .font(.system(size: 9, weight: .regular))
+                                        .opacity(0.5)
+                                }
+                                .padding(.leading, 30)
+                                .fontWeight(.medium)
+                                
+                            }
+                            .font(.system(size: 14))
+                            .padding(.horizontal, 30).padding(.vertical, 5)
+                            
+                            Divider().frame(width: 375).overlay(.gray)
                         }
-                        .padding(.leading, 30)
-                        .fontWeight(.medium)
-                        
                     }
-                    .font(.system(size: 14))
-                    .padding(.horizontal, 30).padding(.vertical, 5)
-                    
-                    Divider().frame(width: 375).overlay(.gray)
                 }
             }
         }

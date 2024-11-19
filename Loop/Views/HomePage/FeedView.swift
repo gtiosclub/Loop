@@ -203,6 +203,22 @@ struct WorkoutCardView: View {
                                     endPoint: .bottom
                                 )
                             }
+                    } else {
+                        Image("stock_swimmer")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(height: 160)
+                            .clipped()
+                            .overlay {
+                                LinearGradient(
+                                    gradient: Gradient(colors: [
+                                        .clear,
+                                        workoutColor.opacity(0.7)
+                                    ]),
+                                    startPoint: .top,
+                                    endPoint: .bottom
+                                )
+                            }
                     }
                     
                     
