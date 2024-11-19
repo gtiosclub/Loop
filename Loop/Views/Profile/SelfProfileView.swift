@@ -98,7 +98,7 @@ struct SelfProfileView: View {
                 } else {
                     if let url = URL(string: User.shared.profilePictureId) {
                         AsyncImage(url: url) { image in
-                            image.resizable().frame(width: 70, height: 70).clipShape(.circle)
+                            image.resizable().scaledToFill().frame(width: 70, height: 70).clipShape(.circle)
                         } placeholder: {
                             ZStack {
                                 Circle()

@@ -199,11 +199,11 @@ struct CreateLoginView: View {
                         
                         HStack {
                             if isSecure2 {
-                                SecureField("Comfirm Password", text: $ConfirmPassword)
+                                SecureField("Confirm Password", text: $ConfirmPassword)
                                     .padding(.trailing, 32) // Add padding to leave space for the button
                                     .textContentType(.none)
                             } else {
-                                TextField("Comfirm Password", text: $ConfirmPassword)
+                                TextField("Confirm Password", text: $ConfirmPassword)
                                     .padding(.trailing, 32)
                                     .textContentType(.none)
                             }
@@ -323,7 +323,7 @@ struct CreateLoginView: View {
                         
                     } else if (ConfirmPassword != Password) {
                         showAlert.toggle()
-                        alerTitle = "Comfirm Password is not the same as Password"
+                        alerTitle = "Confirm Password is not the same as Password"
                     
                     } else if (!HavePicture) {
                         showAlert.toggle()

@@ -124,7 +124,7 @@ struct WorkoutCardView: View {
                     } else {
                         if let url = URL(string: post.avatar) {
                             AsyncImage(url: url) { image in
-                                image.resizable().frame(width: 30, height: 30).clipShape(.circle)
+                                image.resizable().scaledToFill().frame(width: 30, height: 30).clipShape(.circle)
                             } placeholder: {
                                 Circle()
                                     .frame(width: 30, height: 30)

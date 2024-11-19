@@ -49,9 +49,32 @@ struct ChalLeaderboardView: View {
             if (sortedPersonList.count > 3) {
                 ForEach(3..<sortedPersonList.count, id: \.self) { index in
                     HStack {
-                        Circle()
-                            .foregroundColor(.gray)
-                            .frame(width: 30, height: 30)
+//                        
+//                        Circle()
+//                            .foregroundColor(.gray)
+//                            .frame(width: 30, height: 30)
+                        if (sortedPersonList[index].profilePicURL.isEmpty || sortedPersonList[index].profilePicURL == "None") {
+                            Circle()
+                                .foregroundColor(.gray)
+                                .frame(width: 65, height: 65)
+                        } else {
+                            if let url = URL(string: sortedPersonList[index].profilePicURL) {
+                                AsyncImage(url: url) { image in
+                                    image.resizable().scaledToFill()
+                                        .frame(width: 65, height: 65).clipShape(.circle)
+                                } placeholder: {
+                                    Circle()
+                                        .frame(width: 30, height: 30)
+                                        .foregroundColor(.gray)
+                                        .padding()
+                                        .overlay {
+                                            ProgressView()
+                                        }
+                                }
+
+                            }
+                        }
+
                         
                         Text(sortedPersonList[index].name)
                             .fontWeight(.light)
