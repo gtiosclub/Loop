@@ -119,15 +119,22 @@ struct ChallengeView: View {
                             .padding(.bottom, 10)
                         
                         HStack {
-                            Spacer()
                             Text(challenge.accessCode)
                                     .font(.system(size:40))
                                     .bold()
                                     .padding(8)
-                                    .overlay(RoundedRectangle(cornerRadius: 10)
-                                        .stroke(Color.gray, lineWidth: 2))
+                                    
                             Spacer()
+                            Button {UIPasteboard.general.string = challenge.accessCode} label: {
+                                Label("Copy", systemImage: "document.on.clipboard.fill")
+                                    .foregroundStyle(.gray)
+                                    .padding(.horizontal, 10)
+                            }
+
                         }
+                        .overlay(RoundedRectangle(cornerRadius: 10)
+                            .strokeBorder(.gray, style: StrokeStyle(lineWidth: 2, dash: [10])))
+                        .padding(.horizontal, 20)
                         
                         Button(action: {
                             
@@ -143,7 +150,8 @@ struct ChallengeView: View {
                             }
                             .frame(maxWidth: .infinity)
                             .frame(height: 60)
-                            .background(.gray)
+                            .foregroundStyle(.white)
+                            .background(Color(red:238/255, green:78/255, blue:78/255))
                             .cornerRadius(15)
                             .padding(.vertical, 20)
                         }
